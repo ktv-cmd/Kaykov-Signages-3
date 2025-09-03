@@ -3,30 +3,44 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Zap, Palette, Building, Car, Home, Lightbulb } from "lucide-react";
 
+// Import sign images
+import threeDSignImage from "@/assets/3d-sign.jpg";
+import acrylicStorefrontImage from "@/assets/acrylic-storefront.jpg";
+import ledNeonImage from "@/assets/led-neon.jpg";
+import lightboxImage from "@/assets/lightbox.jpg";
+import vinylBannerImage from "@/assets/vinyl-banner.jpg";
+import aluminumSignImage from "@/assets/aluminum-sign.jpg";
+import carWrapImage from "@/assets/car-wrap.jpg";
+import realEstatePostImage from "@/assets/real-estate-post.jpg";
+
 const premiumServices = [
   {
     icon: Lightbulb,
     title: "3D Signs",
     description: "Dimensional and bold signage that makes a statement",
-    features: ["Custom depth & thickness", "Premium materials", "LED integration available"]
+    features: ["Custom depth & thickness", "Premium materials", "LED integration available"],
+    image: threeDSignImage
   },
   {
     icon: Building,
     title: "Acrylic Storefront Signs",
     description: "Sleek, professional signs perfect for businesses",
-    features: ["Crystal clear finish", "Weather resistant", "Day & night visibility"]
+    features: ["Crystal clear finish", "Weather resistant", "Day & night visibility"],
+    image: acrylicStorefrontImage
   },
   {
     icon: Zap,
     title: "LED Neon Signs",
     description: "Fun, vibrant, modern lighting solutions",
-    features: ["Energy efficient", "Custom colors", "Remote control options"]
+    features: ["Energy efficient", "Custom colors", "Remote control options"],
+    image: ledNeonImage
   },
   {
     icon: Lightbulb,
     title: "Light Boxes",
     description: "Always visible, day or night illuminated signs",
-    features: ["Uniform lighting", "Changeable graphics", "Energy efficient LEDs"]
+    features: ["Uniform lighting", "Changeable graphics", "Energy efficient LEDs"],
+    image: lightboxImage
   }
 ];
 
@@ -34,12 +48,14 @@ const affordableServices = [
   {
     title: "Vinyl Banners",
     description: "Perfect for events, promotions, and grand openings",
-    price: "From $45"
+    price: "From $45",
+    image: vinylBannerImage
   },
   {
     title: "Aluminum Signs",
     description: "Durable outdoor option built to last",
-    price: "From $65"
+    price: "From $65",
+    image: aluminumSignImage
   },
   {
     title: "Yard Signs",
@@ -49,7 +65,8 @@ const affordableServices = [
   {
     title: "Car Wraps & Signs",
     description: "Advertise everywhere you go",
-    price: "From $150"
+    price: "From $150",
+    image: carWrapImage
   },
   {
     title: "Vinyl Stickers",
@@ -59,7 +76,8 @@ const affordableServices = [
   {
     title: "Real Estate Posts",
     description: "Professional property signs with frames",
-    price: "From $85"
+    price: "From $85",
+    image: realEstatePostImage
   }
 ];
 
@@ -82,11 +100,21 @@ export default function Services() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
           {premiumServices.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="w-8 h-8 text-white" />
+            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+                    <service.icon className="w-6 h-6 text-white" />
+                  </div>
                 </div>
+              </div>
+              <CardHeader className="text-center">
                 <CardTitle className="text-xl">{service.title}</CardTitle>
                 <CardDescription className="text-base">{service.description}</CardDescription>
               </CardHeader>
@@ -119,17 +147,29 @@ export default function Services() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {affordableServices.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-lg mb-2">{service.title}</CardTitle>
-                    <CardDescription>{service.description}</CardDescription>
-                  </div>
+            <Card key={index} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+              {service.image ? (
+                <div className="relative h-40 overflow-hidden">
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <Badge variant="secondary" className="absolute top-4 right-4 text-accent font-semibold bg-white/90">
+                    {service.price}
+                  </Badge>
+                </div>
+              ) : (
+                <div className="h-20 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center">
                   <Badge variant="secondary" className="text-accent font-semibold">
                     {service.price}
                   </Badge>
                 </div>
+              )}
+              <CardHeader>
+                <CardTitle className="text-lg mb-2">{service.title}</CardTitle>
+                <CardDescription>{service.description}</CardDescription>
               </CardHeader>
             </Card>
           ))}
