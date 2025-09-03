@@ -12,6 +12,11 @@ import vinylBannerImage from "@/assets/vinyl-banner.jpg";
 import aluminumSignImage from "@/assets/aluminum-sign.jpg";
 import carWrapImage from "@/assets/car-wrap.jpg";
 import realEstatePostImage from "@/assets/real-estate-post.jpg";
+import yardSignsImage from "@/assets/yard-signs.jpg";
+import menuBoardImage from "@/assets/menu-board.jpg";
+import tradeShowBannerImage from "@/assets/trade-show-banner.jpg";
+import wayfindingSignsImage from "@/assets/wayfinding-signs.jpg";
+import digitalLedImage from "@/assets/digital-led.jpg";
 
 const premiumServices = [
   {
@@ -60,13 +65,38 @@ const affordableServices = [
   {
     title: "Yard Signs",
     description: "Great for campaigns and real estate",
-    price: "From $25"
+    price: "From $25",
+    image: yardSignsImage
   },
   {
     title: "Car Wraps & Signs",
     description: "Advertise everywhere you go",
     price: "From $150",
     image: carWrapImage
+  },
+  {
+    title: "Menu Boards",
+    description: "Restaurant specials and food displays",
+    price: "From $85",
+    image: menuBoardImage
+  },
+  {
+    title: "Trade Show Displays",
+    description: "Portable event and exhibition signage",
+    price: "From $125",
+    image: tradeShowBannerImage
+  },
+  {
+    title: "Wayfinding Signs",
+    description: "Directional and safety compliance signage",
+    price: "From $55",
+    image: wayfindingSignsImage
+  },
+  {
+    title: "Digital LED Signs",
+    description: "Programmable electronic message displays",
+    price: "From $350",
+    image: digitalLedImage
   },
   {
     title: "Vinyl Stickers",
