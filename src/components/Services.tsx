@@ -206,22 +206,9 @@ export default function Services() {
         </div>
         
         <div className="text-center">
-          <div className="bg-gradient-to-r from-accent/10 to-neon/10 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold mb-4 text-primary">
-              Ready to Transform Your Business?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              From simple 2D signs to stunning 3D illuminated displays, we create signage that gets noticed and drives results.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="cta" size="lg" className="text-lg px-8 py-4" asChild>
-                <a href="/apply">Get Started Today</a>
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-                Chat with AI Assistant
-              </Button>
-            </div>
-          </div>
+          <Button variant="cta" size="lg" className="text-lg px-8 py-4">
+            Get Custom Quote
+          </Button>
         </div>
       </div>
     </section>

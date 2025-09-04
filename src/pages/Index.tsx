@@ -3,9 +3,8 @@ import Services from "@/components/Services";
 import Process from "@/components/Process";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import UseCases from "@/components/UseCases";
-import VideoShowcase from "@/components/VideoShowcase";
+import ApplicationForm from "@/components/ApplicationForm";
 import Contact from "@/components/Contact";
-import AIChat from "@/components/AIChat";
 
 const Index = () => {
   return (
@@ -13,11 +12,10 @@ const Index = () => {
       <Hero />
       <Services />
       <UseCases />
-      <VideoShowcase />
       <Process />
       <WhyChooseUs />
+      <ApplicationForm />
       <Contact />
-      <AIChat />
     </div>
   );
 };
