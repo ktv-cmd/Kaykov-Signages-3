@@ -17,126 +17,99 @@ import menuBoardImage from "@/assets/menu-board.jpg";
 import tradeShowBannerImage from "@/assets/trade-show-banner.jpg";
 import wayfindingSignsImage from "@/assets/wayfinding-signs.jpg";
 import digitalLedImage from "@/assets/digital-led.jpg";
-
-const premiumServices = [
-  {
-    icon: Lightbulb,
-    title: "3D Signs",
-    description: "Dimensional and bold signage that makes a statement",
-    features: ["Custom depth & thickness", "Premium materials", "LED integration available"],
-    image: threeDSignImage
-  },
-  {
-    icon: Building,
-    title: "Acrylic Storefront Signs",
-    description: "Sleek, professional signs perfect for businesses",
-    features: ["Crystal clear finish", "Weather resistant", "Day & night visibility"],
-    image: acrylicStorefrontImage
-  },
-  {
-    icon: Zap,
-    title: "LED Neon Signs",
-    description: "Fun, vibrant, modern lighting solutions",
-    features: ["Energy efficient", "Custom colors", "Remote control options"],
-    image: ledNeonImage
-  },
-  {
-    icon: Lightbulb,
-    title: "Light Boxes",
-    description: "Always visible, day or night illuminated signs",
-    features: ["Uniform lighting", "Changeable graphics", "Energy efficient LEDs"],
-    image: lightboxImage
-  }
-];
-
-const affordableServices = [
-  {
-    title: "Vinyl Banners",
-    description: "Perfect for events, promotions, and grand openings",
-    price: "From $45",
-    image: vinylBannerImage
-  },
-  {
-    title: "Aluminum Signs",
-    description: "Durable outdoor option built to last",
-    price: "From $65",
-    image: aluminumSignImage
-  },
-  {
-    title: "Yard Signs",
-    description: "Great for campaigns and real estate",
-    price: "From $25",
-    image: yardSignsImage
-  },
-  {
-    title: "Car Wraps & Signs",
-    description: "Advertise everywhere you go",
-    price: "From $150",
-    image: carWrapImage
-  },
-  {
-    title: "Menu Boards",
-    description: "Restaurant specials and food displays",
-    price: "From $85",
-    image: menuBoardImage
-  },
-  {
-    title: "Trade Show Displays",
-    description: "Portable event and exhibition signage",
-    price: "From $125",
-    image: tradeShowBannerImage
-  },
-  {
-    title: "Wayfinding Signs",
-    description: "Directional and safety compliance signage",
-    price: "From $55",
-    image: wayfindingSignsImage
-  },
-  {
-    title: "Digital LED Signs",
-    description: "Programmable electronic message displays",
-    price: "From $350",
-    image: digitalLedImage
-  },
-  {
-    title: "Vinyl Stickers",
-    description: "Custom cut, see-through, or blackout options",
-    price: "From $15"
-  },
-  {
-    title: "Real Estate Posts",
-    description: "Professional property signs with frames",
-    price: "From $85",
-    image: realEstatePostImage
-  }
-];
-
+const premiumServices = [{
+  icon: Lightbulb,
+  title: "3D Signs",
+  description: "Dimensional and bold signage that makes a statement",
+  features: ["Custom depth & thickness", "Premium materials", "LED integration available"],
+  image: threeDSignImage
+}, {
+  icon: Building,
+  title: "Acrylic Storefront Signs",
+  description: "Sleek, professional signs perfect for businesses",
+  features: ["Crystal clear finish", "Weather resistant", "Day & night visibility"],
+  image: acrylicStorefrontImage
+}, {
+  icon: Zap,
+  title: "LED Neon Signs",
+  description: "Fun, vibrant, modern lighting solutions",
+  features: ["Energy efficient", "Custom colors", "Remote control options"],
+  image: ledNeonImage
+}, {
+  icon: Lightbulb,
+  title: "Light Boxes",
+  description: "Always visible, day or night illuminated signs",
+  features: ["Uniform lighting", "Changeable graphics", "Energy efficient LEDs"],
+  image: lightboxImage
+}];
+const affordableServices = [{
+  title: "Vinyl Banners",
+  description: "Perfect for events, promotions, and grand openings",
+  price: "From $45",
+  image: vinylBannerImage
+}, {
+  title: "Aluminum Signs",
+  description: "Durable outdoor option built to last",
+  price: "From $65",
+  image: aluminumSignImage
+}, {
+  title: "Yard Signs",
+  description: "Great for campaigns and real estate",
+  price: "From $25",
+  image: yardSignsImage
+}, {
+  title: "Car Wraps & Signs",
+  description: "Advertise everywhere you go",
+  price: "From $150",
+  image: carWrapImage
+}, {
+  title: "Menu Boards",
+  description: "Restaurant specials and food displays",
+  price: "From $85",
+  image: menuBoardImage
+}, {
+  title: "Trade Show Displays",
+  description: "Portable event and exhibition signage",
+  price: "From $125",
+  image: tradeShowBannerImage
+}, {
+  title: "Wayfinding Signs",
+  description: "Directional and safety compliance signage",
+  price: "From $55",
+  image: wayfindingSignsImage
+}, {
+  title: "Digital LED Signs",
+  description: "Programmable electronic message displays",
+  price: "From $350",
+  image: digitalLedImage
+}, {
+  title: "Vinyl Stickers",
+  description: "Custom cut, see-through, or blackout options",
+  price: "From $15"
+}, {
+  title: "Real Estate Posts",
+  description: "Professional property signs with frames",
+  price: "From $85",
+  image: realEstatePostImage
+}];
 export default function Services() {
-  return (
-    <section className="py-20 bg-gradient-to-b from-background to-secondary/20">
+  return <section className="py-20 bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto px-6">
         {/* Premium Signs Section */}
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
             💎 Premium Collection
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
-            3D & Illuminated Signs
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">3D Signages</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             When you want to impress, go big. Our premium signs use cutting-edge materials and lighting to make your brand unforgettable.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {premiumServices.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 overflow-hidden">
+          {premiumServices.map((service, index) => <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 overflow-hidden">
               <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={service.image} 
-                  alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
@@ -150,16 +123,13 @@ export default function Services() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-muted-foreground">
+                  {service.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-center text-sm text-muted-foreground">
                       <div className="w-1.5 h-1.5 bg-accent rounded-full mr-2"></div>
                       {feature}
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
         
         {/* Affordable Signs Section */}
@@ -176,33 +146,23 @@ export default function Services() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {affordableServices.map((service, index) => (
-            <Card key={index} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-              {service.image ? (
-                <div className="relative h-40 overflow-hidden">
-                  <img 
-                    src={service.image} 
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+          {affordableServices.map((service, index) => <Card key={index} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+              {service.image ? <div className="relative h-40 overflow-hidden">
+                  <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <Badge variant="secondary" className="absolute top-4 right-4 text-accent font-semibold bg-white/90">
                     {service.price}
                   </Badge>
-                </div>
-              ) : (
-                <div className="h-20 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center">
+                </div> : <div className="h-20 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center">
                   <Badge variant="secondary" className="text-accent font-semibold">
                     {service.price}
                   </Badge>
-                </div>
-              )}
+                </div>}
               <CardHeader>
                 <CardTitle className="text-lg mb-2">{service.title}</CardTitle>
                 <CardDescription>{service.description}</CardDescription>
               </CardHeader>
-            </Card>
-          ))}
+            </Card>)}
         </div>
         
         <div className="text-center">
@@ -211,6 +171,5 @@ export default function Services() {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }
