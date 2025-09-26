@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, MessageCircle, Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-signage.jpg";
 
 export default function Hero() {
@@ -39,7 +40,7 @@ export default function Hero() {
           </p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <Button variant="hero" size="lg" className="text-lg px-8 py-4">
               <Calendar className="w-5 h-5" />
               Book Free Consultation
@@ -48,6 +49,25 @@ export default function Hero() {
               <Phone className="w-5 h-5" />
               Call Now
             </Button>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Link to="/outdoor-signages">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                Outdoor Signages
+              </Button>
+            </Link>
+            <Link to="/indoor-signages">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                Indoor Signages
+              </Button>
+            </Link>
+            <Link to="/car-wraps">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+                Car Wraps
+              </Button>
+            </Link>
           </div>
           
           {/* Key Benefits */}
