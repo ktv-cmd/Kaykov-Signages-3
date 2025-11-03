@@ -2,7 +2,6 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
 import WhyChooseUs from "@/components/WhyChooseUs";
-import UseCases from "@/components/UseCases";
 import ApplicationForm from "@/components/ApplicationForm";
 import Contact from "@/components/Contact";
 
@@ -11,7 +10,6 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero />
       <Services />
-      <UseCases />
       <Process />
       <WhyChooseUs />
       <ApplicationForm />

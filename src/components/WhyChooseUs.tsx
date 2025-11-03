@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Shield, Headphones, Star, CreditCard, Wrench } from "lucide-react";
+import { Clock, Shield, Headphones, Star, CreditCard, Wrench, Palette } from "lucide-react";
+import GoogleReviews from "./GoogleReviews";
 
 const benefits = [
   {
@@ -11,15 +12,15 @@ const benefits = [
   },
   {
     icon: Headphones,
-    title: "Multiple Support Channels",
-    description: "Support by Chat, WhatsApp, AI Assistant, or Phone - however you prefer to communicate.",
-    highlight: "24/7 support"
+    title: "Your Brand, Our Priority",
+    description: "Every project starts with understanding your business — we craft signage that speaks your language and attracts your audience.",
+    highlight: "Tailored to you"
   },
   {
     icon: Star,
     title: "Perfect Design Guarantee",
-    description: "Custom design with unlimited revisions until you absolutely love your sign.",
-    highlight: "Unlimited revisions"
+    description: "Custom design with up to 3 free revisions until you absolutely love your sign.",
+    highlight: "Up to 3 revisions"
   },
   {
     icon: CreditCard,
@@ -75,23 +76,29 @@ export default function WhyChooseUs() {
             Why Businesses Love Us
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We don't just make signs - we create partnerships. Here's what makes Kaykov Media different.
+            We don't just make signs - we create partnerships.<br />
+            Here's what makes Kaykov Media different.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {benefits.map((benefit, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-accent/20">
-              <CardHeader className="text-center">
+            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-accent/20 h-80 flex flex-col">
+              <CardHeader className="text-center flex-grow">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-accent/10 to-neon/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <benefit.icon className="w-8 h-8 text-accent" />
                 </div>
                 <CardTitle className="text-xl mb-2">{benefit.title}</CardTitle>
-                <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-                  {benefit.highlight}
-                </Badge>
+                <div className="flex justify-center mb-0">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-accent/10 text-accent border-accent/20 text-xs font-medium px-3 py-1 w-fit"
+                  >
+                    {benefit.highlight}
+                  </Badge>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow flex items-start pt-0 -mt-4">
                 <p className="text-muted-foreground text-center">{benefit.description}</p>
               </CardContent>
             </Card>
@@ -99,55 +106,45 @@ export default function WhyChooseUs() {
         </div>
         
         {/* Testimonials Section */}
-        <div className="text-center mb-12">
-          <Badge variant="outline" className="mb-4 text-primary border-primary">
-            💬 Client Reviews
-          </Badge>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
-            What Our Clients Say
-          </h3>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white border-2 hover:border-accent/20 transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <blockquote className="text-lg italic text-muted-foreground">
-                  "{testimonial.text}"
-                </blockquote>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm">
-                  <p className="font-semibold text-primary">{testimonial.author}</p>
-                  <p className="text-muted-foreground">{testimonial.business}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <GoogleReviews />
         
         {/* Guarantee Section */}
         <div className="mt-20 text-center">
-          <div className="bg-gradient-to-r from-accent/10 to-neon/10 rounded-2xl p-8 border-2 border-accent/20 max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-accent/10 to-neon/10 rounded-2xl p-8 border-2 border-accent/20 max-w-5xl mx-auto">
             <Shield className="w-16 h-16 mx-auto mb-6 text-accent" />
-            <h3 className="text-3xl font-bold mb-4 text-primary">Our Promise to You</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-2xl mb-2">✅</div>
-                <p className="font-semibold">3-Year Warranty</p>
+            <h3 className="text-3xl font-bold mb-8 text-primary">Our Promise to You</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+              <div className="bg-white/50 rounded-xl p-5 border border-accent/10 flex flex-col items-center text-center h-full">
+                <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-accent/20 to-neon/20 rounded-lg flex items-center justify-center">
+                  <Palette className="w-6 h-6 text-accent" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2 text-primary">Perfect Design</h4>
+                <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
+                  Visualize First
+                </Badge>
+                <p className="text-sm text-muted-foreground">3D rendering to see everything in advance</p>
               </div>
-              <div>
-                <div className="text-2xl mb-2">✅</div>
-                <p className="font-semibold">Professional Installation</p>
+
+              <div className="bg-white/50 rounded-xl p-5 border border-accent/10 flex flex-col items-center text-center h-full">
+                <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-accent/20 to-neon/20 rounded-lg flex items-center justify-center">
+                  <Wrench className="w-6 h-6 text-accent" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2 text-primary">Professional Installation</h4>
+                <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
+                  Certified experts
+                </Badge>
+                <p className="text-sm text-muted-foreground">Done right, every time</p>
               </div>
-              <div>
-                <div className="text-2xl mb-2">✅</div>
-                <p className="font-semibold">Secure Payments</p>
+
+              <div className="bg-white/50 rounded-xl p-5 border border-accent/10 flex flex-col items-center text-center h-full">
+                <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-accent/20 to-neon/20 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-accent" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2 text-primary">3-Year Warranty</h4>
+                <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
+                  Quality guaranteed
+                </Badge>
+                <p className="text-sm text-muted-foreground">Professional quality guaranteed</p>
               </div>
             </div>
           </div>

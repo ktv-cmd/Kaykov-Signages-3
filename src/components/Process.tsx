@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Ruler, Palette, CreditCard, Factory, Wrench } from "lucide-react";
+import { useState } from "react";
+import ApplicationForm from "./ApplicationForm";
 
 const steps = [
   {
@@ -21,8 +23,8 @@ const steps = [
     icon: Palette,
     number: "03",
     title: "Design",
-    description: "Unlimited revisions until you're completely in love with your design.",
-    highlight: "Unlimited revisions"
+    description: "Custom design with 3D preview to ensure you love your sign before it's made.",
+    highlight: "3 free revisions"
   },
   {
     icon: CreditCard,
@@ -48,6 +50,8 @@ const steps = [
 ];
 
 export default function Process() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <section className="py-20 bg-primary relative overflow-hidden">
       {/* Background Pattern */}
@@ -93,14 +97,8 @@ export default function Process() {
                 </div>
                 
                 {/* Content Card */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 group-hover:bg-white/20 transition-all duration-300 group-hover:shadow-2xl group-hover:transform group-hover:-translate-y-2">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 group-hover:bg-white/20 transition-all duration-300 group-hover:shadow-2xl group-hover:transform group-hover:-translate-y-2 h-40 flex flex-col justify-center">
                   <h3 className="text-lg font-bold text-white mb-2 text-center">{step.title}</h3>
-                  
-                  <div className="mb-3 text-center">
-                    <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30 text-xs">
-                      {step.highlight}
-                    </Badge>
-                  </div>
                   
                   <p className="text-white/80 text-sm text-center leading-relaxed">{step.description}</p>
                 </div>
@@ -125,16 +123,42 @@ export default function Process() {
             <h3 className="text-3xl font-bold text-white mb-4">Ready to Start Your Journey?</h3>
             <p className="text-white/90 mb-8 text-lg">Your perfect sign is just one conversation away. Let's create something amazing together!</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="tel:" className="inline-flex items-center justify-center bg-white text-primary hover:bg-white/90 transition-all duration-300 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl hover:transform hover:-translate-y-1">
+              <button 
+                onClick={() => setIsFormOpen(true)}
+                className="inline-flex items-center justify-center bg-white text-primary hover:bg-white/90 transition-all duration-300 px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl hover:transform hover:-translate-y-1"
+              >
                 📞 Start Your Project
-              </a>
-              <a href="#" className="inline-flex items-center justify-center bg-gradient-to-r from-accent to-neon text-white hover:shadow-2xl transition-all duration-300 px-8 py-4 rounded-xl font-semibold text-lg hover:transform hover:-translate-y-1">
+              </button>
+              <a 
+                href="https://wa.me/19179033458" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center bg-gradient-to-r from-accent to-neon text-white hover:shadow-2xl transition-all duration-300 px-8 py-4 rounded-xl font-semibold text-lg hover:transform hover:-translate-y-1"
+              >
                 💬 Chat With Us
               </a>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Application Form Modal */}
+      {isFormOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
+          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setIsFormOpen(false)}
+              className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+              aria-label="Close form"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <ApplicationForm />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

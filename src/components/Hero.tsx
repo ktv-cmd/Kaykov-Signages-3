@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Phone, MessageCircle, Calendar } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import heroImage from "@/assets/hero-signage.jpg";
+import ApplicationForm from "./ApplicationForm";
 
 export default function Hero() {
+  const location = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -19,11 +24,6 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center text-white">
         <div className="max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
-            <span className="w-2 h-2 bg-success rounded-full animate-pulse"></span>
-            <span className="text-sm font-medium">Available for consultation within 3 hours</span>
-          </div>
           
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
@@ -40,49 +40,86 @@ export default function Hero() {
           </p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-              <Calendar className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="text-lg px-10 py-6 rounded-full shadow-2xl shadow-black/30 hover:shadow-3xl hover:shadow-black/40 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+              onClick={() => setIsFormOpen(true)}
+            >
+              <Calendar className="w-5 h-5 mr-2" />
               Book Free Consultation
             </Button>
-            <Button variant="cta" size="lg" className="text-lg px-8 py-4">
-              <Phone className="w-5 h-5" />
+            <Button 
+              variant="cta" 
+              size="lg" 
+              className="text-lg px-10 py-6 rounded-full shadow-2xl shadow-accent/30 hover:shadow-3xl hover:shadow-accent/40 hover:scale-105 transition-all duration-300" 
+              onClick={() => window.open('tel:+17184784200', '_self')}
+            >
+              <Phone className="w-5 h-5 mr-2" />
               Call Now
             </Button>
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link to="/outdoor-signages">
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
-                Outdoor Signages
-              </Button>
-            </Link>
-            <Link to="/indoor-signages">
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
-                Indoor Signages
-              </Button>
-            </Link>
-            <Link to="/car-wraps">
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
-                Car Wraps
-              </Button>
-            </Link>
+          {/* Service Navigation Buttons */}
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">Explore Our Solutions</h2>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link to="/outdoor-signages">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                    location.pathname === '/outdoor-signages' 
+                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
+                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                  }`}
+                >
+                  Outdoor Signages
+                </Button>
+              </Link>
+              <Link to="/indoor-signages">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                    location.pathname === '/indoor-signages' 
+                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
+                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                  }`}
+                >
+                  Indoor Signages
+                </Button>
+              </Link>
+              <Link to="/car-wraps">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                    location.pathname === '/car-wraps' 
+                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
+                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                  }`}
+                >
+                  Car Wraps
+                </Button>
+              </Link>
+            </div>
           </div>
           
           {/* Key Benefits */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <h3 className="font-semibold text-lg mb-2">3-Year Warranty</h3>
-              <p className="text-white/80">Professional quality guaranteed</p>
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-6 border border-white/30 h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+              <h3 className="font-semibold text-lg mb-2 group-hover:text-white transition-colors duration-300">Perfect Design</h3>
+              <p className="text-white/90 text-sm group-hover:text-white/95 transition-colors duration-300">You're completely in love with</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <h3 className="font-semibold text-lg mb-2">Free Design Revisions</h3>
-              <p className="text-white/80">Until you absolutely love it</p>
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-6 border border-white/30 h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+              <h3 className="font-semibold text-lg mb-2 group-hover:text-white transition-colors duration-300">Professional Installation</h3>
+              <p className="text-white/90 text-sm group-hover:text-white/95 transition-colors duration-300">Done right, every time</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <h3 className="font-semibold text-lg mb-2">Professional Installation</h3>
-              <p className="text-white/80">Done right, every time</p>
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-6 border border-white/30 h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+              <h3 className="font-semibold text-lg mb-2 group-hover:text-white transition-colors duration-300">3-Year Warranty</h3>
+              <p className="text-white/90 text-sm group-hover:text-white/95 transition-colors duration-300">Professional quality guaranteed</p>
             </div>
           </div>
         </div>
@@ -94,6 +131,24 @@ export default function Hero() {
           <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
+
+      {/* Application Form Modal */}
+      {isFormOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
+          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setIsFormOpen(false)}
+              className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+              aria-label="Close form"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <ApplicationForm />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

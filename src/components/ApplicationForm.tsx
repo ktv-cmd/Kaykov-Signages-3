@@ -97,7 +97,7 @@ export default function ApplicationForm() {
                         <Input 
                           id="phone" 
                           {...register("phone", { required: "Phone is required" })}
-                          placeholder="(555) 123-4567"
+                          placeholder="+1(718) 478-4200"
                         />
                         {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
                       </div>
@@ -174,7 +174,7 @@ export default function ApplicationForm() {
                   </div>
                   <CardTitle className="text-2xl">Request Callback</CardTitle>
                   <CardDescription>
-                    Need to speak with someone quickly? We'll call you back within 3 hours during business hours.
+                    Need to speak with someone quickly? We'll call you back within 3 hours.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -194,7 +194,7 @@ export default function ApplicationForm() {
                         <Input 
                           id="phone" 
                           {...register("phone", { required: "Phone is required" })}
-                          placeholder="(555) 123-4567"
+                          placeholder="+1(718) 478-4200"
                         />
                         {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
                       </div>
@@ -240,7 +240,7 @@ export default function ApplicationForm() {
                       <Clock className="w-5 h-5 text-accent mt-0.5" />
                       <div className="text-sm">
                         <p className="font-medium">Quick Response Guarantee</p>
-                        <p className="text-muted-foreground">We'll call you back within 3 hours during business hours (Mon-Fri, 9 AM - 6 PM).</p>
+                        <p className="text-muted-foreground">We'll call you back within 3 hours.</p>
                       </div>
                     </div>
 
