@@ -78,7 +78,7 @@ export default function RequestCallModal({ isOpen, onClose }: RequestCallModalPr
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+          className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-lg p-2 transition-all duration-200 hover:scale-110"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -87,7 +87,7 @@ export default function RequestCallModal({ isOpen, onClose }: RequestCallModalPr
         {/* Header */}
         <div className="bg-gradient-to-r from-accent/20 via-accent/10 to-transparent p-8 border-b border-accent/20">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center">
               <Phone className="w-8 h-8 text-white" />
             </div>
             <div>

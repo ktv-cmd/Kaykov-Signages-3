@@ -30,7 +30,7 @@ export default function Contact() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 cursor-pointer">
                 <CardHeader className="text-center pb-4">
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <CardTitle className="text-lg">Call Us</CardTitle>
@@ -45,7 +45,7 @@ export default function Contact() {
               
               <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 cursor-pointer">
                 <CardHeader className="text-center pb-4">
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <MessageCircle className="w-6 h-6 text-white" />
                   </div>
                   <CardTitle className="text-lg">WhatsApp</CardTitle>

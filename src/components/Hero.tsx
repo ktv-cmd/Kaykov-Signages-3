@@ -44,7 +44,7 @@ export default function Hero() {
             <Button 
               variant="hero" 
               size="lg" 
-              className="text-lg px-10 py-6 rounded-full shadow-2xl shadow-black/30 hover:shadow-3xl hover:shadow-black/40 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+              className="text-lg px-10 py-6 rounded-lg shadow-2xl shadow-black/30 hover:shadow-3xl hover:shadow-black/40 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
               onClick={() => setIsFormOpen(true)}
             >
               <Calendar className="w-5 h-5 mr-2" />
@@ -53,7 +53,7 @@ export default function Hero() {
             <Button 
               variant="cta" 
               size="lg" 
-              className="text-lg px-10 py-6 rounded-full shadow-2xl shadow-accent/30 hover:shadow-3xl hover:shadow-accent/40 hover:scale-105 transition-all duration-300" 
+              className="text-lg px-10 py-6 rounded-lg shadow-2xl shadow-accent/30 hover:shadow-3xl hover:shadow-accent/40 hover:scale-105 transition-all duration-300" 
               onClick={() => window.open('tel:+17184784200', '_self')}
             >
               <Phone className="w-5 h-5 mr-2" />
@@ -69,10 +69,10 @@ export default function Hero() {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                  className={`text-lg px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium ${
                     location.pathname === '/outdoor-signages' 
-                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
-                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                      ? '!bg-primary !text-white !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl shadow-black/30 scale-105' 
+                      : '!bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105'
                   }`}
                 >
                   Outdoor Signages
@@ -82,10 +82,10 @@ export default function Hero() {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                  className={`text-lg px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium ${
                     location.pathname === '/indoor-signages' 
-                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
-                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                      ? '!bg-primary !text-white !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl shadow-black/30 scale-105' 
+                      : '!bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105'
                   }`}
                 >
                   Indoor Signages
@@ -95,10 +95,10 @@ export default function Hero() {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className={`text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-500 ${
+                  className={`text-lg px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium ${
                     location.pathname === '/car-wraps' 
-                      ? 'bg-white/95 text-primary border-white shadow-xl shadow-black/30 scale-105' 
-                      : 'text-white border-white/40 bg-white/10 hover:bg-white/90 hover:text-primary hover:border-white hover:shadow-xl hover:shadow-black/30 hover:scale-105'
+                      ? '!bg-primary !text-white !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl shadow-black/30 scale-105' 
+                      : '!bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105'
                   }`}
                 >
                   Car Wraps
@@ -124,28 +124,23 @@ export default function Hero() {
           </div>
         </div>
       </div>
-      
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
-        </div>
-      </div>
 
       {/* Application Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
-          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
+          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[95vh] overflow-y-auto">
             <button
               onClick={() => setIsFormOpen(false)}
-              className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-lg p-2 transition-all duration-200 hover:scale-110"
               aria-label="Close form"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <ApplicationForm />
+            <div className="max-h-[95vh] overflow-y-auto">
+              <ApplicationForm />
+            </div>
           </div>
         </div>
       )}

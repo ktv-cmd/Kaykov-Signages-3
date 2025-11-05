@@ -146,7 +146,7 @@ export default function UseCases() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
                     <useCase.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-white font-bold text-lg">{useCase.title}</h3>
@@ -159,7 +159,7 @@ export default function UseCases() {
                   <ul className="space-y-1">
                     {useCase.examples.map((example, exampleIndex) => (
                       <li key={exampleIndex} className="flex items-center text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mr-2"></div>
+                        <div className="w-1.5 h-1.5 bg-accent rounded-lg mr-2"></div>
                         {example}
                       </li>
                     ))}

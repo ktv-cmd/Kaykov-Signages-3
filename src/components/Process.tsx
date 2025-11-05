@@ -56,8 +56,8 @@ export default function Process() {
     <section className="py-20 bg-primary relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-64 h-64 border border-white/20 rounded-full"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 border border-white/10 rounded-full"></div>
+        <div className="absolute top-20 left-20 w-64 h-64 border border-white/20 rounded-lg"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 border border-white/10 rounded-lg"></div>
       </div>
       
       <div className="container mx-auto px-6 relative">
@@ -87,11 +87,11 @@ export default function Process() {
                 )}
                 
                 {/* Step Circle */}
-                <div className="relative z-10 w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-accent to-neon rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-500 shadow-2xl">
+                <div className="relative z-10 w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-accent to-neon rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-500 shadow-2xl">
                   <step.icon className="w-10 h-10 text-white" />
                   
                   {/* Step Number Badge */}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-primary rounded-lg flex items-center justify-center text-sm font-bold shadow-lg">
                     {step.number}
                   </div>
                 </div>
@@ -144,18 +144,20 @@ export default function Process() {
 
       {/* Application Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
-          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
+          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[95vh] overflow-y-auto">
             <button
               onClick={() => setIsFormOpen(false)}
-              className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-lg p-2 transition-all duration-200 hover:scale-110"
               aria-label="Close form"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <ApplicationForm />
+            <div className="max-h-[95vh] overflow-y-auto">
+              <ApplicationForm />
+            </div>
           </div>
         </div>
       )}

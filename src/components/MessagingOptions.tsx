@@ -75,7 +75,7 @@ export default function MessagingOptions({
           {/* WhatsApp Option */}
           <button
             onClick={handleWhatsAppClick}
-            className="group flex items-center gap-3 bg-[#25D366] hover:bg-[#25D366]/90 text-white rounded-full px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
+            className="group flex items-center gap-3 bg-[#25D366] hover:bg-[#25D366]/90 text-white rounded-lg px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
             aria-label="WhatsApp"
           >
             <MessageCircle className="w-5 h-5 flex-shrink-0" />
@@ -85,7 +85,7 @@ export default function MessagingOptions({
           {/* Telegram Option */}
           <button
             onClick={handleTelegramClick}
-            className="group flex items-center gap-3 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white rounded-full px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
+            className="group flex items-center gap-3 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white rounded-lg px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
             aria-label="Telegram"
           >
             <Send className="w-5 h-5 flex-shrink-0" />
@@ -95,7 +95,7 @@ export default function MessagingOptions({
           {/* SMS Option */}
           <button
             onClick={handleSMSClick}
-            className="group flex items-center gap-3 bg-gradient-to-r from-accent to-neon hover:from-accent/90 hover:to-neon/90 text-white rounded-full px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
+            className="group flex items-center gap-3 bg-gradient-to-r from-accent to-neon hover:from-accent/90 hover:to-neon/90 text-white rounded-lg px-5 py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[180px]"
             aria-label="SMS"
           >
             <Phone className="w-5 h-5 flex-shrink-0" />
@@ -122,5 +122,8 @@ export default function MessagingOptions({
     </div>
   );
 }
+
+
+
 
 

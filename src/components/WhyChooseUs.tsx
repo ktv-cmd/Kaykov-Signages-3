@@ -85,7 +85,7 @@ export default function WhyChooseUs() {
           {benefits.map((benefit, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-accent/20 h-80 flex flex-col">
               <CardHeader className="text-center flex-grow">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-accent/10 to-neon/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-accent/10 to-neon/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <benefit.icon className="w-8 h-8 text-accent" />
                 </div>
                 <CardTitle className="text-xl mb-2">{benefit.title}</CardTitle>

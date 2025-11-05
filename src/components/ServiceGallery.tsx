@@ -126,7 +126,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-full p-2 transition-all duration-200 hover:scale-110"
+          className="absolute top-4 right-4 z-50 bg-black/10 hover:bg-black/20 text-black rounded-lg p-2 transition-all duration-200 hover:scale-110"
           aria-label="Close gallery"
         >
           <X className="w-5 h-5" />
@@ -139,12 +139,17 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
           )}
           
           <img
-            src={images[currentIndex].src}
-            alt={images[currentIndex].alt}
+            src={images[currentIndex]?.src || ''}
+            alt={images[currentIndex]?.alt || serviceTitle}
             className={`w-full h-full object-contain transition-opacity duration-300 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onLoad={() => setImageLoaded(true)}
+            onError={(e) => {
+              console.error('Image failed to load:', images[currentIndex]?.src);
+              setImageLoaded(true); // Show error state
+            }}
+            loading="lazy"
           />
 
           {/* Navigation Arrows */}
@@ -155,7 +160,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   e.stopPropagation();
                   prevImage();
                 }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-200 hover:scale-110 z-10"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-lg p-2 transition-all duration-200 hover:scale-110 z-10"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -165,7 +170,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   e.stopPropagation();
                   nextImage();
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-200 hover:scale-110 z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-lg p-2 transition-all duration-200 hover:scale-110 z-10"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -198,9 +203,13 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   }}
                 >
                   <img
-                    src={img.src}
-                    alt={img.alt}
+                    src={img.src || ''}
+                    alt={img.alt || serviceTitle}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      console.error('Thumbnail failed to load:', img.src);
+                    }}
                   />
                 </button>
               ))}
@@ -216,7 +225,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                     setImageLoaded(false);
                     setCurrentIndex(index);
                   }}
-                  className={`flex-shrink-0 transition-all duration-200 rounded-full px-3 py-1.5 text-xs font-medium snap-center ${
+                  className={`flex-shrink-0 transition-all duration-200 rounded-lg px-3 py-1.5 text-xs font-medium snap-center ${
                     index === currentIndex
                       ? 'bg-[#E11D48] text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
