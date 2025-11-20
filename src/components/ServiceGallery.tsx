@@ -280,7 +280,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
               className="hidden min-[400px]:flex gap-1.5 sm:gap-2 overflow-x-auto pb-2 scroll-smooth cursor-grab active:cursor-grabbing"
               style={{
                 scrollbarWidth: 'thin',
-                scrollbarColor: '#E11D48 transparent',
+                scrollbarColor: 'hsl(var(--accent)) transparent',
               }}
               onMouseDown={(e) => {
                 const container = e.currentTarget;
@@ -339,7 +339,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   }}
                   className={`flex-shrink-0 transition-all duration-200 rounded-lg overflow-hidden cursor-pointer w-12 h-12 sm:w-[72px] sm:h-[72px] ${
                     index === currentIndex
-                      ? 'ring-2 ring-[#E11D48] ring-offset-1 sm:ring-offset-2 scale-105 shadow-lg'
+                      ? 'ring-2 ring-accent ring-offset-1 sm:ring-offset-2 scale-105 shadow-lg'
                       : 'opacity-60 hover:opacity-100 hover:scale-105'
                   }`}
                 >
@@ -362,7 +362,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
               className="flex min-[400px]:hidden gap-2 overflow-x-auto pb-1 scroll-smooth snap-x snap-mandatory"
               style={{
                 scrollbarWidth: 'thin',
-                scrollbarColor: '#E11D48 transparent',
+                scrollbarColor: 'hsl(var(--accent)) transparent',
               }}
             >
               {images.map((img, index) => (
@@ -375,7 +375,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   }}
                   className={`flex-shrink-0 transition-all duration-200 rounded-lg px-3 py-1.5 text-xs font-medium snap-center cursor-pointer ${
                     index === currentIndex
-                      ? 'bg-[#E11D48] text-white shadow-md scale-105'
+                      ? 'bg-accent text-white shadow-md scale-105'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -397,7 +397,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                 e.stopPropagation();
                 setIsFormOpen(true);
               }}
-              className="bg-[#E11D48] hover:opacity-90 px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105"
+              className="bg-accent hover:opacity-90 px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105"
             >
               Get a Quick Quote
             </Button>
