@@ -286,7 +286,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   {completionPercentage}%
                 </span>
               </div>
-              <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="relative h-2 bg-muted rounded-full overflow-hidden">
                 <div
                   className={`absolute top-0 left-0 h-full transition-all duration-500 ease-out rounded-full ${
                     completionPercentage === 100 ? 'bg-green-500' : 'bg-accent'
@@ -309,10 +309,10 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                 </div>
                 <span className="ml-2 text-sm font-medium">Required Info</span>
               </div>
-              <div className={`w-12 h-0.5 ${currentStep > 1 ? 'bg-green-600' : 'bg-gray-300'}`} />
-              <div className={`flex items-center ${currentStep === 2 ? 'text-accent' : currentStep > 2 ? 'text-green-600' : 'text-gray-400'}`}>
+              <div className={`w-12 h-0.5 ${currentStep > 1 ? 'bg-green-600' : 'bg-border'}`} />
+              <div className={`flex items-center ${currentStep === 2 ? 'text-accent' : currentStep > 2 ? 'text-green-600' : 'text-muted-foreground'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === 2 ? 'border-accent bg-accent/10' : currentStep > 2 ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300'
+                  currentStep === 2 ? 'border-accent bg-accent/10' : currentStep > 2 ? 'border-green-600 bg-green-600 text-white' : 'border-border'
                 }`}>
                   {currentStep > 2 ? <CheckCircle2 className="w-5 h-5" /> : '2'}
                 </div>
@@ -451,7 +451,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                     Picture of the place you need signage for
                   </Label>
                   {!imagePreview ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-accent transition-colors">
+                    <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-accent transition-colors">
                       <input
                         type="file"
                         id="picture"
@@ -461,7 +461,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                         className="hidden"
                       />
                       <label htmlFor="picture" className="cursor-pointer flex flex-col items-center">
-                        <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                        <Upload className="w-8 h-8 text-muted-foreground mb-2" />
                         <span className="text-sm text-muted-foreground">Click to upload image</span>
                         <span className="text-xs text-muted-foreground mt-1">Max 5MB</span>
                       </label>

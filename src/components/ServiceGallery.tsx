@@ -182,7 +182,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backgroundColor: 'hsl(var(--primary) / 0.75)',
         backdropFilter: 'blur(4px)',
         animation: 'fadeIn 160ms ease-out',
       }}
@@ -218,7 +218,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
           onMouseLeave={handleMouseLeave}
         >
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+            <div className="absolute inset-0 bg-primary animate-pulse" />
           )}
           
           <div 
@@ -273,7 +273,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
 
         {/* Thumbnail Strip */}
         {images.length > 1 && (
-          <div className="bg-white border-t border-gray-200 p-2 sm:p-4">
+          <div className="bg-white border-t border-border p-2 sm:p-4">
             {/* Desktop: Full thumbnails with smooth scrolling */}
             <div 
               data-thumbnail-container
@@ -376,7 +376,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                   className={`flex-shrink-0 transition-all duration-200 rounded-lg px-3 py-1.5 text-xs font-medium snap-center cursor-pointer ${
                     index === currentIndex
                       ? 'bg-accent text-white shadow-md scale-105'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
                   {index + 1}
@@ -387,8 +387,8 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
         )}
 
         {/* CTA Block */}
-        <div className="bg-white border-t border-gray-200 p-6">
-          <p className="text-sm text-gray-600 text-center mb-4">
+        <div className="bg-white border-t border-border p-6">
+          <p className="text-sm text-muted-foreground text-center mb-4">
             Want to see your business featured here? Get a quote and we'll add your project to our gallery.
           </p>
           <div className="flex justify-center items-center">

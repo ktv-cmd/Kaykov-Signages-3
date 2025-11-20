@@ -397,7 +397,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             <Button 
               variant="default" 
               size="lg" 
-              className="bg-gray-900 text-white hover:bg-gradient-to-r hover:from-accent hover:to-neon shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base w-full"
+              className="bg-primary text-primary-foreground hover:bg-gradient-to-r hover:from-accent hover:to-neon shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base w-full"
               onClick={() => setIsFormOpen(true)}
             >
               Get a Custom Quote

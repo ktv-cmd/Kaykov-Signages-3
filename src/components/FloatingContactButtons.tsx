@@ -113,10 +113,10 @@ export default function FloatingContactButtons() {
         
         @keyframes pulse-glow {
           0%, 100% {
-            box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+            box-shadow: 0 0 0 0 hsl(var(--accent) / 0.7);
           }
           50% {
-            box-shadow: 0 0 0 10px rgba(225, 29, 72, 0);
+            box-shadow: 0 0 0 10px hsl(var(--accent) / 0);
           }
         }
         
