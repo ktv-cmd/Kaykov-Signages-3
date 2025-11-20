@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Phone, MessageCircle, Mail, MapPin, Youtube, Linkedin, Instagram, Facebook } from "lucide-react";
+import { Phone, MessageCircle, MapPin, Youtube, Linkedin, Instagram, Facebook } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ApplicationForm from "./ApplicationForm";
 
 export default function Contact() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <section className="py-20 bg-gradient-to-b from-background to-primary/5">
       <div className="container mx-auto px-6">
@@ -13,15 +16,16 @@ export default function Contact() {
           <Badge variant="outline" className="mb-4 text-primary border-primary">
             🚀 Get Started
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
-            Ready to Bring Your Brand to Life?
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
+            Get Your Custom Sign Today
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Your perfect sign is just a conversation away. Choose how you'd like to get started.
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+            Fast turnaround, premium quality, and expert service. Contact us now to get started.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Methods */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-primary mb-6">Get In Touch</h3>
@@ -102,9 +106,9 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Location Map */}
-            <div className="mt-6">
-              <h4 className="font-semibold mb-4 flex items-center gap-2">
+              {/* Location Map - Desktop version (original position) */}
+              <div className="hidden lg:block">
+                <h4 className="font-semibold mb-4 flex items-center gap-2 text-xl">
                 <MapPin className="w-5 h-5 text-accent" />
                 Visit Us
               </h4>
@@ -112,7 +116,7 @@ export default function Contact() {
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.5!2d-73.8050998!3d40.7231743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25e1b8baa853b%3A0x6525be028bcfbcdc!2sKaykov%20Media!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
                   width="100%"
-                  height="300"
+                    height="400"
                   style={{ border: 0 }}
                   allowFullScreen={true}
                   loading="lazy"
@@ -125,7 +129,7 @@ export default function Contact() {
                 <Button 
                   variant="link" 
                   size="sm" 
-                  className="p-0 h-auto text-accent hover:text-accent/80"
+                    className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
                   onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
                 >
                   Get Directions →
@@ -134,67 +138,42 @@ export default function Contact() {
             </div>
           </div>
           
-          {/* Contact Form */}
-          <Card className="border-2 border-primary/10">
-            <CardHeader>
-              <CardTitle className="text-2xl">Request Free Consultation</CardTitle>
-              <p className="text-muted-foreground">Tell us about your project and we'll get back to you within 3 hours.</p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">First Name</label>
-                    <Input placeholder="John" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Last Name</label>
-                    <Input placeholder="Smith" />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Email</label>
-                  <Input type="email" placeholder="john@business.com" />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Phone</label>
-                  <Input type="tel" placeholder="+1(718) 478-4200" />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Type of Sign Needed</label>
-                  <select className="w-full px-3 py-2 border border-input rounded-md bg-background">
-                    <option value="">Select sign type...</option>
-                    <option value="3d">3D/Premium Signs</option>
-                    <option value="storefront">Storefront Signs</option>
-                    <option value="office">Office Signs</option>
-                    <option value="vehicle">Car Wraps/Signs</option>
-                    <option value="outdoor">Outdoor Banners</option>
-                    <option value="other">Other/Multiple Types</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Project Details</label>
-                  <Textarea 
-                    placeholder="Tell us about your project, dimensions, timeline, and any specific requirements..."
-                    rows={4}
-                  />
-                </div>
-                
-                <Button variant="cta" className="w-full text-lg py-6">
-                  Get Free Consultation
-                </Button>
-                
-                <p className="text-xs text-muted-foreground text-center">
-                  By submitting this form, you agree to receive communications from Kaykov Media. 
-                  We respect your privacy and will never share your information.
-                </p>
-              </form>
-            </CardContent>
-          </Card>
+          {/* Get a Custom Quote Form */}
+            <div className="pt-12 lg:pt-14">
+              <ApplicationForm inDialog={false} />
+            </div>
+          </div>
+
+          {/* Location Map - Full width on mobile (new position) */}
+          <div className="mt-8 lg:hidden">
+            <h4 className="font-semibold mb-4 flex items-center gap-2 text-xl">
+              <MapPin className="w-5 h-5 text-accent" />
+              Visit Us
+            </h4>
+            <div className="rounded-none sm:rounded-xl overflow-hidden shadow-lg border-0 sm:border-2 border-primary/10">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.5!2d-73.8050998!3d40.7231743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25e1b8baa853b%3A0x6525be028bcfbcdc!2sKaykov%20Media!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+                title="Kaykov Media Location"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground mt-3 text-center">
+              <Button 
+                variant="link" 
+                size="sm" 
+                className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
+                onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
+              >
+                Get Directions →
+              </Button>
+            </p>
+          </div>
         </div>
         
         {/* Final CTA */}
@@ -205,8 +184,11 @@ export default function Contact() {
               Every day without great signage is a day of missed opportunities. Let's get you noticed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4" onClick={() => window.open('tel:+17184784200', '_self')}>
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4 lg:hidden" onClick={() => window.open('tel:+17184784200', '_self')}>
                 📞 Call +1(718) 478-4200
+              </Button>
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4" onClick={() => setIsFormOpen(true)}>
+                Get a Custom Quote
               </Button>
               <Button variant="cta" size="lg" className="text-lg px-8 py-4" onClick={() => window.open('https://wa.me/19179033458', '_blank')}>
                 💬 WhatsApp +19179033458
@@ -215,6 +197,13 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {/* Application Form Modal */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
+          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

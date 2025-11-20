@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import { X, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ApplicationForm from "./ApplicationForm";
 
 interface GalleryImage {
   src: string;
@@ -19,6 +21,15 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
   const [imageLoaded, setImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [mouseStart, setMouseStart] = useState(0);
+  const [mouseEnd, setMouseEnd] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [thumbnailDragStart, setThumbnailDragStart] = useState(0);
+  const [thumbnailScrollStart, setThumbnailScrollStart] = useState(0);
+  const [isThumbnailDragging, setIsThumbnailDragging] = useState(false);
+  const thumbnailDragDistanceRef = useRef(0);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -28,11 +39,37 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      // Close form when gallery closes
+      setIsFormOpen(false);
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  // Auto-scroll thumbnails to center current image
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const thumbnailContainer = document.querySelector('[data-thumbnail-container]') as HTMLElement;
+    if (!thumbnailContainer) return;
+
+    const thumbnails = thumbnailContainer.querySelectorAll('button');
+    if (thumbnails[currentIndex]) {
+      const thumbnail = thumbnails[currentIndex] as HTMLElement;
+      const containerRect = thumbnailContainer.getBoundingClientRect();
+      const thumbnailRect = thumbnail.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      const thumbnailCenter = thumbnailRect.left + thumbnailRect.width / 2;
+      
+      // Calculate scroll offset to center the thumbnail
+      const scrollOffset = thumbnailCenter - containerCenter;
+      thumbnailContainer.scrollBy({
+        left: scrollOffset,
+        behavior: 'smooth'
+      });
+    }
+  }, [currentIndex, isOpen]);
 
   const nextImage = useCallback(() => {
     if (images.length === 0) return;
@@ -90,6 +127,47 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
     setTouchEnd(0);
   };
 
+  // Mouse handlers for drag/swipe
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setMouseStart(e.clientX);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    const currentX = e.clientX;
+    const offset = currentX - mouseStart;
+    setDragOffset(offset);
+    setMouseEnd(currentX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    
+    const distance = mouseStart - mouseEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && images.length > 1) {
+      nextImage();
+    }
+    if (isRightSwipe && images.length > 1) {
+      prevImage();
+    }
+    
+    setIsDragging(false);
+    setMouseStart(0);
+    setMouseEnd(0);
+    setDragOffset(0);
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      handleMouseUp();
+    }
+  };
+
   // Handle backdrop click
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -98,8 +176,6 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
   };
 
   if (!isOpen || !images || images.length === 0) return null;
-
-  const whatsappUrl = "https://api.whatsapp.com/send/?phone=17184784200&text=Hello!%20I'm%20interested%20in%20your%20signage%20services.%20Can%20you%20add%20my%20case%3F";
 
   return (
     <div
@@ -133,24 +209,40 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
         </button>
 
         {/* Main Image Area - 16:10 Aspect Ratio */}
-        <div className="relative w-full bg-black" style={{ aspectRatio: '16/10' }}>
+        <div 
+          className="relative w-full bg-black cursor-grab active:cursor-grabbing" 
+          style={{ aspectRatio: '16/10' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+        >
           {!imageLoaded && (
             <div className="absolute inset-0 bg-gray-800 animate-pulse" />
           )}
           
-          <img
-            src={images[currentIndex]?.src || ''}
-            alt={images[currentIndex]?.alt || serviceTitle}
-            className={`w-full h-full object-contain transition-opacity duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            onError={(e) => {
-              console.error('Image failed to load:', images[currentIndex]?.src);
-              setImageLoaded(true); // Show error state
+          <div 
+            className="relative w-full h-full"
+            style={{
+              transform: `translateX(${dragOffset}px)`,
+              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
             }}
-            loading="lazy"
-          />
+          >
+            <img
+              src={images[currentIndex]?.src || ''}
+              alt={images[currentIndex]?.alt || serviceTitle}
+              className={`w-full h-full object-contain transition-opacity duration-300 select-none ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setImageLoaded(true)}
+              onError={(e) => {
+                console.error('Image failed to load:', images[currentIndex]?.src);
+                setImageLoaded(true); // Show error state
+              }}
+              loading="lazy"
+              draggable={false}
+            />
+          </div>
 
           {/* Navigation Arrows */}
           {images.length > 1 && (
@@ -181,42 +273,98 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
 
         {/* Thumbnail Strip */}
         {images.length > 1 && (
-          <div className="bg-white border-t border-gray-200 p-4">
-            {/* Desktop: Full thumbnails */}
-            <div className="hidden min-[400px]:flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="bg-white border-t border-gray-200 p-2 sm:p-4">
+            {/* Desktop: Full thumbnails with smooth scrolling */}
+            <div 
+              data-thumbnail-container
+              className="hidden min-[400px]:flex gap-1.5 sm:gap-2 overflow-x-auto pb-2 scroll-smooth cursor-grab active:cursor-grabbing"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#E11D48 transparent',
+              }}
+              onMouseDown={(e) => {
+                const container = e.currentTarget;
+                setThumbnailDragStart(e.clientX);
+                setThumbnailScrollStart(container.scrollLeft);
+                thumbnailDragDistanceRef.current = 0;
+                setIsThumbnailDragging(true);
+              }}
+              onMouseMove={(e) => {
+                if (!isThumbnailDragging) return;
+                const container = e.currentTarget;
+                const deltaX = e.clientX - thumbnailDragStart;
+                thumbnailDragDistanceRef.current = Math.abs(deltaX);
+                container.scrollLeft = thumbnailScrollStart - deltaX;
+              }}
+              onMouseUp={() => {
+                setIsThumbnailDragging(false);
+                // Reset after a short delay to allow onClick to check
+                setTimeout(() => {
+                  thumbnailDragDistanceRef.current = 0;
+                }, 100);
+              }}
+              onMouseLeave={() => {
+                setIsThumbnailDragging(false);
+                thumbnailDragDistanceRef.current = 0;
+              }}
+            >
               {images.map((img, index) => (
                 <button
                   key={index}
                   onClick={(e) => {
                     e.stopPropagation();
+                    // Prevent click if user was dragging
+                    if (thumbnailDragDistanceRef.current > 5) return;
                     setImageLoaded(false);
                     setCurrentIndex(index);
+                    
+                    // Center the clicked thumbnail
+                    setTimeout(() => {
+                      const thumbnailContainer = document.querySelector('[data-thumbnail-container]') as HTMLElement;
+                      if (!thumbnailContainer) return;
+                      
+                      const thumbnail = e.currentTarget as HTMLElement;
+                      const containerRect = thumbnailContainer.getBoundingClientRect();
+                      const thumbnailRect = thumbnail.getBoundingClientRect();
+                      const containerCenter = containerRect.left + containerRect.width / 2;
+                      const thumbnailCenter = thumbnailRect.left + thumbnailRect.width / 2;
+                      
+                      // Calculate scroll offset to center the thumbnail
+                      const scrollOffset = thumbnailCenter - containerCenter;
+                      thumbnailContainer.scrollBy({
+                        left: scrollOffset,
+                        behavior: 'smooth'
+                      });
+                    }, 10);
                   }}
-                  className={`flex-shrink-0 transition-all duration-200 rounded-lg overflow-hidden ${
+                  className={`flex-shrink-0 transition-all duration-200 rounded-lg overflow-hidden cursor-pointer w-12 h-12 sm:w-[72px] sm:h-[72px] ${
                     index === currentIndex
-                      ? 'ring-2 ring-[#E11D48] ring-offset-2 scale-105'
+                      ? 'ring-2 ring-[#E11D48] ring-offset-1 sm:ring-offset-2 scale-105 shadow-lg'
                       : 'opacity-60 hover:opacity-100 hover:scale-105'
                   }`}
-                  style={{
-                    width: '72px',
-                    height: '72px',
-                  }}
                 >
                   <img
                     src={img.src || ''}
                     alt={img.alt || serviceTitle}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover pointer-events-none"
                     loading="lazy"
                     onError={(e) => {
                       console.error('Thumbnail failed to load:', img.src);
                     }}
+                    draggable={false}
                   />
                 </button>
               ))}
             </div>
             
             {/* Mobile: Swipeable chips (<400px) */}
-            <div className="flex min-[400px]:hidden gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
+            <div 
+              className="flex min-[400px]:hidden gap-2 overflow-x-auto pb-1 scroll-smooth snap-x snap-mandatory"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#E11D48 transparent',
+              }}
+            >
               {images.map((img, index) => (
                 <button
                   key={index}
@@ -225,9 +373,9 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
                     setImageLoaded(false);
                     setCurrentIndex(index);
                   }}
-                  className={`flex-shrink-0 transition-all duration-200 rounded-lg px-3 py-1.5 text-xs font-medium snap-center ${
+                  className={`flex-shrink-0 transition-all duration-200 rounded-lg px-3 py-1.5 text-xs font-medium snap-center cursor-pointer ${
                     index === currentIndex
-                      ? 'bg-[#E11D48] text-white'
+                      ? 'bg-[#E11D48] text-white shadow-md scale-105'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -241,25 +389,18 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
         {/* CTA Block */}
         <div className="bg-white border-t border-gray-200 p-6">
           <p className="text-sm text-gray-600 text-center mb-4">
-            We're happy to add your case here.
+            Want to see your business featured here? Get a quote and we'll add your project to our gallery.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <div className="flex justify-center items-center">
             <Button
-              onClick={() => window.open(whatsappUrl, '_blank')}
-              className="bg-[#E11D48] hover:bg-[#E11D48]/90 text-white px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-            >
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp Us
-            </Button>
-            <button
-              onClick={() => {
-                // Add your quick quote handler here
-                window.open('tel:+17184784200', '_self');
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFormOpen(true);
               }}
-              className="text-sm text-gray-600 hover:text-[#E11D48] transition-colors duration-200 underline"
+              className="bg-[#E11D48] hover:opacity-90 px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105"
             >
               Get a Quick Quote
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -286,6 +427,13 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
           }
         `}</style>
       </div>
+
+      {/* Application Form Modal */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
+              <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -15,38 +15,6 @@ interface GoogleReview {
 export default function GoogleReviews() {
   const [reviews, setReviews] = useState<GoogleReview[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const PLACE_ID = "ChIJN1sRk9RYwokRqZEaxL8KhBs"; // Kaykov Media Place ID (will be fetched)
-  const API_KEY = "YOUR_GOOGLE_PLACES_API_KEY"; // Needs to be replaced with actual API key
-
-  const fetchGoogleReviews = async () => {
-    try {
-      // Alternative approach: Since direct API calls need API keys and proper setup,
-      // We'll use a proxy service or embed method
-      
-      // For now, we'll use a mock API approach that you can replace with actual Google Places API
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews&key=${API_KEY}`
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch reviews');
-      }
-
-      const data = await response.json();
-      
-      if (data.result && data.result.reviews) {
-        const top5Reviews = data.result.reviews.slice(0, 5);
-        setReviews(top5Reviews);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load reviews');
-      console.error('Error fetching Google reviews:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     // For demo purposes, we'll use mock data
@@ -68,9 +36,9 @@ export default function GoogleReviews() {
           relative_time_description: "2 weeks ago"
         },
         {
-          author_name: "Jennifer Kim",
+          author_name: "Moshe Borukh",
           rating: 5,
-          text: "The car wrap exceeded our expectations. We get compliments everywhere we go!",
+          text: "Great work. Fast and efficient. Very reasonably priced as well. Good communication.",
           time: Date.now() - 86400000 * 20,
           relative_time_description: "3 weeks ago"
         }
@@ -82,68 +50,58 @@ export default function GoogleReviews() {
 
   if (loading) {
     return (
-      <div>
-        <div className="text-center mb-12">
+      <section className="py-20 bg-gradient-to-b from-background to-secondary/20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
             💬 Client Reviews
           </Badge>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
             What Our Clients Say
-          </h3>
-          <p className="text-muted-foreground">Loading reviews...</p>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Loading reviews...</p>
+          </div>
         </div>
-      </div>
+      </section>
     );
   }
 
-  if (error && reviews.length === 0) {
     return (
-      <div>
-        <div className="text-center mb-12">
+    <section className="py-20 bg-gradient-to-b from-background to-secondary/20">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
             💬 Client Reviews
           </Badge>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             What Our Clients Say
-          </h3>
-          <p className="text-muted-foreground">{error}</p>
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+            See what our satisfied customers have to say about their experience with Kaykov Media.
+          </p>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <div className="text-center mb-12">
-        <Badge variant="outline" className="mb-4 text-primary border-primary">
-          💬 Client Reviews
-        </Badge>
-        <h3 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
-          What Our Clients Say
-        </h3>
-      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {reviews.map((review, index) => (
           <Card 
             key={index} 
-            className="bg-white border-2 hover:border-accent/20 transition-all duration-300 animate-fade-in"
+              className="bg-white border-2 hover:border-accent/20 transition-all duration-300 animate-fade-in h-full flex flex-col"
             style={{ 
               animationDelay: `${index * 100}ms`,
               opacity: 1
             }}
           >
-            <CardHeader>
-              <div className="flex items-center mb-4">
+              <CardHeader className="flex-grow">
+                <div className="flex items-center mb-4 gap-1">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-accent text-accent" />
                 ))}
               </div>
-              <blockquote className="text-lg italic text-muted-foreground">
+                <blockquote className="text-lg italic text-muted-foreground leading-relaxed">
                 "{review.text.length > 150 ? `${review.text.substring(0, 150)}...` : review.text}"
               </blockquote>
             </CardHeader>
-            <CardContent>
+              <CardContent className="pt-0">
               <div className="text-sm">
                 <p className="font-semibold text-primary">{review.author_name}</p>
                 <p className="text-muted-foreground">{review.relative_time_description}</p>
@@ -154,7 +112,7 @@ export default function GoogleReviews() {
       </div>
       
       {/* See All Reviews Button */}
-      <div className="text-center mt-8">
+        <div className="text-center mt-12">
         <Button 
           variant="outline" 
           size="lg"
@@ -166,5 +124,6 @@ export default function GoogleReviews() {
         </Button>
       </div>
     </div>
+    </section>
   );
 }

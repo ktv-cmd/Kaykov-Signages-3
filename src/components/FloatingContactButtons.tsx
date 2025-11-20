@@ -28,14 +28,14 @@ export default function FloatingContactButtons() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-3 sm:gap-4">
       {/* Contact Options - shown when isOpen is true */}
       {isOpen && (
         <div className="flex flex-col gap-3 mb-2 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{ animation: 'slideUpFadeIn 0.3s ease-out' }}>
           {/* Phone Button */}
           <button
             onClick={handlePhoneClick}
-            className="group flex items-center justify-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            className="group flex items-center justify-center gap-3 bg-primary hover:bg-primary/90 active:bg-primary/80 text-primary-foreground rounded-lg w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
             aria-label="Call"
             title="Call Us"
           >
@@ -45,7 +45,7 @@ export default function FloatingContactButtons() {
           {/* WhatsApp Button */}
           <button
             onClick={handleWhatsAppClick}
-            className="group flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#25D366]/90 text-white rounded-lg w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            className="group flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#25D366]/90 active:bg-[#25D366]/80 text-white rounded-lg w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
             aria-label="WhatsApp"
             title="WhatsApp"
           >
@@ -57,7 +57,7 @@ export default function FloatingContactButtons() {
           {/* Telegram Button */}
           <button
             onClick={handleTelegramClick}
-            className="group flex items-center justify-center gap-3 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white rounded-lg w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            className="group flex items-center justify-center gap-3 bg-[#0088cc] hover:bg-[#0088cc]/90 active:bg-[#0088cc]/80 text-white rounded-lg w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
             aria-label="Telegram"
             title="Telegram"
           >
@@ -67,7 +67,7 @@ export default function FloatingContactButtons() {
           {/* SMS Button */}
           <button
             onClick={handleSMSClick}
-            className="group flex items-center justify-center gap-3 bg-[#34C759] hover:bg-[#34C759]/90 text-white rounded-lg w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            className="group flex items-center justify-center gap-3 bg-[#34C759] hover:bg-[#34C759]/90 active:bg-[#34C759]/80 text-white rounded-lg w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 touch-manipulation"
             aria-label="SMS"
             title="Send SMS"
           >
@@ -81,10 +81,10 @@ export default function FloatingContactButtons() {
       {/* Main Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center rounded-lg w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 relative ${
+        className={`flex items-center justify-center rounded-lg w-16 h-16 min-w-[64px] min-h-[64px] shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 active:scale-95 relative touch-manipulation ${
           isOpen 
-            ? 'bg-accent hover:bg-accent/90 text-white' 
-            : 'bg-accent hover:bg-accent/90 text-white animate-bounce-subtle pulse-glow'
+            ? 'bg-accent hover:bg-accent/90 active:bg-accent/80 text-white' 
+            : 'bg-accent hover:bg-accent/90 active:bg-accent/80 text-white animate-bounce-subtle pulse-glow'
         }`}
         aria-label="Contact Options"
         title="Contact Us"

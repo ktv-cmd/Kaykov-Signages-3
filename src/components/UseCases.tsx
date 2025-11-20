@@ -1,15 +1,17 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, Store, Home, Car, Users, Utensils, MapPin, Monitor } from "lucide-react";
+import { Building2, Store, Home, Users, Utensils, MapPin } from "lucide-react";
 
 // Import use case images
-import officeLobbyImage from "@/assets/office-lobby-sign.jpg";
-import yardSignsImage from "@/assets/yard-signs.jpg";
-import menuBoardImage from "@/assets/menu-board.jpg";
-import tradeShowBannerImage from "@/assets/trade-show-banner.jpg";
-import wayfindingSignsImage from "@/assets/wayfinding-signs.jpg";
-import digitalLedImage from "@/assets/digital-led.jpg";
+import officeLobbyImage from "@/assets/interiar /3d Letters Indoor/1 tov.JPG";
+import yardSignsImage from "@/assets/outdoor /3d signages /not light /Law office.JPG";
+// menu-board.jpg and trade-show-banner.jpg not found, using alternative images
+import menuBoardImage from "@/assets/outdoor /3d signages /Front lid /13.jpg";
+import tradeShowBannerImage from "@/assets/outdoor /3d signages /Front lid /13.jpg";
+import wayfindingSignsImage from "@/assets/outdoor /3d signages /Front lid /13.jpg";
+// digital-led.jpg not found, using alternative image
+import digitalLedImage from "@/assets/outdoor /3d signages /Front lid /13.jpg";
 
 const useCases = [
   {
@@ -89,33 +91,6 @@ const useCases = [
       "Building directories",
       "ADA compliance signs"
     ]
-  }
-];
-
-const industries = [
-  {
-    name: "Healthcare",
-    signs: ["Patient room signs", "Wayfinding", "Safety compliance", "Reception signs"]
-  },
-  {
-    name: "Education", 
-    signs: ["Campus directories", "Classroom signs", "Event banners", "Safety signs"]
-  },
-  {
-    name: "Manufacturing",
-    signs: ["Safety signs", "Equipment labels", "Warehouse signs", "Compliance displays"]
-  },
-  {
-    name: "Hospitality",
-    signs: ["Welcome signs", "Room numbers", "Event displays", "Amenity signs"]
-  },
-  {
-    name: "Automotive",
-    signs: ["Service bay signs", "Promotional banners", "Parts displays", "Safety signs"]
-  },
-  {
-    name: "Non-Profit",
-    signs: ["Fundraising banners", "Event signage", "Donor recognition", "Awareness campaigns"]
   }
 ];
 

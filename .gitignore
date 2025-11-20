@@ -27,4 +27,13 @@ dist-ssr
 .env
 .env.local
 .env.production.local
-.env.development.local
+
+# Node.js binaries and archives
+node-v*/
+node.tar.gz
+
+# Bun lock file (project uses npm)
+bun.lockb
+
+# Empty directories
+app/api/reels/
