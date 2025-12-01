@@ -17,4 +17,22 @@ export default defineConfig({
     },
   },
   assetsInclude: ["**/*.JPG", "**/*.jpg", "**/*.mp4", "**/*.MP4"],
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    sourcemap: false,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.log statements in production
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+  base: "./", // Use relative paths for assets (important for SiteGround)
 });

@@ -32,6 +32,10 @@ dist-ssr
 node-v*/
 node.tar.gz
 
+# Build artifacts and deployment packages
+*.zip
+kaykov-media-siteground-*.zip
+
 # Bun lock file (project uses npm)
 bun.lockb
 
