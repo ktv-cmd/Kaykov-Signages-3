@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Calendar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import heroImage from "@/assets/outdoor /hero-signage 14.30.46.jpg";
+import ApplicationFormMobile from "./ApplicationFormMobile";
 
-interface HeroProps {
+interface HeroMobileProps {
   hideButtons?: boolean;
 }
 
-export default function Hero({ hideButtons = false }: HeroProps = {}) {
-  const navigate = useNavigate();
+export default function HeroMobile({ hideButtons = false }: HeroMobileProps = {}) {
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 sm:py-0">
@@ -41,13 +43,14 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
             to elevate your brand's identity everywhere it appears.
           </p>
           
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Mobile Optimized: Full width on mobile, min 48px height */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-6 sm:mb-8 md:mb-12 px-4">
             <Button 
               variant="hero" 
               size="lg" 
-              className="text-base sm:text-lg px-6 sm:px-10 py-5 sm:py-6 rounded-lg shadow-2xl shadow-black/30 hover:shadow-3xl hover:shadow-black/40 hover:scale-105 transition-all duration-300 backdrop-blur-sm w-auto sm:w-auto"
-              onClick={() => navigate('/form')}
+              className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-base sm:text-lg px-6 sm:px-10 py-5 sm:py-6 rounded-lg shadow-2xl shadow-black/30 hover:shadow-3xl hover:shadow-black/40 hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-sm touch-manipulation"
+              onClick={() => setIsFormOpen(true)}
+              style={{ touchAction: 'manipulation' }}
             >
               <Calendar className="w-5 h-5 mr-2" />
               Get a Custom Quote
@@ -55,42 +58,45 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
             <Button 
               variant="cta" 
               size="lg" 
-              className="text-base sm:text-lg px-6 sm:px-10 py-5 sm:py-6 rounded-lg shadow-2xl shadow-accent/30 hover:shadow-3xl hover:shadow-accent/40 hover:scale-105 transition-all duration-300 w-auto sm:w-auto" 
+              className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-base sm:text-lg px-6 sm:px-10 py-5 sm:py-6 rounded-lg shadow-2xl shadow-accent/30 hover:shadow-3xl hover:shadow-accent/40 hover:scale-105 active:scale-95 transition-all duration-300 touch-manipulation" 
               onClick={() => window.open('https://wa.me/19179033458', '_blank')}
+              style={{ touchAction: 'manipulation' }}
             >
               <MessageCircle className="w-5 h-5 mr-2" />
               WhatsApp Us
             </Button>
           </div>
 
-          {/* Service Navigation Buttons */}
+          {/* Service Navigation Buttons - Mobile Optimized */}
           {!hideButtons && (
           <div className="mb-6 sm:mb-8 md:mb-12 px-4">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-white">Browse Our Signage Types</h2>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto">
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-base sm:text-lg px-6 sm:px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium !bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105 w-auto sm:w-auto"
+                className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-base sm:text-lg px-6 sm:px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium !bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105 active:scale-95 touch-manipulation"
                 onClick={() => {
                   const element = document.getElementById('outdoor-premium-collection');
                   if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
+                style={{ touchAction: 'manipulation' }}
               >
                 Outdoor Signages
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-base sm:text-lg px-6 sm:px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium !bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105 w-auto sm:w-auto"
+                className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-base sm:text-lg px-6 sm:px-8 py-4 rounded-lg backdrop-blur-md transition-all duration-500 font-medium !bg-white !text-primary !border-2 !border-white hover:!bg-primary hover:!text-white hover:!border-2 hover:!border-white shadow-xl hover:shadow-black/30 hover:scale-105 active:scale-95 touch-manipulation"
                 onClick={() => {
                   const element = document.getElementById('interior-signages');
                   if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }
                 }}
+                style={{ touchAction: 'manipulation' }}
               >
                 Indoor Signages
               </Button>
@@ -100,21 +106,29 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
           
           {/* Key Benefits */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-center px-4">
-            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group touch-manipulation">
               <h3 className="font-semibold text-base sm:text-lg mb-2 group-hover:text-white transition-colors duration-300">Perfect Design</h3>
               <p className="text-white/90 text-xs sm:text-sm group-hover:text-white/95 transition-colors duration-300">You'll love it before we build it</p>
             </div>
-            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group touch-manipulation">
               <h3 className="font-semibold text-base sm:text-lg mb-2 group-hover:text-white transition-colors duration-300">Professional Installation</h3>
               <p className="text-white/90 text-xs sm:text-sm group-hover:text-white/95 transition-colors duration-300">Done right, every time</p>
             </div>
-            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group">
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/30 min-h-[100px] sm:h-32 flex flex-col justify-center shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 hover:scale-105 hover:bg-white/20 transition-all duration-500 group touch-manipulation">
               <h3 className="font-semibold text-base sm:text-lg mb-2 group-hover:text-white transition-colors duration-300">3-Year Warranty</h3>
               <p className="text-white/90 text-xs sm:text-sm group-hover:text-white/95 transition-colors duration-300">Professional quality guaranteed</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Application Form Modal - Mobile Optimized */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
+          <ApplicationFormMobile onClose={() => setIsFormOpen(false)} inDialog={true} />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
+

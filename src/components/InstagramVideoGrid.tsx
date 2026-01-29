@@ -1,9 +1,8 @@
 import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Play, Loader2, ExternalLink } from "lucide-react";
-import ApplicationForm from "./ApplicationForm";
+import { useNavigate } from "react-router-dom";
 
 export type InstagramVideoItem = {
   title: string;
@@ -20,9 +19,9 @@ export type InstagramVideoGridProps = {
 };
 
 export default function InstagramVideoGrid({ items, showHeader = true }: InstagramVideoGridProps) {
+  const navigate = useNavigate();
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const [loadingVideo, setLoadingVideo] = useState<number | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
   const handleVideoToggle = (index: number) => {
@@ -230,7 +229,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
         {showHeader && (
           <div className="text-center mt-12">
             <Button
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => navigate('/form')}
               className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg hover:opacity-90 hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               Get a Custom Quote
@@ -240,11 +239,6 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
       </div>
 
       {/* Application Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-              <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }

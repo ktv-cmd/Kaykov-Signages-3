@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sparkles, ArrowRight } from "lucide-react";
-import ApplicationForm from "./ApplicationForm";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 // Import office case images
 import officeImage1 from "@/assets/outdoor /cases in office /1 K2 letter.JPG";
@@ -35,7 +33,7 @@ const officeImages = [
 ];
 
 export default function OfficeShowroom() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -101,7 +99,7 @@ export default function OfficeShowroom() {
               variant="cta"
               size="lg"
               className="text-lg px-10 py-6 rounded-xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:scale-105"
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => navigate('/form')}
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Get a Custom Quote
@@ -110,12 +108,6 @@ export default function OfficeShowroom() {
           </div>
       </div>
     </section>
-      
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

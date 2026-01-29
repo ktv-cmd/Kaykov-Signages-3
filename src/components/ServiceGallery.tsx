@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import ApplicationForm from "./ApplicationForm";
+import { useNavigate } from "react-router-dom";
 
 interface GalleryImage {
   src: string;
@@ -17,6 +16,7 @@ interface ServiceGalleryProps {
 }
 
 export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }: ServiceGalleryProps) {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
@@ -29,7 +29,6 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
   const [thumbnailScrollStart, setThumbnailScrollStart] = useState(0);
   const [isThumbnailDragging, setIsThumbnailDragging] = useState(false);
   const thumbnailDragDistanceRef = useRef(0);
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -39,8 +38,6 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
-      // Close form when gallery closes
-      setIsFormOpen(false);
     }
     return () => {
       document.body.style.overflow = 'unset';
@@ -395,7 +392,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                setIsFormOpen(true);
+                navigate('/form');
               }}
               className="bg-accent hover:opacity-90 px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105"
             >
@@ -428,12 +425,6 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
         `}</style>
       </div>
 
-      {/* Application Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-              <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

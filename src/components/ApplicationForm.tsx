@@ -243,22 +243,27 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
         imageMimeType,
       };
 
-      toast.success("Form Submitted Successfully!", {
-        description: "We've received your request and will contact you soon.",
-        duration: 5000,
-      });
-
       reset();
       setUploadedImage(null);
       setImagePreview(null);
       setCurrentStep(1);
 
-      // Delay closing the dialog to allow toast to be seen
-      setTimeout(() => {
-        onClose?.();
-      }, 100);
-
+      // Submit to Google Sheets (in background, don't wait for response)
       submitToGoogleSheets(sheetData).catch(showErrorToast);
+
+      // Track conversion in analytics
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'conversion', {
+          'send_to': 'AW-17829037355',
+          'value': 1.0,
+          'currency': 'USD'
+        });
+      }
+
+      // Close dialog if in dialog mode
+      if (inDialog) {
+        onClose?.();
+      }
     } catch (error) {
       showErrorToast();
     } finally {
@@ -509,19 +514,23 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
 
   if (inDialog) {
     return (
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full p-4 sm:p-6">
-        {formContent}
-      </form>
+      <>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full p-4 sm:p-6">
+          {formContent}
+        </form>
+      </>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
-      <Card className="border-2 hover:border-accent/20 hover:shadow-lg transition-all duration-300 p-4 sm:p-6 rounded-2xl sm:rounded-lg">
-        <CardContent className="p-0">
-          {formContent}
-        </CardContent>
-      </Card>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
+        <Card className="border-2 hover:border-accent/20 hover:shadow-lg transition-all duration-300 p-4 sm:p-6 rounded-2xl sm:rounded-lg">
+          <CardContent className="p-0">
+            {formContent}
+          </CardContent>
+        </Card>
+      </form>
+    </>
   );
 }

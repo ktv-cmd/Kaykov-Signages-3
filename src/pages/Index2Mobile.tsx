@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import Hero from "@/components/Hero";
+import HeroMobile from "@/components/HeroMobile";
 import Services from "@/components/Services";
 import GoogleReviews from "@/components/GoogleReviews";
 import InstagramVideoGrid from "@/components/InstagramVideoGrid";
@@ -7,31 +6,15 @@ import { signagesVideos } from "@/data/signagesVideos";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Process from "@/components/Process";
 import OurPromise from "@/components/OurPromise";
-import Contact from "@/components/Contact";
+import ContactMobile from "@/components/ContactMobile";
 import OfficeShowroom from "@/components/OfficeShowroom";
-import FloatingContactButtons from "@/components/FloatingContactButtons";
+import FloatingContactButtonsMobile from "@/components/FloatingContactButtonsMobile";
 
-const Index = () => {
-  useEffect(() => {
-    // Track page view in analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('config', 'AW-17829037355', {
-        page_path: '/',
-        page_title: 'Kaykov Media - Custom Signs That Bring Your Brand to Life'
-      });
-
-      // Track page view event
-      (window as any).gtag('event', 'page_view', {
-        page_path: '/',
-        page_title: 'Kaykov Media - Custom Signs That Bring Your Brand to Life'
-      });
-    }
-  }, []);
-
+const Index2Mobile = () => {
   return (
     <div className="min-h-screen">
-      {/* 1. Hero */}
-      <Hero />
+      {/* 1. Hero - Mobile Optimized */}
+      <HeroMobile />
       
       {/* 2. Outdoor Signages Premium Collection */}
       {/* 3. Outdoor Signages */}
@@ -56,12 +39,13 @@ const Index = () => {
       {/* 11. our promise */}
       <OurPromise />
       
-      {/* 12. Ready to Bring Your Brand to Life? */}
-      <Contact />
+      {/* 12. Ready to Bring Your Brand to Life? - Mobile Optimized */}
+      <ContactMobile />
       
-      <FloatingContactButtons />
+      <FloatingContactButtonsMobile />
     </div>
   );
 };
 
-export default Index;
+export default Index2Mobile;
+

@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Shield, Headphones, Star, CreditCard, Wrench, Sparkles, ArrowRight } from "lucide-react";
-import ApplicationForm from "./ApplicationForm";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const benefits = [
   {
@@ -46,7 +44,7 @@ const benefits = [
 ];
 
 export default function WhyChooseUs() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 bg-gradient-to-b from-secondary/20 to-background">
@@ -115,7 +113,7 @@ export default function WhyChooseUs() {
                   variant="cta"
                   size="lg"
                   className="text-lg px-10 py-6 rounded-xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:scale-105 group/btn"
-                  onClick={() => setIsFormOpen(true)}
+                  onClick={() => navigate('/form')}
                 >
                   <Sparkles className="w-5 h-5 mr-2 group-hover/btn:rotate-180 transition-transform duration-500" />
                   Get a Custom Quote
@@ -134,12 +132,6 @@ export default function WhyChooseUs() {
           </div>
         </div>
       </div>
-      
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }

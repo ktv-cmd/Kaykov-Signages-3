@@ -40,21 +40,21 @@ echo "🔨 Building for production..."
 npm run build
 echo ""
 
-# Check if dist folder exists
-if [ ! -d "dist" ]; then
-    echo "❌ Build failed: dist folder not found"
+# Check if out folder exists
+if [ ! -d "out" ]; then
+    echo "❌ Build failed: out folder not found"
     exit 1
 fi
 
 echo "✅ Build completed successfully!"
 echo ""
-echo "📁 Build output location: ./dist"
+echo "📁 Build output location: ./out"
 echo ""
 
 # Create zip file
 ZIP_NAME="kaykov-media-siteground-$(date +%Y%m%d-%H%M%S).zip"
 echo "📦 Creating zip file: $ZIP_NAME"
-cd dist
+cd out
 zip -r "../$ZIP_NAME" . -q
 cd ..
 echo ""
@@ -67,10 +67,10 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 echo "1. Upload the zip file '$ZIP_NAME' to your SiteGround hosting"
 echo "2. Extract the zip file contents to your public_html folder"
-echo "3. Make sure all files from the dist folder are in public_html"
+echo "3. Make sure all files from the out folder are in public_html"
 echo "4. Your website should be live at your domain!"
 echo ""
-echo "📂 Upload folder: dist/ (or extract $ZIP_NAME to public_html)"
+echo "📂 Upload folder: out/ (or extract $ZIP_NAME to public_html)"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 

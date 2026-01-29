@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Building, Lightbulb, Layers } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ServiceGallery from "./ServiceGallery";
-import ApplicationForm from "./ApplicationForm";
 
 // Light Boxes images - ALL images from light throug folder
 import lightbox1 from "@/assets/outdoor /2d /light throug/Laundry loft .JPG";
@@ -292,9 +292,11 @@ interface ServicesProps {
   hideOutdoor?: boolean;
 }
 
+import { useNavigate } from "react-router-dom";
+
 export default function Services({ hideInterior = false, hideOutdoor = false }: ServicesProps = {}) {
+  const navigate = useNavigate();
   const [selectedGallery, setSelectedGallery] = useState<{ images: Array<{ src: string; alt: string }>; title: string } | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const openGallery = (images: Array<{ src: string; alt: string }>, title: string) => {
     if (images && images.length > 0) {
@@ -398,7 +400,9 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               variant="default" 
               size="lg" 
               className="bg-primary text-primary-foreground hover:bg-gradient-to-r hover:from-accent hover:to-neon shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base w-full"
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => {
+                navigate('/form');
+              }}
             >
               Get a Custom Quote
             </Button>
@@ -459,7 +463,9 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 variant="default" 
                 size="lg" 
             className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
-                onClick={() => setIsFormOpen(true)}
+                onClick={() => {
+                navigate('/form');
+              }}
               >
                 Get a Custom Quote
               </Button>
@@ -590,7 +596,9 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               variant="default" 
               size="lg" 
               className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => {
+                navigate('/form');
+              }}
             >
               Get a Custom Quote
             </Button>
@@ -671,12 +679,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
         />
       )}
 
-      {/* Application Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }

@@ -18,7 +18,7 @@ export default defineConfig({
   },
   assetsInclude: ["**/*.JPG", "**/*.jpg", "**/*.mp4", "**/*.MP4"],
   build: {
-    outDir: "dist",
+    outDir: "out",
     assetsDir: "assets",
     sourcemap: false,
     minify: "terser",

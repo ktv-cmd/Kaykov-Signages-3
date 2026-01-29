@@ -1,9 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { MessageCircle, Ruler, CreditCard, Palette, Factory, Wrench } from "lucide-react";
-import { useState } from "react";
-import ApplicationForm from "./ApplicationForm";
+import { useNavigate } from "react-router-dom";
 
 interface Step {
   icon: React.ComponentType<{ className?: string }>;
@@ -59,7 +57,7 @@ const steps: Step[] = [
 ];
 
 export default function Process() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
@@ -137,20 +135,13 @@ export default function Process() {
               variant="cta" 
               size="lg" 
               className="bg-gradient-to-r from-accent to-neon text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-105 transition-all duration-300 px-6 sm:px-10 py-5 sm:py-6 rounded-xl font-medium text-base sm:text-lg w-full shadow-lg"
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => navigate('/form')}
             >
               Get a Custom Quote
             </Button>
           </div>
         </div>
       </div>
-
-      {/* Application Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
