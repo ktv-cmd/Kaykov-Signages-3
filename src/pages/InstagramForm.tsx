@@ -38,7 +38,7 @@ const InstagramForm = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    trackPageView("/window", "Kaykov Media - Window Quote Form");
+    trackPageView("/inst", "Kaykov Media - Instagram Quote Form");
   }, []);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const InstagramForm = () => {
   }, [location.pathname, location.search, navigate]);
 
   const handleSuccess = () => {
-    navigate("/window?toast=1", { replace: true });
+    navigate("/inst?toast=1", { replace: true });
   };
 
   return (
@@ -66,16 +66,16 @@ const InstagramForm = () => {
               suppressSuccessToast
               showStickyCta={false}
               withCard={false}
-              formId="window_form_mobile"
-              formLocation="window_form"
+              formId="instagram_form_mobile"
+              formLocation="instagram_form"
             />
           ) : (
             <ApplicationForm
               onSuccess={handleSuccess}
               suppressSuccessToast
               withCard={false}
-              formId="window_form_desktop"
-              formLocation="window_form"
+              formId="instagram_form_desktop"
+              formLocation="instagram_form"
             />
           )}
         </div>

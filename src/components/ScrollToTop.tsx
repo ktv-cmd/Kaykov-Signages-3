@@ -8,7 +8,10 @@ type LocationState = {
 export default function ScrollToTop() {
   const location = useLocation();
   const state = location.state as LocationState | null;
-  const pathname = state?.backgroundLocation?.pathname ?? location.pathname;
+  const isFormModal = location.pathname === "/form";
+  const pathname = isFormModal
+    ? (state?.backgroundLocation?.pathname ?? location.pathname)
+    : location.pathname;
 
   useEffect(() => {
     // #region agent log

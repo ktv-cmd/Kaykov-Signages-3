@@ -255,7 +255,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
               Get a Custom Quote
             </Button>
             <Link
-              to="/window"
+              to="/inst"
               className="text-sm text-primary underline-offset-4 hover:underline"
             >
               Open full-screen form

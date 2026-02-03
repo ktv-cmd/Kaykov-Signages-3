@@ -28,17 +28,12 @@ export const QuoteFormProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const openForm = useCallback((meta?: CtaMeta) => {
-    const formPath = meta?.destination ?? FORM_PATH;
     if (meta?.ctaId) {
       trackCtaClick({
         ...meta,
-        destination: formPath,
+        destination: FORM_PATH,
         ctaType: meta.ctaType ?? "quote_form",
       });
-    }
-    if (formPath !== FORM_PATH) {
-      navigate(formPath);
-      return;
     }
     setActiveMeta(meta ?? null);
     setIsOpen(true);

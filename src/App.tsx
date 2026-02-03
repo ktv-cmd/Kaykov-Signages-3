@@ -1,7 +1,7 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, type Location } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, type Location } from "react-router-dom";
 import { QuoteFormProvider } from "@/components/QuoteFormProvider";
 import Index from "./pages/Index";
 import Form from "./pages/Form";
@@ -20,8 +20,9 @@ const AppRoutes = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
   const isFormModal = location.pathname === "/form";
-  const modalLocation = isFormModal ? ({ ...location, pathname: "/" } as Location) : location;
-  const routesLocation = state?.backgroundLocation || modalLocation;
+  const routesLocation = isFormModal
+    ? (state?.backgroundLocation ?? ({ ...location, pathname: "/" } as Location))
+    : location;
 
   return (
     <QuoteFormProvider>
@@ -29,7 +30,8 @@ const AppRoutes = () => {
       <Routes location={routesLocation}>
         <Route path="/" element={<Index />} />
         <Route path="/form" element={<Form />} />
-        <Route path="/window" element={<InstagramForm />} />
+        <Route path="/inst" element={<InstagramForm />} />
+        <Route path="/window" element={<Navigate to="/inst" replace />} />
         <Route path="/outdoor-signages" element={<OutdoorSignages />} />
         <Route path="/indoor-signages" element={<IndoorSignages />} />
       </Routes>
