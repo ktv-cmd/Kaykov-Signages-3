@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, useLocation, type Location } from "react-
 import { QuoteFormProvider } from "@/components/QuoteFormProvider";
 import Index from "./pages/Index";
 import Form from "./pages/Form";
+import InstagramForm from "./pages/InstagramForm";
 import OutdoorSignages from "./pages/OutdoorSignages";
 import IndoorSignages from "./pages/IndoorSignages";
 import ScrollToTop from "./components/ScrollToTop";
@@ -25,6 +26,8 @@ const AppRoutes = () => {
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Index />} />
         <Route path="/form" element={<Form />} />
+        <Route path="/inst" element={<InstagramForm />} />
+        <Route path="/instagram" element={<InstagramForm />} />
         <Route path="/outdoor-signages" element={<OutdoorSignages />} />
         <Route path="/indoor-signages" element={<IndoorSignages />} />
       </Routes>

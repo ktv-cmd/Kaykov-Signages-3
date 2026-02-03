@@ -247,6 +247,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                   ctaId: "instagram_video_grid_quote",
                   ctaText: "Get a Custom Quote",
                   location: "instagram_video_grid_cta",
+                  destination: "/inst",
                 })
               }
               className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg hover:opacity-90 hover:shadow-lg hover:scale-105 transition-all duration-300"
