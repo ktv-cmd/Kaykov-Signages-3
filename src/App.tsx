@@ -29,8 +29,7 @@ const AppRoutes = () => {
       <Routes location={routesLocation}>
         <Route path="/" element={<Index />} />
         <Route path="/form" element={<Form />} />
-        <Route path="/inst" element={<InstagramForm />} />
-        <Route path="/instagram" element={<InstagramForm />} />
+        <Route path="/window" element={<InstagramForm />} />
         <Route path="/outdoor-signages" element={<OutdoorSignages />} />
         <Route path="/indoor-signages" element={<IndoorSignages />} />
       </Routes>
