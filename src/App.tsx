@@ -19,11 +19,14 @@ type LocationState = {
 const AppRoutes = () => {
   const location = useLocation();
   const state = location.state as LocationState | null;
+  const isFormModal = location.pathname === "/form";
+  const modalLocation = isFormModal ? ({ ...location, pathname: "/" } as Location) : location;
+  const routesLocation = state?.backgroundLocation || modalLocation;
 
   return (
     <QuoteFormProvider>
       <ScrollToTop />
-      <Routes location={state?.backgroundLocation || location}>
+      <Routes location={routesLocation}>
         <Route path="/" element={<Index />} />
         <Route path="/form" element={<Form />} />
         <Route path="/inst" element={<InstagramForm />} />

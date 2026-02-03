@@ -19,7 +19,7 @@ export const QuoteFormProvider = ({ children }: { children: ReactNode }) => {
   const backgroundLocation = locationState?.backgroundLocation;
   const [isOpen, setIsOpen] = useState(false);
   const [activeMeta, setActiveMeta] = useState<CtaMeta | null>(null);
-  const shouldShowModal = location.pathname === FORM_PATH && Boolean(backgroundLocation);
+  const shouldShowModal = location.pathname === FORM_PATH;
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === "undefined") {
       return false;
