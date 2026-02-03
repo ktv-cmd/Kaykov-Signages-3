@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { trackPageView } from "@/lib/analytics";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import GoogleReviews from "@/components/GoogleReviews";
@@ -13,19 +14,7 @@ import FloatingContactButtons from "@/components/FloatingContactButtons";
 
 const OutdoorSignages = () => {
   useEffect(() => {
-    // Track page view in analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('config', 'AW-17829037355', {
-        page_path: '/outdoor-signages',
-        page_title: 'Outdoor Signages - Kaykov Media'
-      });
-
-      // Track page view event
-      (window as any).gtag('event', 'page_view', {
-        page_path: '/outdoor-signages',
-        page_title: 'Outdoor Signages - Kaykov Media'
-      });
-    }
+    trackPageView("/outdoor-signages", "Outdoor Signages - Kaykov Media");
   }, []);
 
   return (

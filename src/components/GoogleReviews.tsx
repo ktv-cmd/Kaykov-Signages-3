@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
+import { trackCtaClick } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 
 interface GoogleReview {
@@ -76,8 +77,11 @@ export default function GoogleReviews() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             What Our Clients Say
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             See what our satisfied customers have to say about their experience with Kaykov Media.
+          </p>
+          <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+            Real feedback from NYC clients.
           </p>
         </div>
       
@@ -97,9 +101,12 @@ export default function GoogleReviews() {
                   <Star key={i} className="w-5 h-5 fill-accent text-accent" />
                 ))}
               </div>
-                <blockquote className="text-lg italic text-muted-foreground leading-relaxed">
-                "{review.text.length > 150 ? `${review.text.substring(0, 150)}...` : review.text}"
-              </blockquote>
+                <blockquote className="hidden sm:block text-lg italic text-muted-foreground leading-relaxed">
+                  "{review.text.length > 150 ? `${review.text.substring(0, 150)}...` : review.text}"
+                </blockquote>
+                <blockquote className="sm:hidden text-base italic text-muted-foreground leading-relaxed">
+                  "{review.text.length > 90 ? `${review.text.substring(0, 90)}...` : review.text}"
+                </blockquote>
             </CardHeader>
               <CardContent className="pt-0">
               <div className="text-sm">
@@ -116,8 +123,19 @@ export default function GoogleReviews() {
         <Button 
           variant="outline" 
           size="lg"
-          className="text-lg px-8 py-4"
-          onClick={() => window.open('https://www.google.com/search?q=kaykov+media#lrd=0x89c25e1b8baa853b:0x6525be028bcfbcdc,1', '_blank')}
+          className="w-full sm:w-auto text-base sm:text-lg px-5 sm:px-8 py-3 sm:py-4 whitespace-normal sm:whitespace-nowrap leading-snug text-center"
+          onClick={() => {
+            const reviewsUrl =
+              "https://www.google.com/search?q=kaykov+media#lrd=0x89c25e1b8baa853b:0x6525be028bcfbcdc,1";
+            trackCtaClick({
+              ctaId: "google_reviews_all",
+              ctaText: "See All Reviews on Google",
+              location: "google_reviews_section",
+              destination: reviewsUrl,
+              ctaType: "reviews",
+            });
+            window.open(reviewsUrl, "_blank");
+          }}
         >
           <Star className="w-5 h-5 mr-2" />
           See All Reviews on Google

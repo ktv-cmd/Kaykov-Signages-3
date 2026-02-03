@@ -2,7 +2,8 @@ import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Loader2, ExternalLink } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useQuoteForm } from "@/components/QuoteFormProvider";
+import { trackCtaClick } from "@/lib/analytics";
 
 export type InstagramVideoItem = {
   title: string;
@@ -19,7 +20,7 @@ export type InstagramVideoGridProps = {
 };
 
 export default function InstagramVideoGrid({ items, showHeader = true }: InstagramVideoGridProps) {
-  const navigate = useNavigate();
+  const { openForm } = useQuoteForm();
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const [loadingVideo, setLoadingVideo] = useState<number | null>(null);
   const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
@@ -68,8 +69,11 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
               Kaykov Signs – Video Showcase
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="hidden sm:block text-xl text-muted-foreground max-w-3xl mx-auto">
               See our custom signage projects in action
+            </p>
+            <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto">
+              Short videos of real projects.
             </p>
           </div>
         )}
@@ -198,12 +202,12 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
               {(item.title || item.description) && (
                 <div className="p-4 bg-white/50 group-hover:bg-white/70 transition-all duration-500">
                   {item.title && (
-                    <h3 className="text-lg font-bold text-primary mb-1 group-hover:text-accent transition-colors duration-300">
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-1 group-hover:text-accent transition-colors duration-300">
                       {item.title}
                     </h3>
                   )}
                   {item.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="hidden sm:block text-sm text-muted-foreground line-clamp-2">
                       {item.description}
                     </p>
                   )}
@@ -212,7 +216,16 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                       href={item.instagramUrl}
                       target="_blank"
                       rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        trackCtaClick({
+                          ctaId: `instagram_video_item_${index + 1}_view`,
+                          ctaText: "View on Instagram",
+                          location: `instagram_video_item_${index + 1}`,
+                          destination: item.instagramUrl,
+                          ctaType: "social",
+                        });
+                      }}
                       className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 mt-2 transition-colors duration-300"
                     >
                       View on Instagram
@@ -229,7 +242,13 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
         {showHeader && (
           <div className="text-center mt-12">
             <Button
-              onClick={() => navigate('/form')}
+              onClick={() =>
+                openForm({
+                  ctaId: "instagram_video_grid_quote",
+                  ctaText: "Get a Custom Quote",
+                  location: "instagram_video_grid_cta",
+                })
+              }
               className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg hover:opacity-90 hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               Get a Custom Quote

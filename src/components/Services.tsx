@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Building, Lightbulb, Layers } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useQuoteForm } from "@/components/QuoteFormProvider";
 import ServiceGallery from "./ServiceGallery";
 
 // Light Boxes images - ALL images from light throug folder
@@ -292,13 +292,31 @@ interface ServicesProps {
   hideOutdoor?: boolean;
 }
 
-import { useNavigate } from "react-router-dom";
-
 export default function Services({ hideInterior = false, hideOutdoor = false }: ServicesProps = {}) {
-  const navigate = useNavigate();
+  const { openForm } = useQuoteForm();
   const [selectedGallery, setSelectedGallery] = useState<{ images: Array<{ src: string; alt: string }>; title: string } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleChange = () => setIsMobile(mediaQuery.matches);
+
+    handleChange();
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, []);
 
   const openGallery = (images: Array<{ src: string; alt: string }>, title: string) => {
+    if (isMobile) {
+      return;
+    }
     if (images && images.length > 0) {
       setSelectedGallery({ images, title });
     }
@@ -318,8 +336,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             💎 Premium Collection
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">Premium Outdoor Signs</h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             When you want to impress, go big. Our premium signs use top-quality materials and LED lighting to make your brand stand out and attract customers.
+          </p>
+          <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+            Premium LED signs that make your brand stand out.
           </p>
         </div>
         
@@ -332,47 +353,86 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               key={index} 
                 className={`group hover:shadow-2xl transition-all duration-500 border-2 overflow-hidden cursor-pointer transform hover:-translate-y-2 hover:scale-[1.02] h-full flex flex-col
                   ${isLidService 
-                    ? 'border-accent/60 bg-gradient-to-br from-accent/5 via-primary/5 to-accent/5 hover:border-accent shadow-lg shadow-accent/20 hover:shadow-accent/40' 
+                    ? 'border-primary/20 bg-white/50 hover:border-accent/40 md:border-accent/60 md:bg-gradient-to-br md:from-accent/5 md:via-primary/5 md:to-accent/5 md:hover:border-accent md:shadow-lg md:shadow-accent/20 md:hover:shadow-accent/40'
                     : 'border-primary/20 hover:border-accent/40 bg-white/50'
                   }`}
               onClick={() => openGallery(service.gallery, service.title)}
             >
-                <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={service.image} 
-                  alt={service.title} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                />
-                  <div className={`absolute inset-0 transition-all duration-500 ${
-                    isLidService 
-                      ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent group-hover:from-black/90 group-hover:via-black/60' 
-                      : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
-                  }`} />
-                <div className="absolute bottom-4 left-4 right-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
-                      isLidService 
-                        ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
-                        : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
-                    }`}>
-                    <service.icon className="w-6 h-6 text-white" />
+                {service.image ? (
+                  isMobile && service.gallery.length > 0 ? (
+                    <div className="relative h-64 overflow-hidden">
+                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                        {service.gallery.map((img, imageIndex) => (
+                          <div key={imageIndex} className="relative h-full min-w-full snap-center">
+                            <img
+                              src={img.src}
+                              alt={img.alt}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <div className={`absolute inset-0 ${
+                              isLidService
+                                ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent'
+                                : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
+                            }`} />
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
+                                isLidService
+                                  ? 'bg-gradient-to-r from-accent to-neon'
+                                  : 'bg-gradient-to-r from-accent to-neon'
+                              }`}>
+                                <service.icon className="w-6 h-6 text-white" />
+                              </div>
+                              <h3 className="text-xl font-bold mb-1 text-white">
+                                {service.title}
+                              </h3>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <h3 className={`text-xl font-bold mb-1 transition-colors duration-300 ${
-                      isLidService 
-                        ? 'text-white group-hover:text-accent' 
-                        : 'text-white group-hover:text-accent'
-                    }`}>
-                      {service.title}
-                    </h3>
-                  </div>
-                </div>
-                <CardHeader className={`text-center transition-all duration-500 ${
+                  ) : (
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={service.image} 
+                        alt={service.title} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                      />
+                      <div className={`absolute inset-0 transition-all duration-500 ${
+                        isLidService 
+                          ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent group-hover:from-black/90 group-hover:via-black/60' 
+                          : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
+                      }`} />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
+                          isLidService 
+                            ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
+                            : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
+                        }`}>
+                          <service.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <h3 className={`text-xl font-bold mb-1 transition-colors duration-300 ${
+                          isLidService 
+                            ? 'text-white group-hover:text-accent' 
+                            : 'text-white group-hover:text-accent'
+                        }`}>
+                          {service.title}
+                        </h3>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center" />
+                )}
+                <CardHeader className={`hidden sm:block text-center transition-all duration-500 ${
                   isLidService 
                     ? 'bg-gradient-to-b from-accent/10 to-transparent group-hover:from-accent/20' 
                     : 'bg-white/50 group-hover:bg-white/70'
                 }`}>
                   <CardDescription className="text-base mt-2">{service.description}</CardDescription>
               </CardHeader>
-                <CardContent className={`transition-all duration-500 flex-grow ${
+                <CardContent className={`hidden sm:block transition-all duration-500 flex-grow ${
                   isLidService 
                     ? 'bg-gradient-to-b from-transparent to-accent/5 group-hover:to-accent/10' 
                     : 'bg-white/30 group-hover:bg-white/50'
@@ -400,9 +460,13 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               variant="default" 
               size="lg" 
               className="bg-primary text-primary-foreground hover:bg-gradient-to-r hover:from-accent hover:to-neon shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base w-full"
-              onClick={() => {
-                navigate('/form');
-              }}
+              onClick={() =>
+                openForm({
+                  ctaId: "services_premium_quote",
+                  ctaText: "Get a Custom Quote",
+                  location: "services_premium_cta",
+                })
+              }
             >
               Get a Custom Quote
             </Button>
@@ -418,9 +482,12 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             Affordable Outdoor Signs
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Quality outdoor signs that get noticed - perfect<br />
             for businesses looking for great value.
+          </p>
+          <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+            Affordable signs that still look premium.
           </p>
         </div>
         
@@ -432,24 +499,47 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
               >
                 {service.image ? (
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50 transition-all duration-500" />
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                  </div>
-                  </div>
+                  isMobile && service.gallery.length > 0 ? (
+                    <div className="relative h-64 overflow-hidden">
+                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                        {service.gallery.map((img, imageIndex) => (
+                          <div key={imageIndex} className="relative h-full min-w-full snap-center">
+                            <img 
+                              src={img.src} 
+                              alt={img.alt} 
+                              className="w-full h-full object-cover" 
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+                            <div className="absolute bottom-6 left-6 right-6">
+                              <h3 className="text-2xl font-bold text-white mb-2">
+                                {service.title}
+                              </h3>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={service.image} 
+                        alt={service.title} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50 transition-all duration-500" />
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors duration-300">
+                          {service.title}
+                        </h3>
+                      </div>
+                    </div>
+                  )
                 ) : (
-                <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center">
-                  </div>
+                  <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center" />
                 )}
-              <CardHeader className="bg-white/50 group-hover:bg-white/70 transition-all duration-500">
+              <CardHeader className="hidden sm:block bg-white/50 group-hover:bg-white/70 transition-all duration-500">
                 <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
                 <CardDescription className="text-base">{service.description}</CardDescription>
                 </CardHeader>
@@ -463,9 +553,13 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 variant="default" 
                 size="lg" 
             className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
-                onClick={() => {
-                navigate('/form');
-              }}
+                onClick={() =>
+                  openForm({
+                    ctaId: "services_affordable_quote",
+                    ctaText: "Get a Custom Quote",
+                    location: "services_affordable_cta",
+                  })
+                }
               >
                 Get a Custom Quote
               </Button>
@@ -484,8 +578,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
               Interior Signs
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+            <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
               Professional signs for inside your business - perfect for offices, retail spaces, and waiting areas.
+            </p>
+            <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+              Clean, professional interior signage for any space.
             </p>
           </div>
           
@@ -503,43 +600,81 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
               >
                 {service.image ? (
-                  <div className="relative h-64 overflow-hidden">
-                    <img 
-                      src={service.image} 
-                      alt={service.title} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                    />
-                    <div className={`absolute inset-0 transition-all duration-500 ${
-                      isLightService 
-                        ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent group-hover:from-black/90 group-hover:via-black/60' 
-                        : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
-                    }`} />
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
-                        isLightService 
-                          ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
-                          : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
-                      }`}>
-                        {isLightService ? (
-                          <Lightbulb className="w-6 h-6 text-white" />
-                        ) : (
-                          <Layers className="w-6 h-6 text-white" />
-                        )}
+                  isMobile && service.gallery.length > 0 ? (
+                    <div className="relative h-64 overflow-hidden">
+                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                        {service.gallery.map((img, imageIndex) => (
+                          <div key={imageIndex} className="relative h-full min-w-full snap-center">
+                            <img 
+                              src={img.src} 
+                              alt={img.alt} 
+                              className="w-full h-full object-cover" 
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <div className={`absolute inset-0 ${
+                              isLightService 
+                                ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent' 
+                                : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
+                            }`} />
+                            <div className="absolute bottom-6 left-6 right-6">
+                              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
+                                isLightService 
+                                  ? 'bg-gradient-to-r from-accent to-neon' 
+                                  : 'bg-gradient-to-r from-accent to-neon'
+                              }`}>
+                                {isLightService ? (
+                                  <Lightbulb className="w-6 h-6 text-white" />
+                                ) : (
+                                  <Layers className="w-6 h-6 text-white" />
+                                )}
+                              </div>
+                              <h3 className="text-2xl font-bold mb-2 text-white">
+                                {service.title}
+                              </h3>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <h3 className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
-                        isLightService 
-                          ? 'text-white group-hover:text-accent' 
-                          : 'text-white group-hover:text-accent'
-                      }`}>
-                        {service.title}
-                      </h3>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={service.image} 
+                        alt={service.title} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                      />
+                      <div className={`absolute inset-0 transition-all duration-500 ${
+                        isLightService 
+                          ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent group-hover:from-black/90 group-hover:via-black/60' 
+                          : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
+                      }`} />
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
+                          isLightService 
+                            ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
+                            : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
+                        }`}>
+                          {isLightService ? (
+                            <Lightbulb className="w-6 h-6 text-white" />
+                          ) : (
+                            <Layers className="w-6 h-6 text-white" />
+                          )}
+                        </div>
+                        <h3 className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
+                          isLightService 
+                            ? 'text-white group-hover:text-accent' 
+                            : 'text-white group-hover:text-accent'
+                        }`}>
+                          {service.title}
+                        </h3>
+                      </div>
+                    </div>
+                  )
                 ) : (
-                  <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center">
-                  </div>
+                  <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center" />
                 )}
-                <CardHeader className={`text-center transition-all duration-500 ${
+                <CardHeader className={`hidden sm:block text-center transition-all duration-500 ${
                   isLightService 
                     ? 'bg-gradient-to-b from-accent/10 to-transparent group-hover:from-accent/20' 
                     : 'bg-white/50 group-hover:bg-white/70'
@@ -547,7 +682,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                   <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
                   <CardDescription className="text-base">{service.description}</CardDescription>
                 </CardHeader>
-                <CardContent className={`transition-all duration-500 flex-grow ${
+                <CardContent className={`hidden sm:block transition-all duration-500 flex-grow ${
                   isLightService 
                     ? 'bg-gradient-to-b from-transparent to-accent/5 group-hover:to-accent/10' 
                     : 'bg-white/30 group-hover:bg-white/50'
@@ -596,9 +731,13 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               variant="default" 
               size="lg" 
               className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
-              onClick={() => {
-                navigate('/form');
-              }}
+              onClick={() =>
+                openForm({
+                  ctaId: "services_interior_quote",
+                  ctaText: "Get a Custom Quote",
+                  location: "services_interior_cta",
+                })
+              }
             >
               Get a Custom Quote
             </Button>
@@ -670,7 +809,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
       </div>
 
       {/* Gallery Modal */}
-      {selectedGallery && (
+      {selectedGallery && !isMobile && (
         <ServiceGallery
           images={selectedGallery.images}
           serviceTitle={selectedGallery.title}

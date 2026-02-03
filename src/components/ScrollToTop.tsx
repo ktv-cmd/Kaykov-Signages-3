@@ -1,8 +1,14 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, type Location } from "react-router-dom";
+
+type LocationState = {
+  backgroundLocation?: Location;
+};
 
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const state = location.state as LocationState | null;
+  const pathname = state?.backgroundLocation?.pathname ?? location.pathname;
 
   useEffect(() => {
     // #region agent log

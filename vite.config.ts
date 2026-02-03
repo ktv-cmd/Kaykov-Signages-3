@@ -34,5 +34,5 @@ export default defineConfig({
       },
     },
   },
-  base: "./", // Use relative paths for assets (important for SiteGround)
+  base: "/", // Use root base so deep links load assets on SiteGround
 });

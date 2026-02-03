@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, MessageCircle, MapPin, Youtube, Linkedin, Instagram, Facebook } from "lucide-react";
-import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Phone, MessageCircle, MapPin, Youtube, Linkedin, Instagram, Facebook, Mail } from "lucide-react";
 import ApplicationFormMobile from "./ApplicationFormMobile";
+import { trackCtaClick, trackPhoneClick } from "@/lib/analytics";
 
 export default function ContactMobile() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
   return (
     <section className="py-20 bg-gradient-to-b from-background to-primary/5">
       <div className="container mx-auto px-6">
@@ -43,8 +40,11 @@ export default function ContactMobile() {
                   <p className="text-sm text-muted-foreground mb-3">Speak directly with our team</p>
                   <Button 
                     variant="outline" 
-                    className="w-full min-h-[48px] h-12 touch-manipulation" 
-                    onClick={() => window.open('tel:+17186146369', '_self')}
+                    className="w-full min-h-[48px] h-12 touch-manipulation whitespace-normal text-center leading-snug" 
+                    onClick={() => {
+                      trackPhoneClick("contact_mobile_call", "+17186146369", "contact_section_mobile");
+                      window.open('tel:+17186146369', '_self');
+                    }}
                     style={{ touchAction: 'manipulation' }}
                   >
                     📞 +1(718) 614-6369
@@ -63,11 +63,49 @@ export default function ContactMobile() {
                   <p className="text-sm text-muted-foreground mb-3">Quick chat anytime</p>
                   <Button 
                     variant="outline" 
-                    className="w-full min-h-[48px] h-12 touch-manipulation" 
-                    onClick={() => window.open('https://wa.me/19179033458', '_blank')}
+                    className="w-full min-h-[48px] h-12 touch-manipulation whitespace-normal text-center leading-snug" 
+                    onClick={() => {
+                      trackCtaClick({
+                        ctaId: "contact_mobile_whatsapp",
+                        ctaText: "WhatsApp",
+                        location: "contact_section_mobile",
+                        destination: "https://wa.me/19179033458",
+                        ctaType: "whatsapp",
+                      });
+                      window.open('https://wa.me/19179033458', '_blank');
+                    }}
                     style={{ touchAction: 'manipulation' }}
                   >
-                    💬 WhatsApp +19179033458
+                    💬 WhatsApp
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 cursor-pointer touch-manipulation" style={{ touchAction: 'manipulation' }}>
+                <CardHeader className="text-center pb-4">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Email Us</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center pt-0">
+                  <p className="text-sm text-muted-foreground mb-3">Send us your details</p>
+                  <Button
+                    variant="outline"
+                    className="w-full min-h-[48px] h-12 touch-manipulation whitespace-normal text-center leading-snug"
+                    onClick={() => {
+                      trackCtaClick({
+                        ctaId: "contact_mobile_email",
+                        ctaText: "info@kaykovmedia.com",
+                        location: "contact_section_mobile",
+                        destination: "mailto:info@kaykovmedia.com",
+                        ctaType: "email",
+                      });
+                      window.open('mailto:info@kaykovmedia.com', '_self');
+                    }}
+                    style={{ touchAction: 'manipulation' }}
+                  >
+                    ✉️ info@kaykovmedia.com
                   </Button>
                 </CardContent>
               </Card>
@@ -81,7 +119,16 @@ export default function ContactMobile() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://www.youtube.com/@kaykovmedia', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_mobile_social_youtube",
+                      ctaText: "YouTube",
+                      location: "contact_section_mobile",
+                      destination: "https://www.youtube.com/@kaykovmedia",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.youtube.com/@kaykovmedia', '_blank');
+                  }}
                   style={{ touchAction: 'manipulation' }}
                 >
                   <Youtube className="w-4 h-4" />
@@ -91,7 +138,16 @@ export default function ContactMobile() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://www.instagram.com/kaykovmedia/', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_mobile_social_instagram",
+                      ctaText: "Instagram",
+                      location: "contact_section_mobile",
+                      destination: "https://www.instagram.com/kaykovmedia/",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.instagram.com/kaykovmedia/', '_blank');
+                  }}
                   style={{ touchAction: 'manipulation' }}
                 >
                   <Instagram className="w-4 h-4" />
@@ -101,7 +157,16 @@ export default function ContactMobile() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://www.facebook.com/kaykovmedia', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_mobile_social_facebook",
+                      ctaText: "Facebook",
+                      location: "contact_section_mobile",
+                      destination: "https://www.facebook.com/kaykovmedia",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.facebook.com/kaykovmedia', '_blank');
+                  }}
                   style={{ touchAction: 'manipulation' }}
                 >
                   <Facebook className="w-4 h-4" />
@@ -111,7 +176,16 @@ export default function ContactMobile() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://signscompanynewyork.com/', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_mobile_social_website",
+                      ctaText: "Website",
+                      location: "contact_section_mobile",
+                      destination: "https://signscompanynewyork.com/",
+                      ctaType: "social",
+                    });
+                    window.open('https://signscompanynewyork.com/', '_blank');
+                  }}
                   style={{ touchAction: 'manipulation' }}
                 >
                   <Linkedin className="w-4 h-4" />
@@ -144,7 +218,16 @@ export default function ContactMobile() {
                   variant="link" 
                   size="sm" 
                     className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_mobile_directions_desktop",
+                      ctaText: "Get Directions",
+                      location: "contact_section_mobile",
+                      destination: "https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+                      ctaType: "directions",
+                    });
+                    window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+                  }}
                   style={{ touchAction: 'manipulation' }}
                 >
                   Get Directions →
@@ -155,7 +238,11 @@ export default function ContactMobile() {
           
           {/* Get a Custom Quote Form - Mobile Optimized */}
             <div className="pt-12 lg:pt-14">
-              <ApplicationFormMobile inDialog={false} />
+              <ApplicationFormMobile
+                inDialog={false}
+                formId="contact_form_mobile"
+                formLocation="contact_section_mobile"
+              />
             </div>
           </div>
 
@@ -183,7 +270,16 @@ export default function ContactMobile() {
                 variant="link" 
                 size="sm" 
                 className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
-                onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
+                onClick={() => {
+                  trackCtaClick({
+                    ctaId: "contact_mobile_directions_mobile",
+                    ctaText: "Get Directions",
+                    location: "contact_section_mobile",
+                    destination: "https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+                    ctaType: "directions",
+                  });
+                  window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+                }}
                 style={{ touchAction: 'manipulation' }}
               >
                 Get Directions →
@@ -192,43 +288,8 @@ export default function ContactMobile() {
           </div>
         </div>
         
-        {/* Final CTA - Mobile Optimized: Full width buttons */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-white max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold mb-4">Don't Wait - Your Competition Won't</h3>
-            <p className="text-xl mb-6 text-white/90">
-              Every day without great signage is a day of missed opportunities. Let's get you noticed.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="hero" 
-                size="lg" 
-                className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-lg px-8 py-4 touch-manipulation" 
-                onClick={() => setIsFormOpen(true)}
-                style={{ touchAction: 'manipulation' }}
-              >
-                Get a Custom Quote
-              </Button>
-              <Button 
-                variant="cta" 
-                size="lg" 
-                className="w-full sm:w-auto min-h-[48px] h-14 sm:h-12 text-lg px-8 py-4 touch-manipulation" 
-                onClick={() => window.open('https://wa.me/19179033458', '_blank')}
-                style={{ touchAction: 'manipulation' }}
-              >
-                💬 What App
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Application Form Modal - Mobile Optimized */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationFormMobile onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }

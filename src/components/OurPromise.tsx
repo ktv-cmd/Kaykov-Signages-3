@@ -18,7 +18,7 @@ export default function OurPromise() {
                 <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
                   Visualize First
                 </Badge>
-                <p className="text-sm text-muted-foreground">3D rendering to see everything in advance</p>
+                <p className="hidden sm:block text-sm text-muted-foreground">3D rendering to see everything in advance</p>
               </div>
 
               <div className="bg-white/50 rounded-xl p-5 border border-accent/10 flex flex-col items-center text-center h-full">
@@ -29,7 +29,7 @@ export default function OurPromise() {
                 <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
                   Certified experts
                 </Badge>
-                <p className="text-sm text-muted-foreground">Done right, every time</p>
+                <p className="hidden sm:block text-sm text-muted-foreground">Done right, every time</p>
               </div>
 
               <div className="bg-white/50 rounded-xl p-5 border border-accent/10 flex flex-col items-center text-center h-full">
@@ -40,7 +40,7 @@ export default function OurPromise() {
                 <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 mb-3">
                   Quality guaranteed
                 </Badge>
-                <p className="text-sm text-muted-foreground">Professional quality guaranteed</p>
+                <p className="hidden sm:block text-sm text-muted-foreground">Professional quality guaranteed</p>
               </div>
             </div>
           </div>

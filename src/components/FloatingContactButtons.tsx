@@ -1,29 +1,52 @@
 import { useState } from "react";
 import { Phone, Send } from "lucide-react";
+import { trackCtaClick, trackPhoneClick } from "@/lib/analytics";
 
 export default function FloatingContactButtons() {
   const [isOpen, setIsOpen] = useState(false);
   const phoneNumber = "19179033458";
   
   const handlePhoneClick = () => {
+    trackPhoneClick("floating_contact_phone", `+${phoneNumber}`, "floating_contact_buttons");
     window.open(`tel:+${phoneNumber}`, '_self');
   };
 
   const handleWhatsAppClick = () => {
     const message = "Hello! I'm interested in your signage services.";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    trackCtaClick({
+      ctaId: "floating_contact_whatsapp",
+      ctaText: "WhatsApp",
+      location: "floating_contact_buttons",
+      destination: whatsappUrl,
+      ctaType: "whatsapp",
+    });
     window.open(whatsappUrl, '_blank');
   };
 
   const handleTelegramClick = () => {
     const message = "Hello! I'm interested in your signage services.";
     const telegramUrl = `https://t.me/+${phoneNumber}`;
+    trackCtaClick({
+      ctaId: "floating_contact_telegram",
+      ctaText: "Telegram",
+      location: "floating_contact_buttons",
+      destination: telegramUrl,
+      ctaType: "telegram",
+    });
     window.open(telegramUrl, '_blank');
   };
 
   const handleSMSClick = () => {
     const message = "Hello! I'm interested in your signage services.";
     const smsUrl = `sms:+${phoneNumber}?body=${encodeURIComponent(message)}`;
+    trackCtaClick({
+      ctaId: "floating_contact_sms",
+      ctaText: "SMS",
+      location: "floating_contact_buttons",
+      destination: smsUrl,
+      ctaType: "sms",
+    });
     window.open(smsUrl, '_self');
   };
 

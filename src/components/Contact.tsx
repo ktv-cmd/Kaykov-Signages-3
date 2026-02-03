@@ -1,16 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, MessageCircle, MapPin, Youtube, Linkedin, Instagram, Facebook } from "lucide-react";
-import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Phone, MessageCircle, MapPin, Youtube, Linkedin, Instagram, Facebook, Mail } from "lucide-react";
 import ApplicationForm from "./ApplicationForm";
+import { trackCtaClick, trackPhoneClick } from "@/lib/analytics";
 
 export default function Contact() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-primary/5">
+    <section id="contact" className="py-20 bg-gradient-to-b from-background to-primary/5">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
@@ -19,8 +16,11 @@ export default function Contact() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             Get Your Custom Sign Today
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Fast turnaround, premium quality, and expert service. Contact us now to get started.
+          </p>
+          <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+            Fast quotes and expert service.
           </p>
         </div>
         
@@ -40,8 +40,15 @@ export default function Contact() {
                   <CardTitle className="text-lg">Call Us</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center pt-0">
-                  <p className="text-sm text-muted-foreground mb-3">Speak directly with our team</p>
-                  <Button variant="outline" className="w-full" onClick={() => window.open('tel:+17184784200', '_self')}>
+                  <p className="hidden sm:block text-sm text-muted-foreground mb-3">Speak directly with our team</p>
+                  <Button
+                    variant="outline"
+                    className="w-full whitespace-normal text-center leading-snug"
+                    onClick={() => {
+                      trackPhoneClick("contact_call", "+17184784200", "contact_section");
+                      window.open('tel:+17184784200', '_self');
+                    }}
+                  >
                     📞 +1(718) 478-4200
                   </Button>
                 </CardContent>
@@ -55,23 +62,73 @@ export default function Contact() {
                   <CardTitle className="text-lg">WhatsApp</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center pt-0">
-                  <p className="text-sm text-muted-foreground mb-3">Quick chat anytime</p>
-                  <Button variant="outline" className="w-full" onClick={() => window.open('https://wa.me/19179033458', '_blank')}>
-                    💬 WhatsApp +19179033458
+                  <p className="hidden sm:block text-sm text-muted-foreground mb-3">Quick chat anytime</p>
+                  <Button
+                    variant="outline"
+                    className="w-full whitespace-normal text-center leading-snug"
+                    onClick={() => {
+                      trackCtaClick({
+                        ctaId: "contact_whatsapp",
+                        ctaText: "WhatsApp",
+                        location: "contact_section",
+                        destination: "https://wa.me/19179033458",
+                        ctaType: "whatsapp",
+                      });
+                      window.open('https://wa.me/19179033458', '_blank');
+                    }}
+                  >
+                    💬 WhatsApp
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-accent/20 cursor-pointer">
+                <CardHeader className="text-center pb-4">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-r from-accent to-neon rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Email Us</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center pt-0">
+                  <p className="hidden sm:block text-sm text-muted-foreground mb-3">Send us your details</p>
+                  <Button
+                    variant="outline"
+                    className="w-full whitespace-normal text-center leading-snug"
+                    onClick={() => {
+                      trackCtaClick({
+                        ctaId: "contact_email",
+                        ctaText: "info@kaykovmedia.com",
+                        location: "contact_section",
+                        destination: "mailto:info@kaykovmedia.com",
+                        ctaType: "email",
+                      });
+                      window.open('mailto:info@kaykovmedia.com', '_self');
+                    }}
+                  >
+                    ✉️ info@kaykovmedia.com
                   </Button>
                 </CardContent>
               </Card>
             </div>
             
             {/* Social Links */}
-            <div className="mb-6">
+            <div className="hidden sm:block mb-6">
               <h4 className="font-semibold mb-4">Follow Our Work</h4>
               <div className="flex flex-wrap gap-4">
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2"
-                  onClick={() => window.open('https://www.youtube.com/@kaykovmedia', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_social_youtube",
+                      ctaText: "YouTube",
+                      location: "contact_section",
+                      destination: "https://www.youtube.com/@kaykovmedia",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.youtube.com/@kaykovmedia', '_blank');
+                  }}
                 >
                   <Youtube className="w-4 h-4" />
                   YouTube
@@ -80,7 +137,16 @@ export default function Contact() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2"
-                  onClick={() => window.open('https://www.instagram.com/kaykovmedia/', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_social_instagram",
+                      ctaText: "Instagram",
+                      location: "contact_section",
+                      destination: "https://www.instagram.com/kaykovmedia/",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.instagram.com/kaykovmedia/', '_blank');
+                  }}
                 >
                   <Instagram className="w-4 h-4" />
                   Instagram
@@ -89,7 +155,16 @@ export default function Contact() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2"
-                  onClick={() => window.open('https://www.facebook.com/kaykovmedia', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_social_facebook",
+                      ctaText: "Facebook",
+                      location: "contact_section",
+                      destination: "https://www.facebook.com/kaykovmedia",
+                      ctaType: "social",
+                    });
+                    window.open('https://www.facebook.com/kaykovmedia', '_blank');
+                  }}
                 >
                   <Facebook className="w-4 h-4" />
                   Facebook
@@ -98,7 +173,16 @@ export default function Contact() {
                   variant="outline" 
                   size="sm" 
                   className="flex items-center gap-2"
-                  onClick={() => window.open('https://signscompanynewyork.com/', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_social_website",
+                      ctaText: "Website",
+                      location: "contact_section",
+                      destination: "https://signscompanynewyork.com/",
+                      ctaType: "social",
+                    });
+                    window.open('https://signscompanynewyork.com/', '_blank');
+                  }}
                 >
                   <Linkedin className="w-4 h-4" />
                   Website
@@ -130,7 +214,16 @@ export default function Contact() {
                   variant="link" 
                   size="sm" 
                     className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
-                  onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
+                  onClick={() => {
+                    trackCtaClick({
+                      ctaId: "contact_directions_desktop",
+                      ctaText: "Get Directions",
+                      location: "contact_section",
+                      destination: "https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+                      ctaType: "directions",
+                    });
+                    window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+                  }}
                 >
                   Get Directions →
                 </Button>
@@ -140,7 +233,7 @@ export default function Contact() {
           
           {/* Get a Custom Quote Form */}
             <div className="pt-12 lg:pt-14">
-              <ApplicationForm inDialog={false} />
+              <ApplicationForm inDialog={false} formId="contact_form_desktop" formLocation="contact_section" />
             </div>
           </div>
 
@@ -168,7 +261,16 @@ export default function Contact() {
                 variant="link" 
                 size="sm" 
                 className="p-0 h-auto text-accent hover:text-accent/80 min-h-[44px] touch-manipulation"
-                onClick={() => window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank')}
+                onClick={() => {
+                  trackCtaClick({
+                    ctaId: "contact_directions_mobile",
+                    ctaText: "Get Directions",
+                    location: "contact_section_mobile",
+                    destination: "https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D",
+                    ctaType: "directions",
+                  });
+                  window.open('https://www.google.com/maps/place/Kaykov+Media/@40.7231743,-73.8050998,17z/data=!4m15!1m8!3m7!1s0x89c260fa69c0d9c7:0x7d663dc77053edb7!2s77-40+164th+St,+Fresh+Meadows,+NY+11366!3b1!8m2!3d40.7231743!4d-73.8050998!16s%2Fg%2F11b8z2n3r7!3m5!1s0x89c25e1b8baa853b:0x6525be028bcfbcdc!8m2!3d40.7232836!4d-73.8051251!16s%2Fg%2F1tfr1bqr?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+                }}
               >
                 Get Directions →
               </Button>
@@ -176,31 +278,8 @@ export default function Contact() {
           </div>
         </div>
         
-        {/* Final CTA */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-white max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold mb-4">Don't Wait - Your Competition Won't</h3>
-            <p className="text-xl mb-6 text-white/90">
-              Every day without great signage is a day of missed opportunities. Let's get you noticed.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4" onClick={() => setIsFormOpen(true)}>
-                Get a Custom Quote
-              </Button>
-              <Button variant="cta" size="lg" className="text-lg px-8 py-4" onClick={() => window.open('https://wa.me/19179033458', '_blank')}>
-                💬 What App
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Application Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="!max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto p-0">
-          <ApplicationForm onClose={() => setIsFormOpen(false)} inDialog={true} />
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }

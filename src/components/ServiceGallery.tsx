@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useQuoteForm } from "@/components/QuoteFormProvider";
 
 interface GalleryImage {
   src: string;
@@ -16,7 +16,7 @@ interface ServiceGalleryProps {
 }
 
 export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }: ServiceGalleryProps) {
-  const navigate = useNavigate();
+  const { openForm } = useQuoteForm();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
@@ -392,7 +392,11 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                navigate('/form');
+                openForm({
+                  ctaId: "service_gallery_quick_quote",
+                  ctaText: "Get a Quick Quote",
+                  location: "service_gallery_cta",
+                });
               }}
               className="bg-accent hover:opacity-90 px-8 py-3 rounded-lg transition-all duration-200 hover:scale-105"
             >

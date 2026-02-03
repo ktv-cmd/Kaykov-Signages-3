@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useQuoteForm } from "@/components/QuoteFormProvider";
+import { trackCtaClick } from "@/lib/analytics";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ArrowRight } from "lucide-react";
 
 // Import office case images
 import officeImage1 from "@/assets/outdoor /cases in office /1 K2 letter.JPG";
@@ -33,7 +33,7 @@ const officeImages = [
 ];
 
 export default function OfficeShowroom() {
-  const navigate = useNavigate();
+  const { openForm } = useQuoteForm();
 
   return (
     <>
@@ -46,14 +46,26 @@ export default function OfficeShowroom() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             If You Want to See signages in person
           </h2>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 px-4">
-            Visit our office to see our work up close and get inspired for your next signage project.
-          </p>
+            <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 px-4">
+              Visit our office to see our work up close and get inspired for your next signage project.
+            </p>
+            <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto mb-4 px-4">
+              Visit our office to see our work in person.
+            </p>
           <a 
             href="https://www.google.com/maps?rlz=1C5CHFA_en&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIQCAEQLhivARjHARiABBiOBTIHCAIQABiABDIICAMQABgWGB4yCggEEAAYgAQYogQyBggFEEUYPDIGCAYQRRg8MgYIBxBFGDzSAQgyNDc2ajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KTuFqosbXsKJMdy8z4sCviVl&daddr=77-40+164th+St,+Queens,+NY+11366"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-accent hover:text-accent/80 font-semibold text-lg transition-colors duration-300"
+            className="inline-flex flex-wrap items-center justify-center gap-2 text-accent hover:text-accent/80 font-semibold text-base sm:text-lg transition-colors duration-300 text-center max-w-full px-4 leading-snug"
+          onClick={() =>
+            trackCtaClick({
+              ctaId: "office_showroom_directions",
+              ctaText: "Get Directions to Our Office",
+              location: "office_showroom",
+              destination: "https://www.google.com/maps?rlz=1C5CHFA_en&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIQCAEQLhivARjHARiABBiOBTIHCAIQABiABDIICAMQABgWGB4yCggEEAAYgAQYogQyBggFEEUYPDIGCAYQRRg8MgYIBxBFGDzSAQgyNDc2ajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KTuFqosbXsKJMdy8z4sCviVl&daddr=77-40+164th+St,+Queens,+NY+11366",
+              ctaType: "directions",
+            })
+          }
           >
             📍 Get Directions to Our Office →
           </a>
@@ -99,11 +111,15 @@ export default function OfficeShowroom() {
               variant="cta"
               size="lg"
               className="text-lg px-10 py-6 rounded-xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:scale-105"
-              onClick={() => navigate('/form')}
+            onClick={() =>
+              openForm({
+                ctaId: "office_showroom_quote",
+                ctaText: "Get a Custom Quote",
+                location: "office_showroom_cta",
+              })
+            }
             >
-              <Sparkles className="w-5 h-5 mr-2" />
               Get a Custom Quote
-              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </div>
       </div>

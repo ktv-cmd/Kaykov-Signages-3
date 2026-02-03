@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, ArrowLeft, ArrowRight, X, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { submitToGoogleSheets, type CallbackFormData } from "@/lib/googleSheets";
+import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 
 type FormData = {
   name: string;
@@ -22,6 +23,11 @@ type FormData = {
 interface ApplicationFormProps {
   onClose?: () => void;
   inDialog?: boolean;
+  onSuccess?: () => void;
+  suppressSuccessToast?: boolean;
+  withCard?: boolean;
+  formId?: string;
+  formLocation?: string;
 }
 
 // Email validation function - checks for real email format
@@ -90,7 +96,15 @@ const convertImageToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export default function ApplicationForm({ onClose, inDialog = false }: ApplicationFormProps = {}) {
+export default function ApplicationForm({
+  onClose,
+  inDialog = false,
+  onSuccess,
+  suppressSuccessToast = false,
+  withCard = true,
+  formId = "quote_form_desktop",
+  formLocation,
+}: ApplicationFormProps = {}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
@@ -112,7 +126,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
   const validateContact = () => {
     const email = watchedEmail?.trim();
     const phone = watchedPhone?.replace(/\D/g, '');
-    return (email && email.length > 0) || (phone && phone.length >= 10);
+    return (email && email.length > 0) || (phone && phone.length > 0);
   };
 
   // Calculate completion percentage
@@ -206,9 +220,24 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
       duration: 6000,
       action: {
         label: "Call Now",
-        onClick: () => window.open('tel:+17184784200', '_self'),
+        onClick: () => {
+          trackPhoneClick("form_error_call_desktop", "+17184784200", formLocation ?? "application_form");
+          window.open('tel:+17184784200', '_self');
+        },
       },
     });
+  };
+
+  const showSuccessToast = () => {
+    toast.success("Request submitted successfully!", {
+      description: "We will contact you shortly.",
+      duration: 5000,
+    });
+  };
+
+  const onInvalid = () => {
+    setCurrentStep(1);
+    toast.error("Please complete the required fields before submitting.");
   };
 
   const onSubmit = async (data: FormData, e?: React.BaseSyntheticEvent) => {
@@ -218,6 +247,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
     }
     
     setIsSubmitting(true);
+    let didSubmit = false;
     try {
       const combinedMessage = data.details?.trim() ? `Details: ${data.details.trim()}` : undefined;
 
@@ -243,10 +273,13 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
         imageMimeType,
       };
 
-      reset();
-      setUploadedImage(null);
-      setImagePreview(null);
-      setCurrentStep(1);
+      const shouldReset = !onSuccess;
+      if (shouldReset) {
+        reset();
+        setUploadedImage(null);
+        setImagePreview(null);
+        setCurrentStep(1);
+      }
 
       // Submit to Google Sheets (in background, don't wait for response)
       submitToGoogleSheets(sheetData).catch(showErrorToast);
@@ -260,26 +293,42 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
         });
       }
 
+      trackFormSubmit({
+        formId,
+        location: formLocation ?? (inDialog ? "quote_form_dialog" : "quote_form_inline"),
+        serviceType: "Custom Quote",
+      });
+
+      if (!suppressSuccessToast) {
+        showSuccessToast();
+      }
+
       // Close dialog if in dialog mode
       if (inDialog) {
         onClose?.();
       }
+      didSubmit = true;
     } catch (error) {
       showErrorToast();
     } finally {
       setIsSubmitting(false);
+      if (didSubmit) {
+        onSuccess?.();
+      }
     }
   };
+
+  const submitHandler = handleSubmit(onSubmit, onInvalid);
 
   const formContent = (
     <>
       {/* Title */}
       <div className="text-center mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-primary">
-          Get a Custom Quote
+          Get a Custom Quote for Your Signage
         </h2>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Tell us about your project and we'll create a custom quote just for you.
+          Tell us about your business and we'll create a custom quote just for you.
         </p>
       </div>
 
@@ -287,37 +336,37 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
             <div className="mb-8">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-muted-foreground">Form Completion</span>
-                <span className={`text-sm font-semibold ${completionPercentage === 100 ? 'text-green-600' : 'text-primary'}`}>
+                <span className={`text-sm font-semibold ${completionPercentage === 100 ? 'text-accent' : 'text-primary'}`}>
                   {completionPercentage}%
                 </span>
               </div>
               <div className="relative h-2 bg-muted rounded-full overflow-hidden">
                 <div
                   className={`absolute top-0 left-0 h-full transition-all duration-500 ease-out rounded-full ${
-                    completionPercentage === 100 ? 'bg-green-500' : 'bg-accent'
+                    completionPercentage === 100 ? 'bg-primary' : 'bg-accent'
                   }`}
                   style={{ width: `${completionPercentage}%` }}
                 />
               </div>
               {completionPercentage === 100 && (
-                <p className="text-xs text-green-600 mt-2 text-center">Ready to submit!</p>
+                <p className="text-xs text-primary mt-2 text-center">Ready to submit!</p>
               )}
             </div>
 
             {/* Step Indicator */}
             <div className="flex items-center justify-center mb-8 gap-2">
-              <div className={`flex items-center ${currentStep === 1 ? 'text-accent' : 'text-green-600'}`}>
+              <div className={`flex items-center ${currentStep === 1 ? 'text-accent' : 'text-primary'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === 1 ? 'border-accent bg-accent/10' : 'border-green-600 bg-green-600 text-white'
+                  currentStep === 1 ? 'border-accent bg-accent/10' : 'border-primary bg-primary text-white'
                 }`}>
                   {currentStep > 1 ? <CheckCircle2 className="w-5 h-5" /> : '1'}
                 </div>
                 <span className="ml-2 text-sm font-medium">Required Info</span>
               </div>
-              <div className={`w-12 h-0.5 ${currentStep > 1 ? 'bg-green-600' : 'bg-border'}`} />
-              <div className={`flex items-center ${currentStep === 2 ? 'text-accent' : currentStep > 2 ? 'text-green-600' : 'text-muted-foreground'}`}>
+              <div className={`w-12 h-0.5 ${currentStep > 1 ? 'bg-primary' : 'bg-border'}`} />
+              <div className={`flex items-center ${currentStep === 2 ? 'text-accent' : currentStep > 2 ? 'text-primary' : 'text-muted-foreground'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                  currentStep === 2 ? 'border-accent bg-accent/10' : currentStep > 2 ? 'border-green-600 bg-green-600 text-white' : 'border-border'
+                  currentStep === 2 ? 'border-accent bg-accent/10' : currentStep > 2 ? 'border-primary bg-primary text-white' : 'border-border'
                 }`}>
                   {currentStep > 2 ? <CheckCircle2 className="w-5 h-5" /> : '2'}
                 </div>
@@ -332,14 +381,14 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="name" className="flex items-center gap-2">
                     Name <span className="text-destructive">*</span>
                     {watchedName?.trim() && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Input 
                     id="name" 
                     {...register("name", { required: "Name is required" })}
                     placeholder="Your full name"
-                    className={`h-12 sm:h-12 text-base ${watchedName?.trim() ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`h-12 sm:h-12 text-base ${watchedName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                   {errors.name && (
                     <p className="text-sm text-destructive">{errors.name.message}</p>
@@ -350,18 +399,33 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="phone" className="flex items-center gap-2">
                     Phone <span className="text-destructive">*</span>
                     {watchedPhone?.trim() && !errors.phone && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Input 
                     id="phone" 
                     type="tel"
-                    {...register("phone", { 
-                      required: "Phone is required",
-                      validate: validatePhone 
+                    {...register("phone", {
+                      validate: {
+                        contactRequired: (value) => {
+                          const phoneDigits = value?.replace(/\D/g, "");
+                          const emailValue = watchedEmail?.trim();
+                          if (!phoneDigits && !emailValue) {
+                            return "Please provide at least an email or phone number";
+                          }
+                          return true;
+                        },
+                        validPhone: (value) => {
+                          const phoneDigits = value?.replace(/\D/g, "");
+                          if (!phoneDigits) {
+                            return true;
+                          }
+                          return validatePhone(value);
+                        },
+                      },
                     })}
                     placeholder="(718) 478-4200"
-                    className={`h-12 sm:h-12 text-base ${watchedPhone?.trim() && !errors.phone ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`h-12 sm:h-12 text-base ${watchedPhone?.trim() && !errors.phone ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                   {errors.phone && (
                     <p className="text-sm text-destructive">{errors.phone.message}</p>
@@ -372,18 +436,33 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="email" className="flex items-center gap-2">
                     Email <span className="text-destructive">*</span>
                     {watchedEmail?.trim() && !errors.email && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Input 
                     id="email" 
                     type="email"
-                    {...register("email", { 
-                      required: "Email is required",
-                      validate: validateEmail 
+                    {...register("email", {
+                      validate: {
+                        contactRequired: (value) => {
+                          const emailValue = value?.trim();
+                          const phoneDigits = watchedPhone?.replace(/\D/g, "");
+                          if (!emailValue && !phoneDigits) {
+                            return "Please provide at least an email or phone number";
+                          }
+                          return true;
+                        },
+                        validEmail: (value) => {
+                          const emailValue = value?.trim();
+                          if (!emailValue) {
+                            return true;
+                          }
+                          return validateEmail(value);
+                        },
+                      },
                     })}
                     placeholder="your@email.com"
-                    className={`h-12 sm:h-12 text-base ${watchedEmail?.trim() && !errors.email ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`h-12 sm:h-12 text-base ${watchedEmail?.trim() && !errors.email ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                   {errors.email && (
                     <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -409,14 +488,14 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="businessName" className="flex items-center gap-2">
                     Business Name
                     {watchedBusinessName?.trim() && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Input 
                     id="businessName" 
                     {...register("businessName")}
                     placeholder="Your business name (optional)"
-                    className={`h-12 sm:h-12 text-base ${watchedBusinessName?.trim() ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`h-12 sm:h-12 text-base ${watchedBusinessName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>
 
@@ -424,14 +503,14 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="businessLocation" className="flex items-center gap-2">
                     Business Location
                     {watchedBusinessLocation?.trim() && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Input 
                     id="businessLocation" 
                     {...register("businessLocation")}
                     placeholder="Business address (optional)"
-                    className={`h-12 sm:h-12 text-base ${watchedBusinessLocation?.trim() ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`h-12 sm:h-12 text-base ${watchedBusinessLocation?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>
 
@@ -439,7 +518,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                   <Label htmlFor="details" className="flex items-center gap-2">
                     Details
                     {watchedDetails?.trim() && (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
                   <Textarea 
@@ -447,7 +526,7 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
                     {...register("details")}
                     placeholder="If you know the dimensions, please include them in the description for a faster quote (optional)"
                     rows={4}
-                    className={`resize-none text-base ${watchedDetails?.trim() ? "border-green-500 focus:border-green-500" : ""}`}
+                    className={`resize-none text-base ${watchedDetails?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>
 
@@ -515,8 +594,22 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
   if (inDialog) {
     return (
       <>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full p-4 sm:p-6">
+        <form onSubmit={submitHandler} noValidate className="w-full p-4 sm:p-6">
           {formContent}
+        </form>
+      </>
+    );
+  }
+
+  if (withCard) {
+    return (
+      <>
+        <form onSubmit={submitHandler} noValidate className="w-full">
+          <Card className="border-2 hover:border-accent/20 hover:shadow-lg transition-all duration-300 p-4 sm:p-6 rounded-2xl sm:rounded-lg">
+            <CardContent className="p-0">
+              {formContent}
+            </CardContent>
+          </Card>
         </form>
       </>
     );
@@ -524,12 +617,10 @@ export default function ApplicationForm({ onClose, inDialog = false }: Applicati
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full">
-        <Card className="border-2 hover:border-accent/20 hover:shadow-lg transition-all duration-300 p-4 sm:p-6 rounded-2xl sm:rounded-lg">
-          <CardContent className="p-0">
-            {formContent}
-          </CardContent>
-        </Card>
+      <form onSubmit={submitHandler} noValidate className="w-full">
+        <div className="p-4 sm:p-6">
+          {formContent}
+        </div>
       </form>
     </>
   );

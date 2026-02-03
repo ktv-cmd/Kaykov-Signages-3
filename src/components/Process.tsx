@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Ruler, CreditCard, Palette, Factory, Wrench } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useQuoteForm } from "@/components/QuoteFormProvider";
 
 interface Step {
   icon: React.ComponentType<{ className?: string }>;
@@ -57,7 +57,7 @@ const steps: Step[] = [
 ];
 
 export default function Process() {
-  const navigate = useNavigate();
+  const { openForm } = useQuoteForm();
 
   return (
     <section className="py-20 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
@@ -75,8 +75,11 @@ export default function Process() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-primary px-4">
             How We Work
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+          <p className="hidden sm:block text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             From consultation to installation, we guide you through every step.
+          </p>
+          <p className="sm:hidden text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+            A simple, step-by-step process.
           </p>
         </div>
         
@@ -104,13 +107,14 @@ export default function Process() {
                 </div>
                 
                 {/* Content Card */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 border-2 border-accent/20 group-hover:border-accent/40 group-hover:shadow-xl transition-all duration-300 group-hover:transform group-hover:-translate-y-2 min-h-[160px] sm:min-h-[180px] md:min-h-[240px] flex flex-col shadow-md">
-                  <div className="h-8 sm:h-10 mb-2 sm:mb-3 flex items-end justify-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 border-2 border-accent/20 group-hover:border-accent/40 group-hover:shadow-xl transition-all duration-300 group-hover:transform group-hover:-translate-y-2 sm:min-h-[180px] md:min-h-[240px] flex flex-col shadow-md">
+                  <div className="sm:h-10 mb-2 sm:mb-3 flex items-end justify-center">
                     <h3 className="text-base sm:text-lg md:text-xl font-bold text-primary text-center break-words px-1">{step.title}</h3>
                   </div>
                   
                   <div className="flex-grow flex flex-col justify-start">
-                    <p className="text-muted-foreground text-sm sm:text-base md:text-sm text-center leading-relaxed">{step.description}</p>
+                    <p className="hidden sm:block text-muted-foreground text-sm sm:text-base md:text-sm text-center leading-relaxed">{step.description}</p>
+                    <p className="sm:hidden text-xs text-muted-foreground text-center">{step.highlight}</p>
                   </div>
                 </div>
                 
@@ -135,7 +139,13 @@ export default function Process() {
               variant="cta" 
               size="lg" 
               className="bg-gradient-to-r from-accent to-neon text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-105 transition-all duration-300 px-6 sm:px-10 py-5 sm:py-6 rounded-xl font-medium text-base sm:text-lg w-full shadow-lg"
-              onClick={() => navigate('/form')}
+              onClick={() =>
+                openForm({
+                  ctaId: "process_quote",
+                  ctaText: "Get a Custom Quote",
+                  location: "process_cta",
+                })
+              }
             >
               Get a Custom Quote
             </Button>
