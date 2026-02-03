@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Loader2, ExternalLink } from "lucide-react";
@@ -240,20 +241,25 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
 
         {/* Custom Quote Button Section */}
         {showHeader && (
-          <div className="text-center mt-12">
+          <div className="mt-12 flex flex-col items-center gap-3 text-center">
             <Button
               onClick={() =>
                 openForm({
                   ctaId: "instagram_video_grid_quote",
                   ctaText: "Get a Custom Quote",
                   location: "instagram_video_grid_cta",
-                  destination: "/window",
                 })
               }
               className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg hover:opacity-90 hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               Get a Custom Quote
             </Button>
+            <Link
+              to="/window"
+              className="text-sm text-primary underline-offset-4 hover:underline"
+            >
+              Open full-screen form
+            </Link>
           </div>
         )}
       </div>
