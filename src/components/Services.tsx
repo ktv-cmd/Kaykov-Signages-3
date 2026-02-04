@@ -299,6 +299,9 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
   const premiumGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const affordableGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const interiorGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [premiumAtEnd, setPremiumAtEnd] = useState<boolean[]>([]);
+  const [affordableAtEnd, setAffordableAtEnd] = useState<boolean[]>([]);
+  const [interiorAtEnd, setInteriorAtEnd] = useState<boolean[]>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -334,6 +337,24 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
     }
   };
 
+  const checkIfAtEnd = (
+    refs: { current: Array<HTMLDivElement | null> },
+    setAtEnd: React.Dispatch<React.SetStateAction<boolean[]>>,
+    index: number
+  ) => {
+    const scroller = refs.current[index];
+    if (!scroller) {
+      return;
+    }
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    const isAtEnd = scroller.scrollLeft >= maxScroll - 10;
+    setAtEnd((prev) => {
+      const newState = [...prev];
+      newState[index] = isAtEnd;
+      return newState;
+    });
+  };
+
   const scrollGalleryNext = (refs: { current: Array<HTMLDivElement | null> }, index: number) => {
     const scroller = refs.current[index];
     if (!scroller) {
@@ -343,11 +364,19 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
     if (maxScroll <= 0) {
       return;
     }
-    if (scroller.scrollLeft >= maxScroll - 2) {
+    if (scroller.scrollLeft >= maxScroll - 10) {
       scroller.scrollTo({ left: 0, behavior: "smooth" });
       return;
     }
     scroller.scrollBy({ left: scroller.clientWidth, behavior: "smooth" });
+  };
+
+  const scrollGalleryPrev = (refs: { current: Array<HTMLDivElement | null> }, index: number) => {
+    const scroller = refs.current[index];
+    if (!scroller) {
+      return;
+    }
+    scroller.scrollBy({ left: -scroller.clientWidth, behavior: "smooth" });
   };
 
   const closeGallery = () => {
@@ -396,6 +425,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
                         style={{ touchAction: 'pan-x' }}
+                        onScroll={() => checkIfAtEnd(premiumGalleryRefs, setPremiumAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
@@ -428,25 +458,45 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           {service.title}
                         </h3>
                       </div>
-                      {/* Scroll Indicator Arrow - Right Side */}
+                      {/* Scroll Indicator Arrow - Left or Right Side */}
                       {service.gallery.length > 1 && (
-                        <button
-                          type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
-                          aria-label="Scroll gallery right"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            scrollGalleryNext(premiumGalleryRefs, index);
-                          }}
-                        >
-                          <svg 
-                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
-                            fill="currentColor" 
-                            viewBox="0 0 24 24"
+                        premiumAtEnd[index] ? (
+                          <button
+                            type="button"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery left"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryPrev(premiumGalleryRefs, index);
+                            }}
                           >
-                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
-                          </svg>
-                        </button>
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.38-.38.38-1.02 0-1.41z"/>
+                            </svg>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery right"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryNext(premiumGalleryRefs, index);
+                            }}
+                          >
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                            </svg>
+                          </button>
+                        )
                       )}
                     </div>
                   ) : (
@@ -567,6 +617,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
                         style={{ touchAction: 'pan-x' }}
+                        onScroll={() => checkIfAtEnd(affordableGalleryRefs, setAffordableAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
@@ -586,25 +637,45 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           {service.title}
                         </h3>
                       </div>
-                      {/* Scroll Indicator Arrow - Right Side */}
+                      {/* Scroll Indicator Arrow - Left or Right Side */}
                       {service.gallery.length > 1 && (
-                        <button
-                          type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
-                          aria-label="Scroll gallery right"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            scrollGalleryNext(affordableGalleryRefs, index);
-                          }}
-                        >
-                          <svg 
-                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
-                            fill="currentColor" 
-                            viewBox="0 0 24 24"
+                        affordableAtEnd[index] ? (
+                          <button
+                            type="button"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery left"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryPrev(affordableGalleryRefs, index);
+                            }}
                           >
-                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
-                          </svg>
-                        </button>
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.38-.38.38-1.02 0-1.41z"/>
+                            </svg>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery right"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryNext(affordableGalleryRefs, index);
+                            }}
+                          >
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                            </svg>
+                          </button>
+                        )
                       )}
                     </div>
                   ) : (
@@ -691,6 +762,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
                         style={{ touchAction: 'pan-x' }}
+                        onScroll={() => checkIfAtEnd(interiorGalleryRefs, setInteriorAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
@@ -719,25 +791,45 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           {service.title}
                         </h3>
                       </div>
-                      {/* Scroll Indicator Arrow - Right Side */}
+                      {/* Scroll Indicator Arrow - Left or Right Side */}
                       {service.gallery.length > 1 && (
-                        <button
-                          type="button"
-                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
-                          aria-label="Scroll gallery right"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            scrollGalleryNext(interiorGalleryRefs, index);
-                          }}
-                        >
-                          <svg 
-                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
-                            fill="currentColor" 
-                            viewBox="0 0 24 24"
+                        interiorAtEnd[index] ? (
+                          <button
+                            type="button"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery left"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryPrev(interiorGalleryRefs, index);
+                            }}
                           >
-                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
-                          </svg>
-                        </button>
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M14.71 6.71a.996.996 0 0 0-1.41 0L8.71 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L10.83 12l3.88-3.88c.38-.38.38-1.02 0-1.41z"/>
+                            </svg>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                            aria-label="Scroll gallery right"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              scrollGalleryNext(interiorGalleryRefs, index);
+                            }}
+                          >
+                            <svg 
+                              className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                              fill="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                            </svg>
+                          </button>
+                        )
                       )}
                     </div>
                   ) : (
