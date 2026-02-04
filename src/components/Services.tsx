@@ -299,12 +299,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
   const premiumGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const affordableGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
   const interiorGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const premiumScrollLeft = useRef<number[]>([]);
-  const affordableScrollLeft = useRef<number[]>([]);
-  const interiorScrollLeft = useRef<number[]>([]);
-  const premiumScrollTimeout = useRef<Array<number | undefined>>([]);
-  const affordableScrollTimeout = useRef<Array<number | undefined>>([]);
-  const interiorScrollTimeout = useRef<Array<number | undefined>>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -356,43 +350,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
     scroller.scrollBy({ left: scroller.clientWidth, behavior: "smooth" });
   };
 
-  const handleLoopScroll = (
-    refs: { current: Array<HTMLDivElement | null> },
-    lastLeftRef: React.MutableRefObject<number[]>,
-    timeoutRef: React.MutableRefObject<Array<number | undefined>>,
-    index: number
-  ) => {
-    const scroller = refs.current[index];
-    if (!scroller) {
-      return;
-    }
-    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-    if (maxScroll <= 0) {
-      return;
-    }
-    const currentLeft = scroller.scrollLeft;
-    const lastLeft = lastLeftRef.current[index] ?? currentLeft;
-    lastLeftRef.current[index] = currentLeft;
-
-    if (timeoutRef.current[index]) {
-      window.clearTimeout(timeoutRef.current[index]);
-    }
-
-    timeoutRef.current[index] = window.setTimeout(() => {
-      const nowLeft = scroller.scrollLeft;
-      const isAtEnd = nowLeft >= maxScroll - 2;
-      const isAtStart = nowLeft <= 2;
-      const wasScrollingRight = currentLeft > lastLeft;
-      const wasScrollingLeft = currentLeft < lastLeft;
-
-      if (isAtEnd && wasScrollingRight) {
-        scroller.scrollTo({ left: 0, behavior: "smooth" });
-      } else if (isAtStart && wasScrollingLeft) {
-        scroller.scrollTo({ left: maxScroll, behavior: "smooth" });
-      }
-    }, 120);
-  };
-
   const closeGallery = () => {
     setSelectedGallery(null);
   };
@@ -428,6 +385,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                     : 'border-primary/20 sm:hover:border-accent/40 bg-white/50'
                   }`}
               onClick={() => openGallery(service.gallery, service.title)}
+              style={{ touchAction: 'pan-y pinch-zoom' }}
             >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
@@ -437,14 +395,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           premiumGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        onScroll={() =>
-                          handleLoopScroll(
-                            premiumGalleryRefs,
-                            premiumScrollLeft,
-                            premiumScrollTimeout,
-                            index
-                          )
-                        }
+                        style={{ touchAction: 'pan-x' }}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
@@ -605,6 +556,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               key={index} 
               className="group sm:hover:shadow-2xl transition-all duration-500 border-2 sm:hover:border-accent/40 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02]"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
+              style={{ touchAction: 'pan-y pinch-zoom' }}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
@@ -614,14 +566,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           affordableGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        onScroll={() =>
-                          handleLoopScroll(
-                            affordableGalleryRefs,
-                            affordableScrollLeft,
-                            affordableScrollTimeout,
-                            index
-                          )
-                        }
+                        style={{ touchAction: 'pan-x' }}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
@@ -735,6 +680,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 key={index} 
                 className="group sm:hover:shadow-2xl transition-all duration-500 border-2 border-primary/20 bg-white/50 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02] h-full flex flex-col sm:hover:border-accent/40"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
+              style={{ touchAction: 'pan-y pinch-zoom' }}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
@@ -744,14 +690,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           interiorGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        onScroll={() =>
-                          handleLoopScroll(
-                            interiorGalleryRefs,
-                            interiorScrollLeft,
-                            interiorScrollTimeout,
-                            index
-                          )
-                        }
+                        style={{ touchAction: 'pan-x' }}
                       >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
