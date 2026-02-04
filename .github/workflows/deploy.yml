@@ -30,3 +30,4 @@ jobs:
           port: ${{ secrets.SFTP_PORT || vars.SFTP_PORT }}
           local-dir: ./out/
           server-dir: ${{ secrets.SFTP_REMOTE_PATH || vars.SFTP_REMOTE_PATH }}
+          dangerous-clean-slate: true
