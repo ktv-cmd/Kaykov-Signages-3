@@ -67,6 +67,7 @@ const Form = () => {
               withCard={false}
               formId="form_page_mobile"
               formLocation="form_page"
+              leadSource="Google"
             />
           ) : (
             <ApplicationForm
@@ -75,6 +76,7 @@ const Form = () => {
               withCard={false}
               formId="form_page_desktop"
               formLocation="form_page"
+              leadSource="Google"
             />
           )}
         </div>

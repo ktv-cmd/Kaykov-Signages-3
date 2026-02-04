@@ -17,7 +17,7 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
       <section className="sm:hidden bg-white">
         <div className="w-full">
           <video
-            className="w-full h-[66vh] object-cover object-right"
+            className="w-full h-[52vh] max-h-[520px] object-cover object-center"
             autoPlay
             muted
             loop

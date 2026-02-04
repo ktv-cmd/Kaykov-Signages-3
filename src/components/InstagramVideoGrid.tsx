@@ -84,7 +84,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
           {items.map((item, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] cursor-pointer border-2 border-transparent hover:border-accent/40"
+              className="relative bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer border-2 border-transparent"
               onClick={() => handleVideoToggle(index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               tabIndex={0}
@@ -98,7 +98,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                     {/* Loading Indicator */}
                     {loadingVideo === index && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-10">
-                        <Loader2 className="w-12 h-12 text-accent animate-spin" />
+                        <Loader2 className="w-12 h-12 text-accent" />
                       </div>
                     )}
                     <video
@@ -186,12 +186,12 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                     <img
                       src={item.thumbnailSrc}
                       alt={item.alt}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                     {/* Play Icon Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-all duration-300">
-                      <div className="w-16 h-16 rounded-full bg-white/90 group-hover:bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                         <Play className="w-8 h-8 text-accent ml-1" fill="currentColor" />
                       </div>
                     </div>
@@ -201,9 +201,9 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
 
               {/* Title and Description */}
               {(item.title || item.description) && (
-                <div className="p-4 bg-white/50 group-hover:bg-white/70 transition-all duration-500">
+                <div className="p-4 bg-white/50">
                   {item.title && (
-                    <h3 className="text-base sm:text-lg font-bold text-primary mb-1 group-hover:text-accent transition-colors duration-300">
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-1">
                       {item.title}
                     </h3>
                   )}
@@ -227,7 +227,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                           ctaType: "social",
                         });
                       }}
-                      className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 mt-2 transition-colors duration-300"
+                      className="inline-flex items-center gap-1 text-xs text-accent mt-2"
                     >
                       View on Instagram
                       <ExternalLink className="w-3 h-3" />
@@ -250,16 +250,10 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
                   location: "instagram_video_grid_cta",
                 })
               }
-              className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg hover:opacity-90 hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg"
             >
               Get a Custom Quote
             </Button>
-            <Link
-              to="/inst"
-              className="text-sm text-primary underline-offset-4 hover:underline"
-            >
-              Open full-screen form
-            </Link>
           </div>
         )}
       </div>

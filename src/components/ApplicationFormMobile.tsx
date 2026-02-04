@@ -29,6 +29,7 @@ interface ApplicationFormMobileProps {
   withCard?: boolean;
   formId?: string;
   formLocation?: string;
+  leadSource?: string;
 }
 
 // Email validation function - checks for real email format
@@ -106,6 +107,7 @@ export default function ApplicationFormMobile({
   withCard = true,
   formId = "quote_form_mobile",
   formLocation,
+  leadSource,
 }: ApplicationFormMobileProps = {}) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -287,6 +289,7 @@ export default function ApplicationFormMobile({
         imageBase64,
         imageFileName,
         imageMimeType,
+        leadSource: leadSource || undefined,
       };
 
       const shouldReset = !onSuccess;

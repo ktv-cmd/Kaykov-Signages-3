@@ -274,7 +274,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
             {/* Desktop: Full thumbnails with smooth scrolling */}
             <div 
               data-thumbnail-container
-              className="hidden min-[400px]:flex gap-1.5 sm:gap-2 overflow-x-auto pb-2 scroll-smooth cursor-grab active:cursor-grabbing"
+              className="hidden min-[400px]:flex gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-2 scroll-smooth cursor-grab active:cursor-grabbing"
               style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: 'hsl(var(--accent)) transparent',
@@ -356,7 +356,7 @@ export default function ServiceGallery({ images, serviceTitle, isOpen, onClose }
             
             {/* Mobile: Swipeable chips (<400px) */}
             <div 
-              className="flex min-[400px]:hidden gap-2 overflow-x-auto pb-1 scroll-smooth snap-x snap-mandatory"
+              className="flex min-[400px]:hidden gap-2 overflow-x-auto no-scrollbar pb-1 scroll-smooth snap-x snap-mandatory"
               style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: 'hsl(var(--accent)) transparent',

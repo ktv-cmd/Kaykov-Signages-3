@@ -41,19 +41,8 @@ const InstagramForm = () => {
     trackPageView("/inst", "Kaykov Media - Instagram Quote Form");
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("toast") === "1") {
-      toast.success("Request submitted successfully!", {
-        description: "We will contact you shortly.",
-        duration: 5000,
-      });
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location.pathname, location.search, navigate]);
-
   const handleSuccess = () => {
-    navigate("/inst?toast=1", { replace: true });
+    navigate("/", { replace: true, state: { formSubmitted: true } });
   };
 
   return (
@@ -68,6 +57,7 @@ const InstagramForm = () => {
               withCard={false}
               formId="instagram_form_mobile"
               formLocation="instagram_form"
+              leadSource="Facebook"
             />
           ) : (
             <ApplicationForm
@@ -76,6 +66,7 @@ const InstagramForm = () => {
               withCard={false}
               formId="instagram_form_desktop"
               formLocation="instagram_form"
+              leadSource="Facebook"
             />
           )}
         </div>

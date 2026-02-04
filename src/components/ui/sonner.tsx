@@ -30,11 +30,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
       <style>{`
         @media (max-width: 640px) {
           [data-sonner-toaster] {
-            top: 1rem !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            right: auto !important;
-            bottom: auto !important;
+            bottom: 1rem !important;
+            right: 1rem !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
           }
           [data-sonner-toast][data-type="success"] {
             background-color: rgb(254 242 242) !important;

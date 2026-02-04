@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Building, Lightbulb, Layers } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 import ServiceGallery from "./ServiceGallery";
 
@@ -192,7 +192,7 @@ const premiumServices = [{
     { src: backAndFrontLidLetter5, alt: "Back and Front Light Letter 5" }
   ]
 }, {
-  icon: Building,
+  icon: null,
   title: "3D Letters without light",
   description: "Raised letters that stick out from the wall, creating a bold 3D effect. No lights needed - these letters have a classic, professional look that always looks great.",
   features: ["Classic, timeless design", "Custom finishes available", "Weather-resistant and durable", "Professional installation included"],
@@ -296,6 +296,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
   const { openForm } = useQuoteForm();
   const [selectedGallery, setSelectedGallery] = useState<{ images: Array<{ src: string; alt: string }>; title: string } | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const premiumGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const affordableGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const interiorGalleryRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const premiumScrollLeft = useRef<number[]>([]);
+  const affordableScrollLeft = useRef<number[]>([]);
+  const interiorScrollLeft = useRef<number[]>([]);
+  const premiumScrollTimeout = useRef<Array<number | undefined>>([]);
+  const affordableScrollTimeout = useRef<Array<number | undefined>>([]);
+  const interiorScrollTimeout = useRef<Array<number | undefined>>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -313,6 +322,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
     return () => mediaQuery.removeListener(handleChange);
   }, []);
 
+  useEffect(() => {
+    if (!isMobile) {
+      return;
+    }
+    interiorGalleryRefs.current.forEach((scroller) => {
+      scroller?.scrollTo({ left: 0 });
+    });
+  }, [isMobile]);
+
   const openGallery = (images: Array<{ src: string; alt: string }>, title: string) => {
     if (isMobile) {
       return;
@@ -320,6 +338,59 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
     if (images && images.length > 0) {
       setSelectedGallery({ images, title });
     }
+  };
+
+  const scrollGalleryNext = (refs: { current: Array<HTMLDivElement | null> }, index: number) => {
+    const scroller = refs.current[index];
+    if (!scroller) {
+      return;
+    }
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    if (maxScroll <= 0) {
+      return;
+    }
+    if (scroller.scrollLeft >= maxScroll - 2) {
+      scroller.scrollTo({ left: 0, behavior: "smooth" });
+      return;
+    }
+    scroller.scrollBy({ left: scroller.clientWidth, behavior: "smooth" });
+  };
+
+  const handleLoopScroll = (
+    refs: { current: Array<HTMLDivElement | null> },
+    lastLeftRef: React.MutableRefObject<number[]>,
+    timeoutRef: React.MutableRefObject<Array<number | undefined>>,
+    index: number
+  ) => {
+    const scroller = refs.current[index];
+    if (!scroller) {
+      return;
+    }
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    if (maxScroll <= 0) {
+      return;
+    }
+    const currentLeft = scroller.scrollLeft;
+    const lastLeft = lastLeftRef.current[index] ?? currentLeft;
+    lastLeftRef.current[index] = currentLeft;
+
+    if (timeoutRef.current[index]) {
+      window.clearTimeout(timeoutRef.current[index]);
+    }
+
+    timeoutRef.current[index] = window.setTimeout(() => {
+      const nowLeft = scroller.scrollLeft;
+      const isAtEnd = nowLeft >= maxScroll - 2;
+      const isAtStart = nowLeft <= 2;
+      const wasScrollingRight = currentLeft > lastLeft;
+      const wasScrollingLeft = currentLeft < lastLeft;
+
+      if (isAtEnd && wasScrollingRight) {
+        scroller.scrollTo({ left: 0, behavior: "smooth" });
+      } else if (isAtStart && wasScrollingLeft) {
+        scroller.scrollTo({ left: maxScroll, behavior: "smooth" });
+      }
+    }, 120);
   };
 
   const closeGallery = () => {
@@ -351,17 +422,30 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             return (
             <Card 
               key={index} 
-                className={`group hover:shadow-2xl transition-all duration-500 border-2 overflow-hidden cursor-pointer transform hover:-translate-y-2 hover:scale-[1.02] h-full flex flex-col
+                className={`group sm:hover:shadow-2xl transition-all duration-500 border-2 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02] h-full flex flex-col
                   ${isLidService 
-                    ? 'border-primary/20 bg-white/50 hover:border-accent/40 md:border-accent/60 md:bg-gradient-to-br md:from-accent/5 md:via-primary/5 md:to-accent/5 md:hover:border-accent md:shadow-lg md:shadow-accent/20 md:hover:shadow-accent/40'
-                    : 'border-primary/20 hover:border-accent/40 bg-white/50'
+                    ? 'border-primary/20 bg-white/50 sm:hover:border-accent/40 md:border-accent/60 md:bg-gradient-to-br md:from-accent/5 md:via-primary/5 md:to-accent/5 md:hover:border-accent md:shadow-lg md:shadow-accent/20 md:hover:shadow-accent/40'
+                    : 'border-primary/20 sm:hover:border-accent/40 bg-white/50'
                   }`}
               onClick={() => openGallery(service.gallery, service.title)}
             >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
                     <div className="relative h-64 overflow-hidden">
-                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                      <div
+                        ref={(el) => {
+                          premiumGalleryRefs.current[index] = el;
+                        }}
+                        className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
+                        onScroll={() =>
+                          handleLoopScroll(
+                            premiumGalleryRefs,
+                            premiumScrollLeft,
+                            premiumScrollTimeout,
+                            index
+                          )
+                        }
+                      >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
                             <img
@@ -376,14 +460,16 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                                 ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent'
                                 : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
                             }`} />
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
-                                isLidService
-                                  ? 'bg-gradient-to-r from-accent to-neon'
-                                  : 'bg-gradient-to-r from-accent to-neon'
-                              }`}>
-                                <service.icon className="w-6 h-6 text-white" />
-                              </div>
+                            <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
+                              {service.icon && (
+                                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
+                                  isLidService
+                                    ? 'bg-gradient-to-r from-accent to-neon'
+                                    : 'bg-gradient-to-r from-accent to-neon'
+                                }`}>
+                                  <service.icon className="w-6 h-6 text-white" />
+                                </div>
+                              )}
                               <h3 className="text-xl font-bold mb-1 text-white">
                                 {service.title}
                               </h3>
@@ -391,6 +477,26 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           </div>
                         ))}
                       </div>
+                      {/* Scroll Indicator Arrow - Right Side */}
+                      {service.gallery.length > 1 && (
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                          aria-label="Scroll gallery right"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            scrollGalleryNext(premiumGalleryRefs, index);
+                          }}
+                        >
+                          <svg 
+                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                            fill="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="relative h-64 overflow-hidden">
@@ -405,13 +511,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
                       }`} />
                       <div className="absolute bottom-4 left-4 right-4">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
-                          isLidService 
-                            ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
-                            : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
-                        }`}>
-                          <service.icon className="w-6 h-6 text-white" />
-                        </div>
+                        {service.icon && (
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
+                            isLidService 
+                              ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
+                              : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
+                          }`}>
+                            <service.icon className="w-6 h-6 text-white" />
+                          </div>
+                        )}
                         <h3 className={`text-xl font-bold mb-1 transition-colors duration-300 ${
                           isLidService 
                             ? 'text-white group-hover:text-accent' 
@@ -493,15 +601,28 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {affordableServices.map((service, index) => (
-              <Card 
-                key={index} 
-              className="group hover:shadow-2xl transition-all duration-500 border-2 hover:border-accent/40 overflow-hidden cursor-pointer transform hover:-translate-y-2 hover:scale-[1.02]"
+            <Card 
+              key={index} 
+              className="group sm:hover:shadow-2xl transition-all duration-500 border-2 sm:hover:border-accent/40 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02]"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
                     <div className="relative h-64 overflow-hidden">
-                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                      <div
+                        ref={(el) => {
+                          affordableGalleryRefs.current[index] = el;
+                        }}
+                        className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
+                        onScroll={() =>
+                          handleLoopScroll(
+                            affordableGalleryRefs,
+                            affordableScrollLeft,
+                            affordableScrollTimeout,
+                            index
+                          )
+                        }
+                      >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
                             <img 
@@ -512,7 +633,7 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                               decoding="async"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
-                            <div className="absolute bottom-6 left-6 right-6">
+                            <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
                               <h3 className="text-2xl font-bold text-white mb-2">
                                 {service.title}
                               </h3>
@@ -520,6 +641,26 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           </div>
                         ))}
                       </div>
+                      {/* Scroll Indicator Arrow - Right Side */}
+                      {service.gallery.length > 1 && (
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                          aria-label="Scroll gallery right"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            scrollGalleryNext(affordableGalleryRefs, index);
+                          }}
+                        >
+                          <svg 
+                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                            fill="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="relative h-64 overflow-hidden">
@@ -590,19 +731,28 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             {interiorServices.map((service, index) => {
               const isLightService = index === 0; // "With Light" service
               return (
-              <Card 
+            <Card 
                 key={index} 
-                className={`group hover:shadow-2xl transition-all duration-500 border-2 overflow-hidden cursor-pointer transform hover:-translate-y-2 hover:scale-[1.02] h-full flex flex-col
-                  ${isLightService 
-                    ? 'border-accent/60 bg-gradient-to-br from-accent/5 via-primary/5 to-accent/5 hover:border-accent shadow-lg shadow-accent/20 hover:shadow-accent/40' 
-                    : 'border-primary/20 hover:border-accent/40 bg-white/50'
-                  }`}
+                className="group sm:hover:shadow-2xl transition-all duration-500 border-2 border-primary/20 bg-white/50 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02] h-full flex flex-col sm:hover:border-accent/40"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
                     <div className="relative h-64 overflow-hidden">
-                      <div className="flex h-full overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain">
+                      <div
+                        ref={(el) => {
+                          interiorGalleryRefs.current[index] = el;
+                        }}
+                        className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
+                        onScroll={() =>
+                          handleLoopScroll(
+                            interiorGalleryRefs,
+                            interiorScrollLeft,
+                            interiorScrollTimeout,
+                            index
+                          )
+                        }
+                      >
                         {service.gallery.map((img, imageIndex) => (
                           <div key={imageIndex} className="relative h-full min-w-full snap-center">
                             <img 
@@ -617,18 +767,12 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                                 ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent' 
                                 : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
                             }`} />
-                            <div className="absolute bottom-6 left-6 right-6">
-                              <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
-                                isLightService 
-                                  ? 'bg-gradient-to-r from-accent to-neon' 
-                                  : 'bg-gradient-to-r from-accent to-neon'
-                              }`}>
-                                {isLightService ? (
+                            <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
+                              {isLightService && (
+                                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg bg-gradient-to-r from-accent to-neon">
                                   <Lightbulb className="w-6 h-6 text-white" />
-                                ) : (
-                                  <Layers className="w-6 h-6 text-white" />
-                                )}
-                              </div>
+                                </div>
+                              )}
                               <h3 className="text-2xl font-bold mb-2 text-white">
                                 {service.title}
                               </h3>
@@ -636,6 +780,26 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           </div>
                         ))}
                       </div>
+                      {/* Scroll Indicator Arrow - Right Side */}
+                      {service.gallery.length > 1 && (
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-10"
+                          aria-label="Scroll gallery right"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            scrollGalleryNext(interiorGalleryRefs, index);
+                          }}
+                        >
+                          <svg 
+                            className="w-8 h-8 text-accent drop-shadow-lg animate-pulse-subtle" 
+                            fill="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/>
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="relative h-64 overflow-hidden">
@@ -650,17 +814,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent group-hover:from-black/80 group-hover:via-black/50'
                       }`} />
                       <div className="absolute bottom-6 left-6 right-6">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg ${
-                          isLightService 
-                            ? 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70' 
-                            : 'bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/50'
-                        }`}>
-                          {isLightService ? (
+                        {isLightService && (
+                          <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg bg-gradient-to-r from-accent to-neon group-hover:shadow-accent/70">
                             <Lightbulb className="w-6 h-6 text-white" />
-                          ) : (
-                            <Layers className="w-6 h-6 text-white" />
-                          )}
-                        </div>
+                          </div>
+                        )}
                         <h3 className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
                           isLightService 
                             ? 'text-white group-hover:text-accent' 
@@ -674,19 +832,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 ) : (
                   <div className="h-64 bg-gradient-to-r from-secondary to-secondary/50 flex items-center justify-center" />
                 )}
-                <CardHeader className={`hidden sm:block text-center transition-all duration-500 ${
-                  isLightService 
-                    ? 'bg-gradient-to-b from-accent/10 to-transparent group-hover:from-accent/20' 
-                    : 'bg-white/50 group-hover:bg-white/70'
-                }`}>
+                <CardHeader className="hidden sm:block text-center transition-all duration-500 bg-white/50 group-hover:bg-white/70">
                   <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
                   <CardDescription className="text-base">{service.description}</CardDescription>
                 </CardHeader>
-                <CardContent className={`hidden sm:block transition-all duration-500 flex-grow ${
-                  isLightService 
-                    ? 'bg-gradient-to-b from-transparent to-accent/5 group-hover:to-accent/10' 
-                    : 'bg-white/30 group-hover:bg-white/50'
-                }`}>
+                <CardContent className="hidden sm:block transition-all duration-500 flex-grow bg-white/30 group-hover:bg-white/50">
                   {isLightService && (
                     <ul className="space-y-2 mt-4">
                       <li className="flex items-center text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
@@ -778,6 +928,17 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
             }
           }
           
+          @keyframes pulse-subtle {
+            0%, 100% {
+              opacity: 0.8;
+              transform: translateX(0);
+            }
+            50% {
+              opacity: 1;
+              transform: translateX(4px);
+            }
+          }
+          
           .animate-fade-in-up {
             animation: fade-in-up 0.6s ease-out forwards;
           }
@@ -804,6 +965,10 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
           .animate-button-pulse {
             animation: button-pulse 2s ease-in-out infinite;
             animation-delay: 1s;
+          }
+          
+          .animate-pulse-subtle {
+            animation: pulse-subtle 2s ease-in-out infinite;
           }
         `}</style>
       </div>

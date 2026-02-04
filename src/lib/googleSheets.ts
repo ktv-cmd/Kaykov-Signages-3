@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzm1yFjQxoztP-FRqXv_sBRm2Q6Ig1Hp8AZE5_6cgA2EO3dQNzhY78eb9Is4JbOKcnrMQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkiHvsqTGP94YM627H8FuJ7KofDWQthTN-NtGK8_ux4gImCflKrcfyViRn2SgK2Sg5MQ/exec";
 
 export interface CallbackFormData {
   name: string;
@@ -11,6 +11,7 @@ export interface CallbackFormData {
   imageBase64?: string;
   imageFileName?: string;
   imageMimeType?: string;
+  leadSource?: string;
 }
 
 export async function submitToGoogleSheets(data: CallbackFormData): Promise<boolean> {
@@ -18,6 +19,7 @@ export async function submitToGoogleSheets(data: CallbackFormData): Promise<bool
     const rowData = {
       timestamp: new Date().toISOString(),
       name: data.name || "",
+      leadSource: data.leadSource || "Not specified",
       phone: data.phone || "Not provided",
       email: data.email || "Not provided",
       company: data.company || "Not provided",
