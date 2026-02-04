@@ -460,22 +460,22 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                                 ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent'
                                 : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
                             }`} />
-                            <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
-                              {service.icon && (
-                                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
-                                  isLidService
-                                    ? 'bg-gradient-to-r from-accent to-neon'
-                                    : 'bg-gradient-to-r from-accent to-neon'
-                                }`}>
-                                  <service.icon className="w-6 h-6 text-white" />
-                                </div>
-                              )}
-                              <h3 className="text-xl font-bold mb-1 text-white">
-                                {service.title}
-                              </h3>
-                            </div>
                           </div>
                         ))}
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4 pointer-events-none">
+                        {service.icon && (
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg ${
+                            isLidService
+                              ? 'bg-gradient-to-r from-accent to-neon'
+                              : 'bg-gradient-to-r from-accent to-neon'
+                          }`}>
+                            <service.icon className="w-6 h-6 text-white" />
+                          </div>
+                        )}
+                        <h3 className="text-xl font-bold mb-1 text-white">
+                          {service.title}
+                        </h3>
                       </div>
                       {/* Scroll Indicator Arrow - Right Side */}
                       {service.gallery.length > 1 && (
@@ -633,13 +633,13 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                               decoding="async"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
-                            <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
-                              <h3 className="text-2xl font-bold text-white mb-2">
-                                {service.title}
-                              </h3>
-                            </div>
                           </div>
                         ))}
+                      </div>
+                      <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
+                        <h3 className="text-2xl font-bold text-white mb-2">
+                          {service.title}
+                        </h3>
                       </div>
                       {/* Scroll Indicator Arrow - Right Side */}
                       {service.gallery.length > 1 && (
@@ -767,18 +767,18 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                                 ? 'bg-gradient-to-t from-black/80 via-black/50 to-transparent' 
                                 : 'bg-gradient-to-t from-black/70 via-black/40 to-transparent'
                             }`} />
-                            <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
-                              {isLightService && (
-                                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg bg-gradient-to-r from-accent to-neon">
-                                  <Lightbulb className="w-6 h-6 text-white" />
-                                </div>
-                              )}
-                              <h3 className="text-2xl font-bold mb-2 text-white">
-                                {service.title}
-                              </h3>
-                            </div>
                           </div>
                         ))}
+                      </div>
+                      <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
+                        {isLightService && (
+                          <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-2 shadow-lg bg-gradient-to-r from-accent to-neon">
+                            <Lightbulb className="w-6 h-6 text-white" />
+                          </div>
+                        )}
+                        <h3 className="text-2xl font-bold mb-2 text-white">
+                          {service.title}
+                        </h3>
                       </div>
                       {/* Scroll Indicator Arrow - Right Side */}
                       {service.gallery.length > 1 && (
