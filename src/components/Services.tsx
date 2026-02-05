@@ -414,7 +414,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                     : 'border-primary/20 sm:hover:border-accent/40 bg-white/50'
                   }`}
               onClick={() => openGallery(service.gallery, service.title)}
-              style={{ touchAction: 'pan-y pinch-zoom' }}
             >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
@@ -605,7 +604,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               key={index} 
               className="group sm:hover:shadow-2xl transition-all duration-500 border-2 sm:hover:border-accent/40 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02]"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
-              style={{ touchAction: 'pan-y pinch-zoom' }}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
@@ -749,7 +747,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 key={index} 
                 className="group sm:hover:shadow-2xl transition-all duration-500 border-2 border-primary/20 bg-white/50 overflow-hidden cursor-pointer transform sm:hover:-translate-y-2 sm:hover:scale-[1.02] h-full flex flex-col sm:hover:border-accent/40"
                 onClick={() => service.gallery.length > 0 && openGallery(service.gallery, service.title)}
-              style={{ touchAction: 'pan-y pinch-zoom' }}
               >
                 {service.image ? (
                   isMobile && service.gallery.length > 0 ? (
