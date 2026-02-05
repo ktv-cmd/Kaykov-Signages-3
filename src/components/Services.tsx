@@ -424,7 +424,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           premiumGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        style={{ touchAction: 'pan-x' }}
                         onScroll={() => checkIfAtEnd(premiumGalleryRefs, setPremiumAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
@@ -616,7 +615,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           affordableGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        style={{ touchAction: 'pan-x' }}
                         onScroll={() => checkIfAtEnd(affordableGalleryRefs, setAffordableAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
@@ -761,7 +759,6 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                           interiorGalleryRefs.current[index] = el;
                         }}
                         className="flex h-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain"
-                        style={{ touchAction: 'pan-x' }}
                         onScroll={() => checkIfAtEnd(interiorGalleryRefs, setInteriorAtEnd, index)}
                       >
                         {service.gallery.map((img, imageIndex) => (
