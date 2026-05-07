@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { Loader2, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { submitToGoogleSheets } from "@/lib/googleSheets"
 
-const API_BASE = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
+const API_BASE = import.meta.env.VITE_SIGNAI_API_URL ?? ""
 const LS_KEY = "signai_lead"
 
 interface LeadData {
@@ -46,23 +47,42 @@ export function LeadCaptureModal({ storefrontFile, logoFile, companyName, onConf
     setStatus("saving"); setError("")
 
     try {
-      const fd = new FormData()
-      fd.append("name",    form.name.trim())
-      fd.append("email",   form.email.trim())
-      fd.append("phone",   form.phone.trim())
-      fd.append("company", form.company.trim())
-      if (storefrontFile) fd.append("storefront", storefrontFile)
-      if (logoFile)       fd.append("logo",       logoFile)
+      let leadId: string | null = null
 
-      const res  = await fetch(`${API_BASE}/api/leads`, { method: "POST", body: fd })
-      const json = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(json.error ?? "Failed to save")
+      // Try the backend API first (only if a URL is configured)
+      if (API_BASE) {
+        try {
+          const fd = new FormData()
+          fd.append("name",    form.name.trim())
+          fd.append("email",   form.email.trim())
+          fd.append("phone",   form.phone.trim())
+          fd.append("company", form.company.trim())
+          if (storefrontFile) fd.append("storefront", storefrontFile)
+          if (logoFile)       fd.append("logo",       logoFile)
+
+          const res  = await fetch(`${API_BASE}/api/leads`, { method: "POST", body: fd })
+          const json = await res.json().catch(() => ({}))
+          if (res.ok) leadId = json.id ?? null
+        } catch {
+          // API unavailable — fall through to Google Sheets
+        }
+      }
+
+      // Always send to Google Sheets as backup
+      await submitToGoogleSheets({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        company: form.company.trim(),
+        leadSource: "AI Sign Generator",
+      })
 
       localStorage.setItem(LS_KEY, JSON.stringify(form))
-      onConfirm(json.id ?? null)
+      onConfirm(leadId)
     } catch (err) {
       setStatus("error")
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
+      setError("Something went wrong. Please try again.")
+      console.error(err)
     }
   }
 
