@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Building, Lightbulb, Layers } from "lucide-react";
+import { Building, Lightbulb, Layers, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 import ServiceGallery from "./ServiceGallery";
@@ -562,11 +562,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
         
         {/* CTA Section After 3D Signages - Apple Style */}
         <div className="my-16 text-center">
-          <div className="max-w-md mx-auto">
-            <Button 
-              variant="default" 
-              size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-gradient-to-r hover:from-accent hover:to-neon shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base w-full"
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-10 py-6 rounded-lg font-medium text-base"
               onClick={() =>
                 openForm({
                   ctaId: "services_premium_quote",
@@ -576,6 +576,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               }
             >
               Get a Custom Quote
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="!bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105 px-10 py-6 rounded-lg font-medium text-base"
+              onClick={() => { window.location.href = "/ai" }}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Design My Sign with AI →
             </Button>
         </div>
       </div>
@@ -701,11 +710,11 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
         </div>
         
         {/* CTA Button - Centered after Affordable Outdoor Collection */}
-        <div className="my-16 text-center">
-              <Button 
-                variant="default" 
-                size="lg" 
-            className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
+        <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                variant="default"
+                size="lg"
+                className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
                 onClick={() =>
                   openForm({
                     ctaId: "services_affordable_quote",
@@ -715,6 +724,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
                 }
               >
                 Get a Custom Quote
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="!bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105 px-8 py-5 rounded-lg font-medium text-lg"
+                onClick={() => { window.location.href = "/ai" }}
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Design My Sign with AI →
               </Button>
             </div>
         </div>
@@ -901,10 +919,10 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
           </div>
           
           {/* CTA Button - Centered after Interior Signages */}
-          <div className="my-16 text-center">
-            <Button 
-              variant="default" 
-              size="lg" 
+          <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="default"
+              size="lg"
               className="bg-accent text-white hover:opacity-90 transition-all duration-300 px-8 py-5 rounded-lg font-medium text-lg"
               onClick={() =>
                 openForm({
@@ -915,6 +933,15 @@ export default function Services({ hideInterior = false, hideOutdoor = false }: 
               }
             >
               Get a Custom Quote
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="!bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105 px-8 py-5 rounded-lg font-medium text-lg"
+              onClick={() => { window.location.href = "/ai" }}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Design My Sign with AI →
             </Button>
           </div>
         </div>

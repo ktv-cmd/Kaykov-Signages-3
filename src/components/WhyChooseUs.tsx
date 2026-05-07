@@ -2,7 +2,7 @@ import { useQuoteForm } from "@/components/QuoteFormProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, Shield, Headphones, Star, CreditCard, Wrench } from "lucide-react";
+import { Clock, Shield, Headphones, Star, CreditCard, Wrench, Sparkles } from "lucide-react";
 
 const benefits = [
   {
@@ -91,7 +91,7 @@ export default function WhyChooseUs() {
         </div>
         
         {/* CTA Button */}
-        <div className="mt-16 text-center">
+        <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button
             variant="cta"
             size="lg"
@@ -105,6 +105,15 @@ export default function WhyChooseUs() {
             }
           >
             Get a Custom Quote
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="text-lg px-10 py-6 rounded-xl !bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+            onClick={() => { window.location.href = "/ai" }}
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            Design My Sign with AI →
           </Button>
         </div>
       </div>

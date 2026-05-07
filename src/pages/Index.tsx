@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { CheckCircle2 } from "lucide-react";
 import { trackPageView } from "@/lib/analytics";
 import Hero from "@/components/Hero";
+import SignAIPromo from "@/components/SignAIPromo";
+import SectionCTA from "@/components/SectionCTA";
 import Services from "@/components/Services";
 import GoogleReviews from "@/components/GoogleReviews";
 import InstagramVideoGrid from "@/components/InstagramVideoGrid";
@@ -89,31 +91,32 @@ const Index = () => {
       )}
       {/* 1. Hero */}
       <Hero />
-      
-      {/* 2. Outdoor Signages Premium Collection */}
-      {/* 3. Outdoor Signages */}
-      {/* 4. Interior Signages */}
+
+      {/* Services */}
       <Services />
-      
-      {/* 5. What Our Clients Say */}
+
+      {/* Reviews */}
       <GoogleReviews />
-      
-      {/* 7. Kaykov Signs – Video Showcase */}
+
+      {/* Video Showcase */}
       <InstagramVideoGrid items={signagesVideos} showHeader />
-      
-      {/* 8. Why Businesses Love Us */}
+
+      {/* Why Us */}
       <WhyChooseUs />
-      
-      {/* 9. Office Showroom */}
+
+      {/* Office Showroom */}
       <OfficeShowroom />
-      
-      {/* 10. Smooth. Creative. High Quality. */}
+
+      {/* AI Sign Design Promo */}
+      <SignAIPromo />
+
+      {/* How We Work */}
       <Process />
-      
-      {/* 11. our promise */}
+
+      {/* Our Promise */}
       <OurPromise />
-      
-      {/* 12. Ready to Bring Your Brand to Life? */}
+
+      {/* Contact */}
       <Contact />
       
       <FloatingContactButtons />

@@ -8,6 +8,7 @@ import Form from "./pages/Form";
 import InstagramForm from "./pages/InstagramForm";
 import OutdoorSignages from "./pages/OutdoorSignages";
 import IndoorSignages from "./pages/IndoorSignages";
+import AITool from "./pages/AITool";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const AppRoutes = () => {
         <Route path="/window" element={<Navigate to="/inst" replace />} />
         <Route path="/outdoor-signages" element={<OutdoorSignages />} />
         <Route path="/indoor-signages" element={<IndoorSignages />} />
+        <Route path="/ai" element={<AITool />} />
       </Routes>
     </QuoteFormProvider>
   );

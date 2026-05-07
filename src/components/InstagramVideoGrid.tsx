@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Loader2, ExternalLink } from "lucide-react";
+import { Play, Loader2, ExternalLink, Sparkles } from "lucide-react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 import { trackCtaClick } from "@/lib/analytics";
 
@@ -241,7 +241,7 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
 
         {/* Custom Quote Button Section */}
         {showHeader && (
-          <div className="mt-12 flex flex-col items-center gap-3 text-center">
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               onClick={() =>
                 openForm({
@@ -253,6 +253,15 @@ export default function InstagramVideoGrid({ items, showHeader = true }: Instagr
               className="px-8 py-4 bg-gradient-to-r from-accent to-neon text-white rounded-lg font-medium text-lg"
             >
               Get a Custom Quote
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="px-8 py-4 !bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105 rounded-lg font-medium text-lg"
+              onClick={() => { window.location.href = "/ai" }}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Design My Sign with AI →
             </Button>
           </div>
         )}

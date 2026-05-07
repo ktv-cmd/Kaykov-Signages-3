@@ -9,6 +9,10 @@ import { CheckCircle2, ArrowLeft, ArrowRight, X, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { submitToGoogleSheets, type CallbackFormData } from "@/lib/googleSheets";
 import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
+import { SignAreaBrush, type PaintedArea } from "@/components/SignAreaBrush";
+
+const SIGN_AI_API = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
+
 
 type FormData = {
   name: string;
@@ -112,6 +116,7 @@ export default function ApplicationForm({
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [paintedArea, setPaintedArea] = useState<PaintedArea | null>(null);
   
   const { register, handleSubmit, watch, formState: { errors }, reset, trigger } = useForm<FormData>({
     mode: "onChange"
@@ -173,6 +178,7 @@ export default function ApplicationForm({
   const removeImage = () => {
     setUploadedImage(null);
     setImagePreview(null);
+    setPaintedArea(null);
   };
 
   // Handle step navigation
@@ -284,8 +290,20 @@ export default function ApplicationForm({
         setCurrentStep(1);
       }
 
-      // Submit to Google Sheets (in background, don't wait for response)
+      // Submit to Google Sheets (keep as backup)
       submitToGoogleSheets(sheetData).catch(showErrorToast);
+
+      // Also submit to Sign AI / Supabase so all leads land in one database
+      const fd = new FormData();
+      fd.append("name",    data.name || "");
+      fd.append("email",   data.email?.trim() || "");
+      fd.append("phone",   data.phone?.trim() || "");
+      fd.append("company", data.businessName?.trim() || "");
+      fd.append("source",  leadSource || "quote-form");
+      fd.append("flow_type", "quote-form");
+      if (uploadedImage) fd.append("storefront", uploadedImage);
+      if (paintedArea)   fd.append("sign_area", JSON.stringify(paintedArea));
+      fetch(`${SIGN_AI_API}/api/leads`, { method: "POST", body: fd }).catch(() => {});
 
       // Track conversion in analytics
       if (typeof window !== 'undefined' && (window as any).gtag) {
@@ -524,14 +542,15 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Textarea 
-                    id="details" 
+                  <Textarea
+                    id="details"
                     {...register("details")}
                     placeholder="If you know the dimensions, please include them in the description for a faster quote (optional)"
                     rows={4}
                     className={`resize-none text-base ${watchedDetails?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>
+
 
                 <div className="space-y-2">
                   <Label htmlFor="picture" className="flex items-center gap-2">
@@ -554,19 +573,21 @@ export default function ApplicationForm({
                       </label>
                     </div>
                   ) : (
-                    <div className="relative">
-                      <img 
-                        src={imagePreview} 
-                        alt="Preview" 
-                        className="w-full h-48 object-cover rounded-lg"
+                    <div className="space-y-2">
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="flex items-center gap-1 text-xs text-red-500 hover:text-red-700 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                          Remove photo
+                        </button>
+                      </div>
+                      <SignAreaBrush
+                        imageUrl={imagePreview!}
+                        onChange={setPaintedArea}
                       />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
                     </div>
                   )}
                 </div>

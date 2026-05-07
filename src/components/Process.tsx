@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Ruler, CreditCard, Palette, Factory, Wrench } from "lucide-react";
+import { MessageCircle, Ruler, CreditCard, Palette, Factory, Wrench, Sparkles } from "lucide-react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 
 interface Step {
@@ -134,11 +134,11 @@ export default function Process() {
         </div>
         
         <div className="text-center mt-12 sm:mt-20 px-4">
-          <div className="max-w-md mx-auto">
-            <Button 
-              variant="cta" 
-              size="lg" 
-              className="bg-gradient-to-r from-accent to-neon text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-105 transition-all duration-300 px-6 sm:px-10 py-5 sm:py-6 rounded-xl font-medium text-base sm:text-lg w-full shadow-lg"
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="cta"
+              size="lg"
+              className="bg-gradient-to-r from-accent to-neon text-white hover:shadow-lg hover:shadow-accent/30 hover:scale-105 transition-all duration-300 px-6 sm:px-10 py-5 sm:py-6 rounded-xl font-medium text-base sm:text-lg shadow-lg"
               onClick={() =>
                 openForm({
                   ctaId: "process_quote",
@@ -148,6 +148,15 @@ export default function Process() {
               }
             >
               Get a Custom Quote
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="!bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105 px-6 sm:px-10 py-5 sm:py-6 rounded-xl font-medium text-base sm:text-lg"
+              onClick={() => { window.location.href = "/ai" }}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Design My Sign with AI →
             </Button>
           </div>
         </div>

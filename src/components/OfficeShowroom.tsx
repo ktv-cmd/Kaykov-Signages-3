@@ -2,6 +2,7 @@ import { useQuoteForm } from "@/components/QuoteFormProvider";
 import { trackCtaClick } from "@/lib/analytics";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 
 // Import office case images
 import officeImage1 from "@/assets/outdoor /cases in office /1 K2 letter.JPG";
@@ -106,20 +107,29 @@ export default function OfficeShowroom() {
         </div>
           
           {/* CTA Button */}
-          <div className="text-center mt-12">
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               variant="cta"
               size="lg"
               className="text-lg px-10 py-6 rounded-xl shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:scale-105"
-            onClick={() =>
-              openForm({
-                ctaId: "office_showroom_quote",
-                ctaText: "Get a Custom Quote",
-                location: "office_showroom_cta",
-              })
-            }
+              onClick={() =>
+                openForm({
+                  ctaId: "office_showroom_quote",
+                  ctaText: "Get a Custom Quote",
+                  location: "office_showroom_cta",
+                })
+              }
             >
               Get a Custom Quote
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-lg px-10 py-6 rounded-xl !bg-transparent border-2 border-primary text-primary hover:!bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+              onClick={() => { window.location.href = "/ai" }}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Design My Sign with AI →
             </Button>
           </div>
       </div>
