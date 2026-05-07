@@ -1,14 +1,11 @@
 import type { ReferenceStyle } from "@/types/flow"
 
-// Reference image URLs point to sign-combined (served from public/references/)
-const BASE = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
-
 export const REFERENCE_STYLES: ReferenceStyle[] = [
   {
     id: "front-lid",
     name: "Front Lit Sign",
     description: "Illuminated letters lit from the front — bright, clean, and visible day and night",
-    imageUrl: `${BASE}/references/front-lid.jpg`,
+    imageUrl: `/references/front-lid.jpg`,
     lightingType: "front",
     materialFeel: "acrylic",
     depthStyle: "shallow",
@@ -20,7 +17,7 @@ export const REFERENCE_STYLES: ReferenceStyle[] = [
     id: "back-front-lid",
     name: "Back & Front Lit",
     description: "Letters lit from both front and back — halo glow behind with bright face illumination",
-    imageUrl: `${BASE}/references/back-front-lid.jpg`,
+    imageUrl: `/references/back-front-lid.jpg`,
     lightingType: "both",
     materialFeel: "acrylic",
     depthStyle: "shallow",
@@ -32,7 +29,7 @@ export const REFERENCE_STYLES: ReferenceStyle[] = [
     id: "back-lit",
     name: "Back Lit Sign",
     description: "Halo backlit letters — LED glow on the wall behind the sign, premium night presence",
-    imageUrl: `${BASE}/references/back-lit.jpg?v=2`,
+    imageUrl: `/references/back-lit.jpg`,
     lightingType: "back",
     materialFeel: "acrylic",
     depthStyle: "shallow",
@@ -44,7 +41,7 @@ export const REFERENCE_STYLES: ReferenceStyle[] = [
     id: "light-box",
     name: "Light Box",
     description: "Backlit panel or cabinet sign — classic, even illumination across the entire face",
-    imageUrl: `${BASE}/references/light-box.jpg`,
+    imageUrl: `/references/light-box.jpg`,
     lightingType: "back",
     materialFeel: "acrylic",
     depthStyle: "flat",
@@ -56,7 +53,7 @@ export const REFERENCE_STYLES: ReferenceStyle[] = [
     id: "no-light-outdoor",
     name: "No Light – 3D Outdoor",
     description: "Bold 3D dimensional letters mounted to the facade — no illumination, high-end professional look",
-    imageUrl: `${BASE}/references/no-light-outdoor.jpg`,
+    imageUrl: `/references/no-light-outdoor.jpg`,
     lightingType: "front",
     materialFeel: "brushed-metal",
     depthStyle: "deep",
@@ -68,7 +65,7 @@ export const REFERENCE_STYLES: ReferenceStyle[] = [
     id: "awning",
     name: "Awning Sign",
     description: "Custom printed or lit awning — adds street presence, weather protection, and branding",
-    imageUrl: `${BASE}/references/awning.jpg`,
+    imageUrl: `/references/awning.jpg`,
     lightingType: "front",
     materialFeel: "flat",
     depthStyle: "flat",

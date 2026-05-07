@@ -235,7 +235,7 @@ export function StepPlacement() {
         <div className="flex rounded-lg border border-gray-200 p-0.5 bg-white">
           {(["paint", "erase"] as const).map((t) => (
             <button key={t} type="button" onClick={() => setTool(t)}
-              className={cn("flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors", tool === t ? "bg-black text-white" : "text-gray-600 hover:bg-gray-50")}
+              className={cn("flex items-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-md text-sm font-medium transition-colors min-w-[80px] justify-center", tool === t ? "bg-black text-white" : "text-gray-600 hover:bg-gray-50")}
             >
               {t === "paint" ? <Paintbrush size={16} /> : <Eraser size={16} />}
               {t === "paint" ? "Brush" : "Eraser"}
@@ -248,11 +248,13 @@ export function StepPlacement() {
             onChange={(e) => setBrushScreenPx(Number(e.target.value))}
             onPointerDown={() => setBrushSizeAdjusting(true)}
             onPointerUp={() => setBrushSizeAdjusting(false)}
+            onTouchStart={() => setBrushSizeAdjusting(true)}
+            onTouchEnd={() => setBrushSizeAdjusting(false)}
             onBlur={() => setBrushSizeAdjusting(false)}
-            className="w-36 accent-black"
+            className="w-32 sm:w-36 accent-black touch-none"
           />
         </label>
-        <button type="button" onClick={clearBrushLayer} className="text-sm text-gray-500 underline hover:text-gray-800">Clear all</button>
+        <button type="button" onClick={clearBrushLayer} className="text-sm text-gray-500 underline hover:text-gray-800 py-2.5 sm:py-0">Clear all</button>
       </div>
 
       <div ref={stageRef} className="relative w-full rounded-xl overflow-hidden bg-gray-900 select-none touch-none">

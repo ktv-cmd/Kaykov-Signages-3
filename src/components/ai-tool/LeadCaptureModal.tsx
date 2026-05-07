@@ -103,7 +103,7 @@ export function LeadCaptureModal({ storefrontFile, logoFile, companyName, onConf
                 type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
                 value={form[field]}
                 onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
-                placeholder={field === "name" ? "Boris Kaykov" : field === "email" ? "boris@kaykovmedia.com" : field === "phone" ? "+1 555 123 4567" : "Kaykov Media"}
+                placeholder={field === "name" ? "Jane Smith" : field === "email" ? "jane@example.com" : field === "phone" ? "+1 555 123 4567" : "Acme Inc."}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 required={field === "name"}
               />
