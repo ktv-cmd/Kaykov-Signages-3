@@ -238,20 +238,25 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
             designed, built, and installed to elevate your brand's identity everywhere it appears.
           </p>
 
-          {/* 2 pill buttons — centered */}
+          {/* 2 buttons — matching site style */}
           <div className="flex gap-4 justify-center mb-8">
-            <button
-              className="px-8 py-3 rounded-full bg-white text-black text-sm font-semibold hover:bg-white/90 transition-all duration-200"
+            <Button
+              variant="hero"
+              size="lg"
+              className="px-8 py-6 text-base font-semibold"
               onClick={() => openForm({ ctaId: "hero_desktop_quote", ctaText: "Get a Custom Quote", location: "hero_desktop" })}
             >
-              Get a Quote
-            </button>
-            <button
-              className="px-8 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 backdrop-blur-sm transition-all duration-200"
+              <Calendar className="w-5 h-5 mr-2" />
+              Get a Custom Quote
+            </Button>
+            <Button
+              size="lg"
+              className="px-8 py-6 text-base font-semibold bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
               onClick={() => { window.location.href = "/ai"; }}
             >
+              <Sparkles className="w-5 h-5 mr-2" />
               Design with AI →
-            </button>
+            </Button>
           </div>
 
           {/* Browse links — minimal */}
