@@ -1,0 +1,181 @@
+/**
+ * Generates controlled variation specs for 1/3/6 outputs.
+ * Uses Gemini (nana banana) if key is available; otherwise deterministic local logic.
+ */
+
+import type { ReferenceStyle, VariantSpec, VariationCount } from "@/types"
+
+// Controlled variation axes — bounded, not random
+const DEPTH_PROFILES = ["flat", "shallow", "medium", "deep"] as const
+const EDGE_PROFILES = ["sharp", "beveled", "rounded"] as const
+const MOUNTING_STYLES = ["flush", "stand-off", "raceway"] as const
+
+export type BrandMode = "logo-only" | "text-only" | "logo-and-text"
+
+export async function planVariations(
+  references: ReferenceStyle[],
+  variationCount: VariationCount,
+  brandText: string,
+  brandMode: BrandMode = "text-only"
+): Promise<VariantSpec[]> {
+  const primary = references[0]
+
+  // Always use the local deterministic planner to preserve Gemini quota for image generation.
+  return planDeterministic(primary, variationCount, brandText, brandMode)
+}
+
+// ─── Gemini planner ───────────────────────────────────────────────────────────
+
+async function planWithGemini(
+  reference: ReferenceStyle,
+  count: VariationCount,
+  brandText: string
+): Promise<VariantSpec[]> {
+  const { GoogleGenAI } = await import("@google/genai")
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
+
+  const prompt = `You are a professional sign design variation planner.
+Generate exactly ${count} controlled, distinct but style-consistent variation specs for a storefront sign mockup.
+
+Reference style: ${reference.name}
+- Material: ${reference.materialFeel}
+- Depth: ${reference.depthStyle}
+- Mounting: ${reference.mountingStyle}
+- Lighting: ${reference.lightingType}
+- Backing plate: ${reference.hasBackingPlate}
+Brand text: "${brandText}"
+
+Each variation must differ in at least one of: depth, edge profile, mounting, or backing plate.
+All variations must stay within the spirit of the reference style.
+
+Return a JSON array of exactly ${count} objects. Each object must have these fields:
+- depthProfile: "flat" | "shallow" | "medium" | "deep"
+- edgeProfile: "sharp" | "beveled" | "rounded"
+- mountingStyle: "flush" | "stand-off" | "raceway"
+- hasBackingPlate: boolean
+- materialFeel: string
+- lightingMode: ${JSON.stringify(reference.compatibleLightModes)}  — pick one
+- prompt: a detailed single-sentence photorealistic image generation prompt describing the sign installed on the storefront
+
+Return only the raw JSON array, no markdown, no explanation.`
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { responseMimeType: "application/json", temperature: 0.4 },
+  })
+
+  const raw = response.text ?? ""
+  const parsed = JSON.parse(raw)
+  const specs: VariantSpec[] = Array.isArray(parsed) ? parsed : parsed.variations ?? []
+  return specs.slice(0, count)
+}
+
+// ─── Deterministic fallback ───────────────────────────────────────────────────
+
+function planDeterministic(
+  reference: ReferenceStyle,
+  count: VariationCount,
+  brandText: string,
+  brandMode: BrandMode = "text-only"
+): VariantSpec[] {
+  const specs: VariantSpec[] = []
+
+  const depthMatrix = {
+    1: [reference.depthStyle],
+    3: ["shallow", "medium", "deep"],
+    6: ["flat", "shallow", "medium", "medium", "deep", "deep"],
+  }[count]
+
+  const edgeMatrix = {
+    1: ["sharp"],
+    3: ["sharp", "beveled", "rounded"],
+    6: ["sharp", "sharp", "beveled", "beveled", "rounded", "rounded"],
+  }[count]
+
+  const mountMatrix = {
+    1: [reference.mountingStyle],
+    3: [reference.mountingStyle, "stand-off", "flush"],
+    6: ["flush", "stand-off", "raceway", "flush", "stand-off", "raceway"],
+  }[count]
+
+  for (let i = 0; i < count; i++) {
+    const depth = depthMatrix[i] as VariantSpec["depthProfile"]
+    const edge = edgeMatrix[i] as VariantSpec["edgeProfile"]
+    const mount = mountMatrix[i] as VariantSpec["mountingStyle"]
+    const lightMode = reference.compatibleLightModes[i % reference.compatibleLightModes.length]
+
+    specs.push({
+      depthProfile: depth,
+      edgeProfile: edge,
+      mountingStyle: mount,
+      hasBackingPlate: i % 3 === 2 ? !reference.hasBackingPlate : reference.hasBackingPlate,
+      materialFeel: reference.materialFeel,
+      lightingMode: lightMode,
+      prompt: buildPrompt({ brandText, reference, depth, edge, mount, lightMode, brandMode }),
+    })
+  }
+
+  return specs
+}
+
+function buildPrompt({
+  brandText,
+  reference,
+  mount,
+  lightMode,
+  brandMode,
+}: {
+  brandText: string
+  reference: ReferenceStyle
+  depth: string
+  edge: string
+  mount: string
+  lightMode: string
+  brandMode: BrandMode
+}): string {
+  // Short labels for “style as on the example” (light type)
+  const lightMap: Record<string, string> = {
+    front: "front-lit / face-lit (e.g. channel letters, lightbox face)",
+    back: "back-lit / halo behind letters",
+    both: "front + back halo",
+    neon: "neon-style glow",
+  }
+  const lightStyle = lightMap[lightMode] ?? `${lightMode} lit`
+
+  const mountMap: Record<string, string> = {
+    flush: "flush",
+    "stand-off": "stand-off",
+    raceway: "raceway box",
+  }
+  const mountShort = mountMap[mount] ?? mount
+
+  // One reference line: example name + how light should read
+  const exampleLine = `Example style: "${reference.name}" — aim for this material and illumination (${lightStyle}), mounting: ${mountShort}.`
+
+  if (brandMode === "logo-only") {
+    return [
+      `Image 1 is the building; gold areas = only where the new sign replaces old signage.`,
+      `LOGO: Image 2 is the logo. Build the sign from that artwork — keep the logo’s real colors and shape.`,
+      `Light it like the example: ${lightStyle}. ${exampleLine}`,
+      `No business name text. Only change the highlighted zone.`,
+    ].join(" ")
+  }
+
+  if (brandMode === "text-only") {
+    return [
+      `Image 1 is the building; gold areas = only where the new sign replaces old signage.`,
+      `TEXT: render the name "${brandText}" in that zone. Lighting/sign construction like the example (${lightStyle}). ${exampleLine}`,
+      `No logo — no fixed brand colors. Pick letter and trim colors that suit this storefront photo (wall, stone, glass, sky, time of day). Do not copy unrelated colors from elsewhere; make it look like it belongs on this building. Do not use the yellow placement highlight as a sign color.`,
+      `Only change the highlighted zone.`,
+    ].join(" ")
+  }
+
+  // logo-and-text
+  return [
+    `Image 1 is the building; gold areas = only where the new sign replaces old signage.`,
+    `LOGO + NAME: Image 2 is the logo — place the logo, then the name "${brandText}" (logo first, name after; readable layout).`,
+    `Colors from the logo; light like the example (${lightStyle}). ${exampleLine}`,
+    `Only change the highlighted zone.`,
+  ].join(" ")
+}

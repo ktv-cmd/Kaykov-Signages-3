@@ -1,0 +1,228 @@
+{
+  "testSuite": "Complete System Test - Architectural Signage",
+  "version": "2.0",
+  "date": "2026-04-22",
+  "testCases": {
+    "case1": {
+      "name": "NAME ONLY (Text-Only Signage)",
+      "tests": {
+        "test1.1": {
+          "id": "test-1.1",
+          "name": "Basic Name + Client Color + Client Font",
+          "purpose": "Validate color/font enforcement and 3D geometry",
+          "inputs": {
+            "storefront": "Red brick facade with golden zone",
+            "brandText": "VALERIA",
+            "textStyling": {
+              "fontStyle": "classic-serif",
+              "color": "#1E3A8A"
+            },
+            "reference": "back-lit",
+            "lighting": "back",
+            "mounting": "stand-off",
+            "variationCount": 1
+          },
+          "expectedOutput": {
+            "sideWallTest": "At least one letter shows visible thickness/return plane",
+            "zeroGold": "0% golden/yellow pixels (#FFD740 ±10%)",
+            "surfaceContinuity": "Red brick texture visible around letters (not gold)",
+            "shadowAuthenticity": "Multi-plane shadows (dark core + soft penumbra)",
+            "colorAccuracy": "Letters are EXACTLY #1E3A8A navy (no interpretation)",
+            "typography": "Classic serif letterforms (Trajan/Times Roman style)",
+            "boundary": "All letters fit within golden zone"
+          },
+          "validationKeywords": [
+            "EXTRUDED VOLUMETRIC LETTERFORMS",
+            "6-faced mesh",
+            "Z-axis: 3.5 inches (89mm)",
+            "Metallic 0.95, Roughness 0.35, Anisotropy 0.6",
+            "CRITICAL COLOR REQUIREMENT: MUST BE #1E3A8A"
+          ]
+        },
+        "test1.2": {
+          "id": "test-1.2",
+          "name": "Name + Auto Color (No Client Selection)",
+          "purpose": "Validate facade analysis and auto-color selection",
+          "inputs": {
+            "storefront": "Wood facade (natural brown tones)",
+            "brandText": "CAFE PARIS",
+            "textStyling": null,
+            "reference": "front-lid",
+            "lighting": "front",
+            "mounting": "flush",
+            "variationCount": 1
+          }
+        },
+        "test1.3": {
+          "id": "test-1.3",
+          "name": "Long Name (Boundary Constraint Test)",
+          "purpose": "Validate scaling/fitting logic",
+          "inputs": {
+            "storefront": "Brick facade with MEDIUM golden zone",
+            "brandText": "THE METROPOLITAN BISTRO",
+            "textStyling": {
+              "fontStyle": "modern-sans",
+              "color": "#C0C0C0"
+            },
+            "reference": "no-light-outdoor",
+            "variationCount": 1
+          }
+        }
+      }
+    },
+    "case2": {
+      "name": "LOGO ONLY (Symbol/Artwork)",
+      "tests": {
+        "test2.1": {
+          "id": "test-2.1",
+          "name": "Simple Logo + Front-Lit",
+          "purpose": "Validate lightbox construction and color integrity",
+          "inputs": {
+            "storefront": "Stucco facade with golden zone",
+            "brandAsset": "public/kaykov-logo.png",
+            "brandText": null,
+            "reference": "front-lid",
+            "lighting": "front",
+            "mounting": "stand-off",
+            "variationCount": 1
+          }
+        },
+        "test2.2": {
+          "id": "test-2.2",
+          "name": "Logo + Back-Lit (Halo Effect)",
+          "purpose": "Validate ray-traced backlighting physics",
+          "inputs": {
+            "storefront": "Brick facade (dark red)",
+            "brandAsset": "public/kaykov-media-logo.png",
+            "reference": "back-lit",
+            "lighting": "back",
+            "mounting": "stand-off",
+            "variationCount": 1
+          }
+        }
+      }
+    },
+    "case3": {
+      "name": "LOGO + NAME (Combined Identity)",
+      "tests": {
+        "test3.1": {
+          "id": "test-3.1",
+          "name": "Logo + Name Horizontal Layout",
+          "purpose": "Validate dual component construction and color harmonization",
+          "inputs": {
+            "storefront": "Stone facade",
+            "brandAsset": "public/kaykov-logo.png",
+            "brandText": "KAYKOV MEDIA",
+            "textStyling": null,
+            "reference": "back-front-lid",
+            "lighting": "both",
+            "mounting": "stand-off",
+            "variationCount": 1
+          }
+        },
+        "test3.2": {
+          "id": "test-3.2",
+          "name": "Logo + Name Vertical Layout",
+          "purpose": "Validate vertical stacking when horizontal too wide",
+          "inputs": {
+            "storefront": "Brick facade with NARROW golden zone",
+            "brandAsset": "Wide logo file",
+            "brandText": "METROPOLITAN RESTAURANT",
+            "reference": "front-lid",
+            "variationCount": 1
+          }
+        }
+      }
+    },
+    "case4": {
+      "name": "AWNING MODIFIER (Fabric Graphics)",
+      "tests": {
+        "test4.1": {
+          "id": "test-4.1",
+          "name": "Awning + Name Only",
+          "purpose": "Validate awning logic overrides 3D extrusion",
+          "inputs": {
+            "storefront": "Brick facade",
+            "brandText": "BISTRO",
+            "reference": "awning",
+            "variationCount": 1
+          }
+        },
+        "test4.2": {
+          "id": "test-4.2",
+          "name": "Awning + Logo",
+          "purpose": "Validate logo as printed graphic (not lightbox)",
+          "inputs": {
+            "storefront": "Wood facade",
+            "brandAsset": "Logo file",
+            "brandText": null,
+            "reference": "awning",
+            "variationCount": 1
+          }
+        }
+      }
+    },
+    "case5": {
+      "name": "MULTI-VARIATION (1 vs 3 vs 6)",
+      "tests": {
+        "test5.1": {
+          "id": "test-5.1",
+          "name": "3 Variations",
+          "purpose": "Validate variation planner diversity",
+          "inputs": {
+            "storefront": "Brick facade",
+            "brandText": "CAFE",
+            "textStyling": {
+              "fontStyle": "bold-condensed",
+              "color": "#DC2626"
+            },
+            "reference": "front-lid",
+            "variationCount": 3
+          }
+        },
+        "test5.2": {
+          "id": "test-5.2",
+          "name": "6 Variations",
+          "purpose": "Validate maximum variation count",
+          "inputs": {
+            "brandText": "RESTAURANT",
+            "reference": "back-lit",
+            "variationCount": 6
+          }
+        }
+      }
+    }
+  },
+  "validationChecklist": {
+    "4pointTest": [
+      {
+        "name": "Side-Wall Test (3D Proof)",
+        "question": "Can you see the thickness of any letter/logo?",
+        "method": "Look for visible return planes (sides) on at least one element",
+        "pass": "Side-wall visible due to viewing angle (parallax)",
+        "fail": "All elements perfectly flat (2D decal appearance)"
+      },
+      {
+        "name": "Zero Gold Policy (Mask Removal)",
+        "question": "Any yellow/golden pixels visible?",
+        "method": "Use eyedropper tool to check for #FFD740 ±10%",
+        "pass": "0% golden pixels anywhere in image",
+        "fail": "Yellow glow, border, artifacts around/behind sign"
+      },
+      {
+        "name": "Surface Continuity (Texture Restoration)",
+        "question": "What's visible in areas around/between sign elements?",
+        "method": "Check exposed areas where golden zone was larger than sign",
+        "pass": "Restored building texture (brick/wood/stone) matching facade",
+        "fail": "Golden color remains, mismatched texture, blank areas"
+      },
+      {
+        "name": "Shadow Authenticity (Depth Proof)",
+        "question": "Do shadows show depth gradation?",
+        "method": "Examine shadow characteristics",
+        "pass": "Multi-plane shadows (dark core + soft penumbra), varies by depth",
+        "fail": "Uniform blur like Photoshop drop-shadow, no gradation"
+      }
+    ]
+  }
+}
