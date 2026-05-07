@@ -389,10 +389,12 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Input 
-                    id="name" 
+                  <Input
+                    id="name"
                     {...register("name", { required: "Name is required" })}
                     placeholder="Your full name"
+                    autoComplete="off"
+                    autoCorrect="off"
                     className={`h-12 sm:h-12 text-base ${watchedName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                   {errors.name && (
@@ -407,9 +409,11 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Input 
-                    id="phone" 
+                  <Input
+                    id="phone"
                     type="tel"
+                    autoComplete="off"
+                    autoCorrect="off"
                     {...register("phone", {
                       validate: {
                         contactRequired: (value) => {
@@ -444,9 +448,11 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Input 
-                    id="email" 
+                  <Input
+                    id="email"
                     type="email"
+                    autoComplete="off"
+                    autoCorrect="off"
                     {...register("email", {
                       validate: {
                         contactRequired: (value) => {
@@ -496,10 +502,12 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Input 
-                    id="businessName" 
+                  <Input
+                    id="businessName"
                     {...register("businessName")}
                     placeholder="Your business name (optional)"
+                    autoComplete="off"
+                    autoCorrect="off"
                     className={`h-12 sm:h-12 text-base ${watchedBusinessName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>
@@ -511,10 +519,12 @@ export default function ApplicationForm({
                       <CheckCircle2 className="w-4 h-4 text-accent" />
                     )}
                   </Label>
-                  <Input 
-                    id="businessLocation" 
+                  <Input
+                    id="businessLocation"
                     {...register("businessLocation")}
                     placeholder="Business address (optional)"
+                    autoComplete="off"
+                    autoCorrect="off"
                     className={`h-12 sm:h-12 text-base ${watchedBusinessLocation?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
                   />
                 </div>

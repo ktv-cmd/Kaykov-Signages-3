@@ -405,11 +405,13 @@ export default function ApplicationFormMobile({
                 <CheckCircle2 className="w-4 h-4 text-accent" />
               )}
             </Label>
-            <Input 
+            <Input
               id="name-mobile"
               ref={nameInputRef}
               {...register("name", { required: "Name is required" })}
               placeholder="Your full name"
+              autoComplete="off"
+              autoCorrect="off"
               className={`min-h-[48px] h-12 sm:h-12 text-base touch-manipulation ${watchedName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
               style={{ touchAction: 'manipulation' }}
               autoFocus={inDialog}
@@ -426,10 +428,12 @@ export default function ApplicationFormMobile({
                 <CheckCircle2 className="w-4 h-4 text-accent" />
               )}
             </Label>
-            <Input 
+            <Input
               id="phone-mobile"
               type="tel"
               inputMode="tel"
+              autoComplete="off"
+              autoCorrect="off"
               {...register("phone", {
                 validate: {
                   contactRequired: (value) => {
@@ -465,10 +469,12 @@ export default function ApplicationFormMobile({
                 <CheckCircle2 className="w-4 h-4 text-accent" />
               )}
             </Label>
-            <Input 
+            <Input
               id="email-mobile"
               type="email"
               inputMode="email"
+              autoComplete="off"
+              autoCorrect="off"
               {...register("email", {
                 validate: {
                   contactRequired: (value) => {
@@ -520,10 +526,12 @@ export default function ApplicationFormMobile({
                 <CheckCircle2 className="w-4 h-4 text-accent" />
               )}
             </Label>
-            <Input 
+            <Input
               id="businessName-mobile"
               {...register("businessName")}
               placeholder="Your business name (optional)"
+              autoComplete="off"
+              autoCorrect="off"
               className={`min-h-[48px] h-12 sm:h-12 text-base touch-manipulation ${watchedBusinessName?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
               style={{ touchAction: 'manipulation' }}
             />
@@ -536,10 +544,12 @@ export default function ApplicationFormMobile({
                 <CheckCircle2 className="w-4 h-4 text-accent" />
               )}
             </Label>
-            <Input 
+            <Input
               id="businessLocation-mobile"
               {...register("businessLocation")}
               placeholder="Business address (optional)"
+              autoComplete="off"
+              autoCorrect="off"
               className={`min-h-[48px] h-12 sm:h-12 text-base touch-manipulation ${watchedBusinessLocation?.trim() ? "border-primary/40 focus:border-primary" : ""}`}
               style={{ touchAction: 'manipulation' }}
             />
