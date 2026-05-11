@@ -31,7 +31,7 @@ const officeImages = [
   imgSrc(officeImage9),
   imgSrc(officeImage10),
   imgSrc(officeImage11),
-  officeImage12
+  imgSrc(officeImage12),
 ];
 
 export default function OfficeShowroom() {
