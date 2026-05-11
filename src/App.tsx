@@ -3,12 +3,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, type Location } from "react-router-dom";
 import { QuoteFormProvider } from "@/components/QuoteFormProvider";
-import Index from "./pages/Index";
-import Form from "./pages/Form";
-import InstagramForm from "./pages/InstagramForm";
-import OutdoorSignages from "./pages/OutdoorSignages";
-import IndoorSignages from "./pages/IndoorSignages";
-import AITool from "./pages/AITool";
+import Index from "./routes/Index";
+import Form from "./routes/Form";
+import InstagramForm from "./routes/InstagramForm";
+import OutdoorSignages from "./routes/OutdoorSignages";
+import IndoorSignages from "./routes/IndoorSignages";
+import AITool from "./routes/AITool";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
