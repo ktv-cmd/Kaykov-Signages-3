@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { Sparkles, Loader2, ChevronDown, ChevronUp, Eye } from "lucide-react"
 import { LeadCaptureModal } from "@/components/ai-tool/LeadCaptureModal"
 
-const API_BASE = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
+const API_BASE = ""
 
 export function StepGenerate() {
   const {

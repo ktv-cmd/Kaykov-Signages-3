@@ -6,7 +6,7 @@ import { cn, createObjectUrl } from "@/lib/utils"
 import { Upload, X, CheckCircle2, Image as ImageIcon, Type } from "lucide-react"
 import type { ReferenceStyle, FontStyle } from "@/types/flow"
 
-const API_BASE = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
+const API_BASE = ""
 
 function TextStylingSelector() {
   const { textStyling, setTextStyling } = useFlowStore()

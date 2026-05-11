@@ -3,7 +3,7 @@ import { Loader2, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { submitToGoogleSheets } from "@/lib/googleSheets"
 
-const API_BASE = import.meta.env.VITE_SIGNAI_API_URL ?? ""
+const API_BASE = ""
 const LS_KEY = "signai_lead"
 
 interface LeadData {
@@ -50,7 +50,7 @@ export function LeadCaptureModal({ storefrontFile, logoFile, companyName, onConf
       let leadId: string | null = null
 
       // Try the backend API first (only if a URL is configured)
-      if (API_BASE) {
+      {
         try {
           const fd = new FormData()
           fd.append("name",    form.name.trim())

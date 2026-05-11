@@ -1,10 +1,10 @@
 import { InstagramVideoItem } from "@/components/InstagramVideoGrid";
 
-// Import video files - using ?url suffix for Vite to properly handle MP4 files
-import video1 from "@/assets/video signages /1 LVL UP Trend  2.mp4?url";
-import video2 from "@/assets/video signages /2 Average Derm V2.mp4?url";
-import video3 from "@/assets/video signages /2 KM SINGS VIDEO.mp4?url";
-import video4 from "@/assets/video signages /4 tov.mp4?url";
+// Import video files - using  suffix for Vite to properly handle MP4 files
+import video1 from "@/assets/video signages /1 LVL UP Trend  2.mp4";
+import video2 from "@/assets/video signages /2 Average Derm V2.mp4";
+import video3 from "@/assets/video signages /2 KM SINGS VIDEO.mp4";
+import video4 from "@/assets/video signages /4 tov.mp4";
 
 // Import thumbnail images from thumbnails folder
 import thumbnail1 from "@/assets/video signages /thumbnails/LVL UP.JPG";

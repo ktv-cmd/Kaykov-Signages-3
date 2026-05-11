@@ -13,7 +13,7 @@ type FormSubmitMeta = {
 };
 
 const getGa4Id = () => {
-  const envId = import.meta.env.VITE_GA4_ID;
+  const envId = process.env.NEXT_PUBLIC_GA4_ID;
   if (envId) {
     return envId;
   }

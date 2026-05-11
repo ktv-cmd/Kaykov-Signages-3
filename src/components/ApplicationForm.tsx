@@ -11,7 +11,7 @@ import { submitToGoogleSheets, type CallbackFormData } from "@/lib/googleSheets"
 import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import { SignAreaBrush, type PaintedArea } from "@/components/SignAreaBrush";
 
-const SIGN_AI_API = import.meta.env.VITE_SIGNAI_API_URL ?? "http://localhost:3000"
+const SIGN_AI_API = ""
 
 
 type FormData = {

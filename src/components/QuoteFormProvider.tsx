@@ -3,7 +3,7 @@ import { useLocation, useNavigate, type Location } from "react-router-dom";
 import { trackCtaClick, trackPageView, type CtaMeta } from "@/lib/analytics";
 import ApplicationForm from "@/components/ApplicationForm";
 import ApplicationFormMobile from "@/components/ApplicationFormMobile";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 type QuoteFormContextValue = {
   openForm: (meta?: CtaMeta) => void;
@@ -92,7 +92,7 @@ export const QuoteFormProvider = ({ children }: { children: ReactNode }) => {
           }
         }}
       >
-        <DialogContent className="max-w-3xl p-0 sm:p-0">
+        <DialogContent className="max-w-3xl p-0 sm:p-0"><DialogTitle className="sr-only">Get a Quote</DialogTitle>
           {isMobile ? (
             <ApplicationFormMobile
               inDialog

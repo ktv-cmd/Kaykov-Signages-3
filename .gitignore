@@ -42,3 +42,9 @@ bun.lockb
 
 # Empty directories
 app/api/reels/
+
+# Local Netlify folder
+.netlify
+
+# Next.js build output
+.next

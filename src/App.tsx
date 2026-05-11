@@ -45,7 +45,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner />
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <BrowserRouter basename={"/"}>
         <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
