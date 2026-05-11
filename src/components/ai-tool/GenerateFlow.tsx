@@ -9,6 +9,7 @@ import { StepGenerate } from "./steps/StepGenerate"
 import { StepSelect } from "./steps/StepSelect"
 import { StepAdjust } from "./steps/StepAdjust"
 import { Sparkles, Upload, Paintbrush2, Wand2, Download } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const STEP_LABELS = {
   upload: "Upload",
@@ -84,12 +85,9 @@ export function GenerateFlow({ embedded = false }: Props) {
             <img src="/favicon.png" alt="Kaykov Media" className="h-8 w-8 shrink-0" />
             <span className="font-bold text-sm text-gray-900 whitespace-nowrap">AI Sign Generator</span>
           </div>
-          <a
-            href="/#contact"
-            className="shrink-0 text-xs font-semibold text-white bg-black hover:bg-gray-800 px-3 py-1.5 rounded-lg transition-colors hidden sm:block"
-          >
-            Get a Quote
-          </a>
+          <Button variant="cta" size="sm" asChild className="shrink-0 hidden sm:inline-flex">
+            <a href="/#contact">Get a Quote</a>
+          </Button>
           <div className="w-8 sm:hidden" />
         </div>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-3">
