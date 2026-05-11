@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Calendar, Sparkles, X } from "lucide-react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 import { trackCtaClick } from "@/lib/analytics";
+import { imgSrc } from "@/lib/imgSrc";
 import heroImage from "@/assets/outdoor /hero-signage 14.30.46.jpg";
 import heroVideoKm from "@/assets/video signages /2 KM SINGS VIDEO.mp4";
 
@@ -24,20 +25,20 @@ import ind6 from "@/assets/interiar /3d Letters Indoor/shimonov law.JPG";
 
 const galleryData = {
   outdoor: [
-    { src: out1, label: "TOV Front Lit" },
-    { src: out2, label: "LVL UP" },
-    { src: out3, label: "Red Mango" },
-    { src: out4, label: "Sweetlab" },
-    { src: out5, label: "RGF Home Decor" },
-    { src: out6, label: "K2 Letter" },
+    { src: imgSrc(out1), label: "TOV Front Lit" },
+    { src: imgSrc(out2), label: "LVL UP" },
+    { src: imgSrc(out3), label: "Red Mango" },
+    { src: imgSrc(out4), label: "Sweetlab" },
+    { src: imgSrc(out5), label: "RGF Home Decor" },
+    { src: imgSrc(out6), label: "K2 Letter" },
   ],
   indoor: [
-    { src: ind1, label: "TOV Indoor" },
-    { src: ind2, label: "Watch Store" },
-    { src: ind3, label: "Simply" },
-    { src: ind4, label: "JLGS" },
-    { src: ind5, label: "Mass" },
-    { src: ind6, label: "Shimonov Law" },
+    { src: imgSrc(ind1), label: "TOV Indoor" },
+    { src: imgSrc(ind2), label: "Watch Store" },
+    { src: imgSrc(ind3), label: "Simply" },
+    { src: imgSrc(ind4), label: "JLGS" },
+    { src: imgSrc(ind5), label: "Mass" },
+    { src: imgSrc(ind6), label: "Shimonov Law" },
   ],
 };
 
@@ -61,7 +62,7 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
             loop
             playsInline
             preload="metadata"
-            poster={heroImage}
+            poster={imgSrc(heroImage)}
           >
             <source src={heroVideoKm} type="video/mp4" />
           </video>
@@ -210,7 +211,7 @@ export default function Hero({ hideButtons = false }: HeroProps = {}) {
             loop
             playsInline
             preload="metadata"
-            poster={heroImage}
+            poster={imgSrc(heroImage)}
           >
             <source src={heroVideoKm} type="video/mp4" />
           </video>

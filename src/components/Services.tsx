@@ -6,6 +6,7 @@ import { Building, Lightbulb, Layers, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQuoteForm } from "@/components/QuoteFormProvider";
 import ServiceGallery from "./ServiceGallery";
+import { imgSrc } from "@/lib/imgSrc";
 
 // Light Boxes images - ALL images from light throug folder
 import lightbox1 from "@/assets/outdoor /2d /light throug/Laundry loft .JPG";
@@ -126,123 +127,123 @@ const premiumServices = [{
   title: "Front Light Signs",
   description: "The lights shine through the front of your letters, making them super bright and easy to see. Perfect for when you want maximum visibility both during the day and at night.",
   features: ["Maximum brightness and visibility", "Premium quality materials", "Weather-resistant and durable", "Available in any color"],
-  image: frontLid4,
+  image: imgSrc(frontLid4),
   gallery: [
-    { src: frontLid4, alt: "LID Front Light 1" },
-    { src: frontLid1, alt: "LID Front Light 2" },
-    { src: frontLid2, alt: "LID Front Light 3" },
-    { src: frontLid3, alt: "LID Front Light 4" },
-    { src: frontLid5, alt: "LID Front Light 5" },
-    { src: frontLid6, alt: "LID Front Light 6" },
-    { src: frontLid7, alt: "LID Front Light 7" },
-    { src: frontLid8, alt: "LID Front Light 8" },
-    { src: frontLid9, alt: "LID Front Light 9" },
-    { src: frontLid11, alt: "LID Front Light 11" },
-    { src: frontLid12, alt: "LID Front Light 12" },
-    { src: frontLid13, alt: "LID Front Light 13" },
-    { src: frontLidLetter1, alt: "Front Light Letter 1" },
-    { src: frontLidLetter2, alt: "Front Light Letter 2" },
-    { src: frontLidLetter3, alt: "Front Light Letter 3" },
-    { src: frontLidLetter4, alt: "Front Light Letter 4" },
-    { src: frontLidLetter5, alt: "Front Light Letter 5" }
+    { src: imgSrc(frontLid4), alt: "LID Front Light 1" },
+    { src: imgSrc(frontLid1), alt: "LID Front Light 2" },
+    { src: imgSrc(frontLid2), alt: "LID Front Light 3" },
+    { src: imgSrc(frontLid3), alt: "LID Front Light 4" },
+    { src: imgSrc(frontLid5), alt: "LID Front Light 5" },
+    { src: imgSrc(frontLid6), alt: "LID Front Light 6" },
+    { src: imgSrc(frontLid7), alt: "LID Front Light 7" },
+    { src: imgSrc(frontLid8), alt: "LID Front Light 8" },
+    { src: imgSrc(frontLid9), alt: "LID Front Light 9" },
+    { src: imgSrc(frontLid11), alt: "LID Front Light 11" },
+    { src: imgSrc(frontLid12), alt: "LID Front Light 12" },
+    { src: imgSrc(frontLid13), alt: "LID Front Light 13" },
+    { src: imgSrc(frontLidLetter1), alt: "Front Light Letter 1" },
+    { src: imgSrc(frontLidLetter2), alt: "Front Light Letter 2" },
+    { src: imgSrc(frontLidLetter3), alt: "Front Light Letter 3" },
+    { src: imgSrc(frontLidLetter4), alt: "Front Light Letter 4" },
+    { src: imgSrc(frontLidLetter5), alt: "Front Light Letter 5" }
   ]
 }, {
   icon: Lightbulb,
   title: "Back Light Signs",
   description: "The lights shine from behind your letters, creating a beautiful glowing outline. This gives your sign an elegant look that stands out and catches eyes.",
   features: ["Beautiful glowing effect", "Premium quality materials", "Weather-resistant and durable", "Sleek, professional look"],
-  image: backLid1,
+  image: imgSrc(backLid1),
   gallery: [
-    { src: backLid1, alt: "LID Back Light 1" },
-    { src: backLid2, alt: "LID Back Light 2" },
-    { src: backLid3, alt: "LID Back Light 3" },
-    { src: backLid6, alt: "LID Back Light 6" },
-    { src: backLid7, alt: "LID Back Light 7" },
-    { src: backLid8, alt: "LID Back Light 8" },
-    { src: backLid10, alt: "LID Back Light 10" },
-    { src: backLid13, alt: "LID Back Light 13" },
-    { src: backLid16, alt: "LID Back Light 16" },
-    { src: backLid17, alt: "LID Back Light 17" },
-    { src: backLid18, alt: "LID Back Light 18" },
-    { src: backLid19, alt: "LID Back Light 19" },
-    { src: backLid21, alt: "LID Back Light 21" },
-    { src: backLidLetter1, alt: "Back Light Letter 1" },
-    { src: backLidLetter2, alt: "Back Light Letter 2" }
+    { src: imgSrc(backLid1), alt: "LID Back Light 1" },
+    { src: imgSrc(backLid2), alt: "LID Back Light 2" },
+    { src: imgSrc(backLid3), alt: "LID Back Light 3" },
+    { src: imgSrc(backLid6), alt: "LID Back Light 6" },
+    { src: imgSrc(backLid7), alt: "LID Back Light 7" },
+    { src: imgSrc(backLid8), alt: "LID Back Light 8" },
+    { src: imgSrc(backLid10), alt: "LID Back Light 10" },
+    { src: imgSrc(backLid13), alt: "LID Back Light 13" },
+    { src: imgSrc(backLid16), alt: "LID Back Light 16" },
+    { src: imgSrc(backLid17), alt: "LID Back Light 17" },
+    { src: imgSrc(backLid18), alt: "LID Back Light 18" },
+    { src: imgSrc(backLid19), alt: "LID Back Light 19" },
+    { src: imgSrc(backLid21), alt: "LID Back Light 21" },
+    { src: imgSrc(backLidLetter1), alt: "Back Light Letter 1" },
+    { src: imgSrc(backLidLetter2), alt: "Back Light Letter 2" }
   ]
 }, {
   icon: Lightbulb,
   title: "Both Sides Light Signs",
   description: "Lights shine on both the front and back of your letters, so your sign can be seen from every direction. Great for busy streets where people are coming from all sides.",
   features: ["Seen from all directions", "Maximum visibility", "Premium quality materials", "Weather-resistant and durable"],
-  image: backAndFrontLid1,
+  image: imgSrc(backAndFrontLid1),
   gallery: [
-    { src: backAndFrontLid1, alt: "LID Back and Front 1" },
-    { src: backAndFrontLid3b, alt: "LID Back and Front 2" },
-    { src: backAndFrontLid4, alt: "LID Back and Front 5" },
-    { src: backAndFrontLid7, alt: "LID Back and Front 8" },
-    { src: backAndFrontLid8, alt: "LID Back and Front 9" },
-    { src: backAndFrontLid9, alt: "LID Back and Front 10" },
-    { src: backAndFrontLid10, alt: "LID Back and Front 11" },
-    { src: backAndFrontLid11, alt: "LID Back and Front 12" },
-    { src: backAndFrontLid13, alt: "LID Back and Front 14" },
-    { src: backAndFrontLidLetter1, alt: "Back and Front Light Letter 1" },
-    { src: backAndFrontLidLetter2, alt: "Back and Front Light Letter 2" },
-    { src: backAndFrontLidLetter3, alt: "Back and Front Light Letter 3" },
-    { src: backAndFrontLidLetter4, alt: "Back and Front Light Letter 4" },
-    { src: backAndFrontLidLetter5, alt: "Back and Front Light Letter 5" }
+    { src: imgSrc(backAndFrontLid1), alt: "LID Back and Front 1" },
+    { src: imgSrc(backAndFrontLid3b), alt: "LID Back and Front 2" },
+    { src: imgSrc(backAndFrontLid4), alt: "LID Back and Front 5" },
+    { src: imgSrc(backAndFrontLid7), alt: "LID Back and Front 8" },
+    { src: imgSrc(backAndFrontLid8), alt: "LID Back and Front 9" },
+    { src: imgSrc(backAndFrontLid9), alt: "LID Back and Front 10" },
+    { src: imgSrc(backAndFrontLid10), alt: "LID Back and Front 11" },
+    { src: imgSrc(backAndFrontLid11), alt: "LID Back and Front 12" },
+    { src: imgSrc(backAndFrontLid13), alt: "LID Back and Front 14" },
+    { src: imgSrc(backAndFrontLidLetter1), alt: "Back and Front Light Letter 1" },
+    { src: imgSrc(backAndFrontLidLetter2), alt: "Back and Front Light Letter 2" },
+    { src: imgSrc(backAndFrontLidLetter3), alt: "Back and Front Light Letter 3" },
+    { src: imgSrc(backAndFrontLidLetter4), alt: "Back and Front Light Letter 4" },
+    { src: imgSrc(backAndFrontLidLetter5), alt: "Back and Front Light Letter 5" }
   ]
 }, {
   icon: null,
   title: "3D Letters without light",
   description: "Raised letters that stick out from the wall, creating a bold 3D effect. No lights needed - these letters have a classic, professional look that always looks great.",
   features: ["Classic, timeless design", "Custom finishes available", "Weather-resistant and durable", "Professional installation included"],
-  image: noLight1,
+  image: imgSrc(noLight1),
   gallery: [
-    { src: noLight1, alt: "No Light 1" },
-    { src: noLight2, alt: "No Light 2" },
-    { src: noLight3, alt: "No Light 3" },
-    { src: noLight4, alt: "No Light 4" },
-    { src: noLight5, alt: "No Light 5" }
+    { src: imgSrc(noLight1), alt: "No Light 1" },
+    { src: imgSrc(noLight2), alt: "No Light 2" },
+    { src: imgSrc(noLight3), alt: "No Light 3" },
+    { src: imgSrc(noLight4), alt: "No Light 4" },
+    { src: imgSrc(noLight5), alt: "No Light 5" }
   ]
 }];
 const affordableServices = [{
   title: "Awning Signs",
   description: "Signs mounted on your storefront awning - perfect for storefronts and businesses",
-  image: awning1,
+  image: imgSrc(awning1),
   gallery: [
-    { src: awning1, alt: "Awning Signage 1" },
-    { src: awning2, alt: "Awning Signage 2" },
-    { src: awning3, alt: "Awning Signage 3" },
-    { src: awning4, alt: "Awning Signage 4" },
-    { src: awning5, alt: "Awning Signage 5" },
-    { src: awning6, alt: "Awning Signage 6" }
+    { src: imgSrc(awning1), alt: "Awning Signage 1" },
+    { src: imgSrc(awning2), alt: "Awning Signage 2" },
+    { src: imgSrc(awning3), alt: "Awning Signage 3" },
+    { src: imgSrc(awning4), alt: "Awning Signage 4" },
+    { src: imgSrc(awning5), alt: "Awning Signage 5" },
+    { src: imgSrc(awning6), alt: "Awning Signage 6" }
   ]
 }, {
   title: "Window Signs",
   description: "Professional signs and graphics for your windows - attract customers walking by",
-  image: windowOutdoor1,
+  image: imgSrc(windowOutdoor1),
   gallery: [
-    { src: windowOutdoor1, alt: "Window Signage Outdoor 1" },
-    { src: windowOutdoor2, alt: "Window Signage Outdoor 2" },
-    { src: windowOutdoor3, alt: "Window Signage Outdoor 3" },
-    { src: windowOutdoor4, alt: "Window Signage Outdoor 4" },
-    { src: windowOutdoor5, alt: "Window Signage Outdoor 5" },
-    { src: windowOutdoor6, alt: "Window Signage Outdoor 6" }
+    { src: imgSrc(windowOutdoor1), alt: "Window Signage Outdoor 1" },
+    { src: imgSrc(windowOutdoor2), alt: "Window Signage Outdoor 2" },
+    { src: imgSrc(windowOutdoor3), alt: "Window Signage Outdoor 3" },
+    { src: imgSrc(windowOutdoor4), alt: "Window Signage Outdoor 4" },
+    { src: imgSrc(windowOutdoor5), alt: "Window Signage Outdoor 5" },
+    { src: imgSrc(windowOutdoor6), alt: "Window Signage Outdoor 6" }
   ]
 }, {
   title: "Light Box Signs",
   description: "Flat signs with LED lights behind - bright, clear, and perfect for any business",
-  image: lightbox1,
+  image: imgSrc(lightbox1),
   gallery: [
-    { src: lightbox1, alt: "Light Box 1" },
-    { src: lightbox2, alt: "Light Box 2" },
-    { src: lightbox3, alt: "Light Box 3" },
-    { src: lightbox4, alt: "Light Box 4" },
-    { src: lightbox5, alt: "Light Box 5" },
-    { src: lightbox6, alt: "Light Box 6" },
-    { src: lightbox7, alt: "Light Box 7" },
-    { src: lightbox8, alt: "Light Box 8" },
-    { src: lightbox9, alt: "Light Box 9" }
+    { src: imgSrc(lightbox1), alt: "Light Box 1" },
+    { src: imgSrc(lightbox2), alt: "Light Box 2" },
+    { src: imgSrc(lightbox3), alt: "Light Box 3" },
+    { src: imgSrc(lightbox4), alt: "Light Box 4" },
+    { src: imgSrc(lightbox5), alt: "Light Box 5" },
+    { src: imgSrc(lightbox6), alt: "Light Box 6" },
+    { src: imgSrc(lightbox7), alt: "Light Box 7" },
+    { src: imgSrc(lightbox8), alt: "Light Box 8" },
+    { src: imgSrc(lightbox9), alt: "Light Box 9" }
   ]
 }];
 
@@ -250,41 +251,41 @@ const affordableServices = [{
 const interiorServices = [{
   title: "With Light",
   description: "LED-lit signs for inside your business - professional and eye-catching",
-  image: interiorWithLight1,
+  image: imgSrc(interiorWithLight1),
   gallery: [
-    { src: interiorWithLight1, alt: "Interior With Light 1" },
-    { src: interiorWithLight2, alt: "Interior With Light 2" },
-    { src: interiorWithLight3, alt: "Interior With Light 3" },
-    { src: interiorWithLight4, alt: "Interior With Light 4" },
-    { src: interiorWithLight5, alt: "Interior With Light 5" },
-    { src: interiorWithLight6, alt: "Interior With Light 6" },
-    { src: interiorWithLight7, alt: "Interior With Light 7" },
-    { src: interiorWithLight8, alt: "Interior With Light 8" },
-    { src: interiorWithLight9, alt: "Interior With Light 9" },
-    { src: interiorWithLight10, alt: "Interior With Light 10" },
-    { src: interiorWithLight11, alt: "Interior With Light 11" }
+    { src: imgSrc(interiorWithLight1), alt: "Interior With Light 1" },
+    { src: imgSrc(interiorWithLight2), alt: "Interior With Light 2" },
+    { src: imgSrc(interiorWithLight3), alt: "Interior With Light 3" },
+    { src: imgSrc(interiorWithLight4), alt: "Interior With Light 4" },
+    { src: imgSrc(interiorWithLight5), alt: "Interior With Light 5" },
+    { src: imgSrc(interiorWithLight6), alt: "Interior With Light 6" },
+    { src: imgSrc(interiorWithLight7), alt: "Interior With Light 7" },
+    { src: imgSrc(interiorWithLight8), alt: "Interior With Light 8" },
+    { src: imgSrc(interiorWithLight9), alt: "Interior With Light 9" },
+    { src: imgSrc(interiorWithLight10), alt: "Interior With Light 10" },
+    { src: imgSrc(interiorWithLight11), alt: "Interior With Light 11" }
   ]
 }, {
   title: "Without Light",
   description: "3D raised letters without lights - clean, elegant look for interior spaces",
-  image: interiorNoLight1,
+  image: imgSrc(interiorNoLight1),
   gallery: [
-    { src: interiorNoLight1, alt: "Interior Without Light 1" },
-    { src: interiorNoLight2, alt: "Interior Without Light 2" },
-    { src: interiorNoLight3, alt: "Interior Without Light 3" },
-    { src: interiorNoLight4, alt: "Interior Without Light 4" },
-    { src: interiorNoLight5, alt: "Interior Without Light 5" },
-    { src: interiorNoLight6, alt: "Interior Without Light 6" },
-    { src: interiorNoLight7, alt: "Interior Without Light 7" },
-    { src: interiorNoLight8, alt: "Interior Without Light 8" },
-    { src: interiorNoLight9, alt: "Interior Without Light 9" },
-    { src: interiorNoLight10, alt: "Interior Without Light 10" },
-    { src: interiorNoLight11, alt: "Interior Without Light 11" },
-    { src: interiorNoLight12, alt: "Interior Without Light 12" },
-    { src: interiorNoLight13, alt: "Interior Without Light 13" },
-    { src: interiorNoLight14, alt: "Interior Without Light 14" },
-    { src: interiorNoLight15, alt: "Interior Without Light 15" },
-    { src: interiorNoLight16, alt: "Interior Without Light 16" }
+    { src: imgSrc(interiorNoLight1), alt: "Interior Without Light 1" },
+    { src: imgSrc(interiorNoLight2), alt: "Interior Without Light 2" },
+    { src: imgSrc(interiorNoLight3), alt: "Interior Without Light 3" },
+    { src: imgSrc(interiorNoLight4), alt: "Interior Without Light 4" },
+    { src: imgSrc(interiorNoLight5), alt: "Interior Without Light 5" },
+    { src: imgSrc(interiorNoLight6), alt: "Interior Without Light 6" },
+    { src: imgSrc(interiorNoLight7), alt: "Interior Without Light 7" },
+    { src: imgSrc(interiorNoLight8), alt: "Interior Without Light 8" },
+    { src: imgSrc(interiorNoLight9), alt: "Interior Without Light 9" },
+    { src: imgSrc(interiorNoLight10), alt: "Interior Without Light 10" },
+    { src: imgSrc(interiorNoLight11), alt: "Interior Without Light 11" },
+    { src: imgSrc(interiorNoLight12), alt: "Interior Without Light 12" },
+    { src: imgSrc(interiorNoLight13), alt: "Interior Without Light 13" },
+    { src: imgSrc(interiorNoLight14), alt: "Interior Without Light 14" },
+    { src: imgSrc(interiorNoLight15), alt: "Interior Without Light 15" },
+    { src: imgSrc(interiorNoLight16), alt: "Interior Without Light 16" }
   ]
 }];
 interface ServicesProps {

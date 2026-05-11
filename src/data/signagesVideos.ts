@@ -1,4 +1,5 @@
 import { InstagramVideoItem } from "@/components/InstagramVideoGrid";
+import { imgSrc } from "@/lib/imgSrc";
 
 // Import video files - using  suffix for Vite to properly handle MP4 files
 import video1 from "@/assets/video signages /1 LVL UP Trend  2.mp4";
@@ -17,7 +18,7 @@ export const signagesVideos: InstagramVideoItem[] = [
     title: "LVL UP Trend Signage",
     description: "Front-lit LED channel letters signage project showcasing modern design.",
     videoSrc: video1,
-    thumbnailSrc: thumbnail1,
+    thumbnailSrc: imgSrc(thumbnail1),
     alt: "LVL UP Trend LED channel letters signage",
     instagramUrl: "https://www.instagram.com/kaykovsigns/",
   },
@@ -25,7 +26,7 @@ export const signagesVideos: InstagramVideoItem[] = [
     title: "Average Derm Signage",
     description: "Professional back-lit channel letters with premium materials and installation.",
     videoSrc: video2,
-    thumbnailSrc: thumbnail2,
+    thumbnailSrc: imgSrc(thumbnail2),
     alt: "Average Derm back-lit LED signage",
     instagramUrl: "https://www.instagram.com/kaykovsigns/",
   },
@@ -33,7 +34,7 @@ export const signagesVideos: InstagramVideoItem[] = [
     title: "KM Signs Showcase",
     description: "Comprehensive signage solutions featuring multiple installation types.",
     videoSrc: video3,
-    thumbnailSrc: thumbnail3,
+    thumbnailSrc: imgSrc(thumbnail3),
     alt: "KM Signs comprehensive signage showcase",
     instagramUrl: "https://www.instagram.com/kaykovsigns/",
   },
@@ -41,7 +42,7 @@ export const signagesVideos: InstagramVideoItem[] = [
     title: "Interior Signage Project",
     description: "Custom 3D letters indoor signage with professional lighting.",
     videoSrc: video4,
-    thumbnailSrc: thumbnail4,
+    thumbnailSrc: imgSrc(thumbnail4),
     alt: "Interior 3D letters signage project",
     instagramUrl: "https://www.instagram.com/kaykovsigns/",
   },

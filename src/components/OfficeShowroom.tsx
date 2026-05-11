@@ -1,4 +1,5 @@
 import { useQuoteForm } from "@/components/QuoteFormProvider";
+import { imgSrc } from "@/lib/imgSrc";
 import { trackCtaClick } from "@/lib/analytics";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,17 +20,17 @@ import officeImage11 from "@/assets/outdoor /cases in office /11 I letter.JPG";
 import officeImage12 from "@/assets/outdoor /cases in office /12 KAY_3639.JPG";
 
 const officeImages = [
-  officeImage1,
-  officeImage2,
-  officeImage3,
-  officeImage4,
-  officeImage5,
-  officeImage6,
-  officeImage7,
-  officeImage8,
-  officeImage9,
-  officeImage10,
-  officeImage11,
+  imgSrc(officeImage1),
+  imgSrc(officeImage2),
+  imgSrc(officeImage3),
+  imgSrc(officeImage4),
+  imgSrc(officeImage5),
+  imgSrc(officeImage6),
+  imgSrc(officeImage7),
+  imgSrc(officeImage8),
+  imgSrc(officeImage9),
+  imgSrc(officeImage10),
+  imgSrc(officeImage11),
   officeImage12
 ];
 
