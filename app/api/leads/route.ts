@@ -328,10 +328,10 @@ export async function PATCH(req: NextRequest) {
       }).eq("id", id)
     }
 
-    // Fetch lead details to populate emails
-    let lead: { name: string; email: string | null; phone: string | null; company: string | null; storefront_url: string | null; logo_url: string | null } | null = null
+    // Fetch all lead data from DB as single source of truth for emails
+    let lead: { name: string; email: string | null; phone: string | null; company: string | null; storefront_url: string | null; logo_url: string | null; generated_url: string | null; sign_width_in: number | null; sign_height_in: number | null } | null = null
     if (supabase) {
-      const { data } = await supabase.from("leads").select("name,email,phone,company,storefront_url,logo_url").eq("id", id).single()
+      const { data } = await supabase.from("leads").select("name,email,phone,company,storefront_url,logo_url,generated_url,sign_width_in,sign_height_in").eq("id", id).single()
       if (data) lead = data
     }
 
@@ -348,11 +348,11 @@ export async function PATCH(req: NextRequest) {
           email: lead.email,
           phone: lead.phone,
           company: lead.company,
-          generatedUrl: generatedStoredUrl,
+          generatedUrl: lead.generated_url,
           storefrontUrl: lead.storefront_url,
           logoUrl: lead.logo_url,
-          signWidthIn: body.sign_width_in ?? null,
-          signHeightIn: body.sign_height_in ?? null,
+          signWidthIn: lead.sign_width_in,
+          signHeightIn: lead.sign_height_in,
           submittedAt,
         }),
       }).catch(console.error)
@@ -369,11 +369,11 @@ export async function PATCH(req: NextRequest) {
         subject: "Your sign design is ready!",
         html: clientDesignHtml({
           name: lead.name,
-          generatedUrl: generatedStoredUrl,
+          generatedUrl: lead.generated_url,
           storefrontUrl: lead.storefront_url,
           logoUrl: lead.logo_url,
-          signWidthIn: body.sign_width_in ?? null,
-          signHeightIn: body.sign_height_in ?? null,
+          signWidthIn: lead.sign_width_in,
+          signHeightIn: lead.sign_height_in,
         }),
       }).catch(console.error)
 
