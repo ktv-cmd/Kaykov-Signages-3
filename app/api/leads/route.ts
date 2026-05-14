@@ -74,7 +74,6 @@ const KM_LOGO = "https://signscompanynewyork.com/favicon.png"
 function signature() {
   return `
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid #eee">
-    <img src="${KM_LOGO}" alt="Kaykov Media" style="width:60px;height:60px;display:block;margin-bottom:12px" />
     <p style="margin:0;font-size:14px;font-weight:600">Boris</p>
     <p style="margin:4px 0 0;font-size:13px;color:#666">Kaykov Media</p>
     <p style="margin:2px 0 0;font-size:13px;color:#666"><a href="tel:+17184784200" style="color:#666">(718) 478-4200</a></p>
@@ -91,11 +90,7 @@ function clientQuoteHtml(opts: {
   const { name, company, businessLocation, message } = opts
   return `
 <div style="font-family:sans-serif;max-width:620px;margin:0 auto;color:#111">
-  <div style="text-align:center;padding:24px 0 16px">
-    <img src="${KM_LOGO}" alt="Kaykov Media" style="width:80px;height:80px" />
-  </div>
-
-  <p style="font-size:16px;margin-bottom:4px">Hi ${fmt(name)},</p>
+  <p style="font-size:16px;margin-bottom:4px;margin-top:24px">Hi ${fmt(name)},</p>
   <p style="font-size:15px;color:#333;margin-top:0">Thank you for reaching out to Kaykov Media. We received your quote request and will contact you shortly.</p>
 
   <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Your Request</h3>
@@ -167,17 +162,13 @@ function clientDesignHtml(opts: {
   const hasSize = signWidthIn != null && signHeightIn != null
   return `
 <div style="font-family:sans-serif;max-width:620px;margin:0 auto;color:#111">
-  <div style="text-align:center;padding:24px 0 16px">
-    <img src="${KM_LOGO}" alt="Kaykov Media" style="width:80px;height:80px" />
-  </div>
-
-  <p style="font-size:16px;margin-bottom:4px">Hi ${fmt(name)},</p>
-  <p style="font-size:15px;color:#333;margin-top:0">Thank you for using Kaykov Media. Your sign design is ready and we will contact you shortly with a full quote.</p>
-
   ${generatedUrl ? `
-  <div style="margin-top:20px">
+  <div style="margin-top:0">
     <img src="${generatedUrl}" alt="Your sign design" style="width:100%;border-radius:8px;display:block" />
   </div>` : ""}
+
+  <p style="font-size:16px;margin-bottom:4px;margin-top:24px">Hi ${fmt(name)},</p>
+  <p style="font-size:15px;color:#333;margin-top:0">Thank you for using Kaykov Media. Your sign design is ready and we will contact you shortly with a full quote.</p>
 
   ${hasSize ? `<p style="margin-top:12px;font-size:15px;font-weight:600">Estimated size: ${signWidthIn}" × ${signHeightIn}"</p>` : ""}
 
