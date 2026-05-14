@@ -144,10 +144,14 @@ function adminDesignHtml(opts: {
   <a href="${generatedUrl}" style="display:inline-block;margin-top:6px;color:#555;font-size:13px">View full image →</a>
   ` : ""}
 
-  ${storefrontUrl || logoUrl ? `
-  <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Original Photos</h3>
-  ${storefrontUrl ? `<p style="margin:4px 0;font-size:14px">Storefront: <a href="${storefrontUrl}" style="color:#111">View →</a></p>` : ""}
-  ${logoUrl ? `<p style="margin:4px 0;font-size:14px">Logo: <a href="${logoUrl}" style="color:#111">View →</a></p>` : ""}
+  ${storefrontUrl ? `
+  <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Storefront Photo</h3>
+  <a href="${storefrontUrl}"><img src="${storefrontUrl}" alt="Storefront" style="width:100%;border-radius:8px;display:block" /></a>
+  ` : ""}
+
+  ${logoUrl ? `
+  <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Client Logo</h3>
+  <a href="${logoUrl}"><img src="${logoUrl}" alt="Client logo" style="max-width:300px;border-radius:8px;display:block" /></a>
   ` : ""}
 </div>`
 }
@@ -155,10 +159,12 @@ function adminDesignHtml(opts: {
 function clientDesignHtml(opts: {
   name: string
   generatedUrl: string | null
+  storefrontUrl: string | null
+  logoUrl: string | null
   signWidthIn: number | null
   signHeightIn: number | null
 }) {
-  const { name, generatedUrl, signWidthIn, signHeightIn } = opts
+  const { name, generatedUrl, storefrontUrl, logoUrl, signWidthIn, signHeightIn } = opts
   const hasSize = signWidthIn != null && signHeightIn != null
   return `
 <div style="font-family:sans-serif;max-width:620px;margin:0 auto;color:#111">
@@ -171,6 +177,16 @@ function clientDesignHtml(opts: {
   <p style="font-size:15px;color:#333;margin-top:0">Thank you for using Kaykov Media. Your sign design is ready and we will contact you shortly with a full quote.</p>
 
   ${hasSize ? `<p style="margin-top:12px;font-size:15px;font-weight:600">Estimated size: ${signWidthIn}" × ${signHeightIn}"</p>` : ""}
+
+  ${storefrontUrl ? `
+  <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Your Storefront</h3>
+  <img src="${storefrontUrl}" alt="Storefront" style="width:100%;border-radius:8px;display:block" />
+  ` : ""}
+
+  ${logoUrl ? `
+  <h3 style="margin-top:24px;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#888">Your Logo</h3>
+  <img src="${logoUrl}" alt="Logo" style="max-width:300px;border-radius:8px;display:block" />
+  ` : ""}
 
   <p style="margin-top:24px;font-size:14px;color:#333">Best regards,</p>
   ${signature()}
@@ -354,6 +370,8 @@ export async function PATCH(req: NextRequest) {
         html: clientDesignHtml({
           name: lead.name,
           generatedUrl: generatedStoredUrl,
+          storefrontUrl: lead.storefront_url,
+          logoUrl: lead.logo_url,
           signWidthIn: body.sign_width_in ?? null,
           signHeightIn: body.sign_height_in ?? null,
         }),
