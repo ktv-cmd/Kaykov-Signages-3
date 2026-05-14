@@ -295,12 +295,14 @@ export default function ApplicationForm({
 
       // Also submit to Sign AI / Supabase so all leads land in one database
       const fd = new FormData();
-      fd.append("name",    data.name || "");
-      fd.append("email",   data.email?.trim() || "");
-      fd.append("phone",   data.phone?.trim() || "");
-      fd.append("company", data.businessName?.trim() || "");
-      fd.append("source",  leadSource || "quote-form");
-      fd.append("flow_type", "quote-form");
+      fd.append("name",              data.name || "");
+      fd.append("email",             data.email?.trim() || "");
+      fd.append("phone",             data.phone?.trim() || "");
+      fd.append("company",           data.businessName?.trim() || "");
+      fd.append("business_location", data.businessLocation?.trim() || "");
+      fd.append("message",           data.details?.trim() || "");
+      fd.append("source",            leadSource || "quote-form");
+      fd.append("flow_type",         "quote");
       if (uploadedImage) fd.append("storefront", uploadedImage);
       if (paintedArea)   fd.append("sign_area", JSON.stringify(paintedArea));
       fetch(`${SIGN_AI_API}/api/leads`, { method: "POST", body: fd }).catch(() => {});
