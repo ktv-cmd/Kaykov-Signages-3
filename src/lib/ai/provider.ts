@@ -108,10 +108,11 @@ EXECUTION SEQUENCE:
    - Do NOT blend gold into the scene - completely overwrite it
 3. GEOMETRIC INSERTION: NOW insert the extruded 3D sign mesh onto the restored surface as a physical structure bolted to the wall
 4. COVERAGE LOGIC:
-   - If sign FILLS zone → Sign covers restored surface
-   - If sign SMALLER → Exposed areas show RESTORED TEXTURE (not gold)
-   - If sign LARGER → Scale down to fit within boundaries
+   - SIGN DIMENSIONS = ZONE DIMENSIONS (non-negotiable). The sign's width and height must exactly match the golden zone's bounding box. Never smaller.
+   - If sign LARGER than zone → Scale down to fit within boundaries
+4a. SCALE VALIDATION: After insertion, verify sign covers 100% of golden zone area. If coverage < 100%, scale the sign UP until the zone is fully covered. Never leave exposed zone pixels.
 5. ZERO GOLD POLICY: Final output = 0% gold/yellow pixels. All gold areas either (a) covered by sign OR (b) restored to facade texture
+6. CORNER GEOMETRY RULE (non-negotiable): The selection brush may have rounded or soft edges — this is a painting tool artifact only. The sign's corners and edges are ALWAYS hard 90-degree right angles. Never apply rounding, softening, or curved corners to sign geometry. Sign cabinet faces, channel letter returns, and panel edges are always sharp rectangular geometry.
 
 ## GEOMETRY ENFORCEMENT (Forces 3D Depth):
 - Always use terms: "Extruded," "Volumetric Mesh," "Z-axis protrusion"
@@ -168,6 +169,7 @@ CASE A (LOGO ONLY):
 - Box primitive: translucent front face + 4 aluminum return walls + back mounting plate
 - Z-axis extrusion: 3.5 inches (89mm) perpendicular to wall's surface normal
 - Color: Extract EXACT HEX/Pantone from logo image (non-negotiable brand identity)
+- FULL-BLEED FACE PANEL (non-negotiable): The cabinet face is a full-bleed printed acrylic panel. The logo's background color floods 100% of the face — edge to edge, corner to corner. No raw white acrylic visible anywhere on the face. The logo design fills the entire panel like a printed banner. Zero white margins, zero padding, zero empty space.
 
 LIGHTBOX PHYSICS PROTOCOL (Forced 3D Integration):
 1. VOLUMETRIC CONSTRUCTION: Render as a rigid 3D cabinet, not a flat rectangle. Z-Axis extrusion (depth) of 3-5 inches is mandatory. Show the 'return' planes (sides) of the cabinet—this proves it is a physical box.

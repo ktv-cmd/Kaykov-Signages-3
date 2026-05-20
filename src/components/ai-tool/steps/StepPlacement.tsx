@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { useFlowStore } from "@/lib/flow-store"
 import { cn } from "@/lib/utils"
 import { placementToInches } from "@/lib/placement-to-inches"
-import type { Placement } from "@/types/flow"
+import type { Placement, SignSizeResult } from "@/types/flow"
 import { Eraser, Paintbrush } from "lucide-react"
 
 function placementFromBrushLayer(brushLayer: HTMLCanvasElement): Placement | null {
@@ -218,7 +218,44 @@ export function StepPlacement() {
     const blob: Blob | null = await new Promise((res) => brushLayer.toBlob((b) => res(b), "image/png"))
     if (!blob) return
     const file = new File([blob], "placement-brush.png", { type: "image/png" })
-    const size = placementToInches(derived, natural.w, natural.h, doorDetection?.detected ? doorDetection.box ?? null : null)
+
+    // --- Primary: ask Gemini directly for sign dimensions (most accurate) ---
+    let size: SignSizeResult | null = await (async () => {
+      try {
+        const res = await fetch("/api/estimate-sign-size", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl: storefrontPreviewUrl, signBox: derived }),
+        })
+        if (!res.ok) return null
+        const data = await res.json() as SignSizeResult
+        if (data.widthIn > 0 && data.heightIn > 0) return data
+      } catch {}
+      return null
+    })()
+
+    // --- Cross-check with door reference if door was detected with a narrow box (single leaf) ---
+    if (doorDetection?.detected && doorDetection.box) {
+      const doorSize = placementToInches(derived, natural.w, natural.h, doorDetection.box)
+      if (doorSize.method === "door-reference" && size) {
+        // Average the two if they're within 20% of each other
+        const wRatio = Math.abs(doorSize.widthIn - size.widthIn) / size.widthIn
+        const hRatio = Math.abs(doorSize.heightIn - size.heightIn) / size.heightIn
+        if (wRatio < 0.2 && hRatio < 0.2) {
+          const wIn = Math.round((doorSize.widthIn + size.widthIn) / 2)
+          const hIn = Math.round((doorSize.heightIn + size.heightIn) / 2)
+          size = { widthIn: wIn, heightIn: hIn, method: "gemini-vision", label: size.label, confidence: 0.95 }
+        }
+      } else if (!size) {
+        size = doorSize
+      }
+    }
+
+    // --- Fallback: storefront-width prior ---
+    if (!size) {
+      size = placementToInches(derived, natural.w, natural.h, null)
+    }
+
     setSignSize(size); setPlacement(derived); setPlacementBrushFile(file); goNext()
   }
 

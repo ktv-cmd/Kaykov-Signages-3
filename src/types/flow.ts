@@ -84,8 +84,9 @@ export interface DoorDetectionResult {
 export interface SignSizeResult {
   widthIn: number
   heightIn: number
-  method: "door-reference" | "user-input" | "ai-estimate"
+  method: "door-reference" | "user-input" | "ai-estimate" | "gemini-vision"
   label: string
+  confidence?: number
 }
 
 export interface FlowState {

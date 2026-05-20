@@ -20,9 +20,11 @@ export function placementToInches(
   const signPixelW = placement.width  * imageNaturalW
   const signPixelH = placement.height * imageNaturalH
 
-  if (doorBox && doorBox.width > 0 && doorBox.height > 0) {
-    const ppiX = doorBox.width  / DOOR_WIDTH_IN
-    const ppiY = doorBox.height / DOOR_HEIGHT_IN
+  // doorBox is in 0-1 fractions of image dimensions — convert to pixels before computing PPI.
+  // Also guard against Gemini boxing the whole storefront opening (> 15% of image width = not a single door leaf).
+  if (doorBox && doorBox.width > 0 && doorBox.height > 0 && doorBox.width <= 0.15) {
+    const ppiX = (doorBox.width  * imageNaturalW) / DOOR_WIDTH_IN
+    const ppiY = (doorBox.height * imageNaturalH) / DOOR_HEIGHT_IN
     const widthIn  = Math.round(signPixelW / ppiX)
     const heightIn = Math.round(signPixelH / ppiY)
     return { widthIn, heightIn, method: "door-reference", label: formatLabel(widthIn, heightIn) }

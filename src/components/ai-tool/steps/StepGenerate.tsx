@@ -110,26 +110,6 @@ export function StepGenerate() {
       setProgress(100); setStatus("done")
       setGenerationResult(result)
 
-      const resolvedLeadId = capturedLeadId ?? leadId
-      const firstImage = result.candidates?.[0]?.imageUrl
-      if (resolvedLeadId && firstImage) {
-        fetch(`${API_BASE}/api/leads`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: resolvedLeadId,
-            generatedImageUrl: firstImage,
-            sign_width_in:    signSize?.widthIn    ?? null,
-            sign_height_in:   signSize?.heightIn   ?? null,
-            size_method:      signSize?.method     ?? null,
-            door_detected:    doorDetection?.detected  ?? null,
-            door_confidence:  doorDetection?.confidence ?? null,
-            source:           source ?? "direct",
-            flow_type:        "sign-ai",
-          }),
-        }).catch(() => {})
-      }
-
       setTimeout(() => goNext(), 600)
     } catch (err) {
       setStatus("error")
